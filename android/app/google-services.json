@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "743083597128",
+    "project_id": "meetup-d2efb",
+    "storage_bucket": "meetup-d2efb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743083597128:android:f2e56eca840fa55e2da77d",
+        "android_client_info": {
+          "package_name": "com.example.untitled1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743083597128-krc7gdtg08nio9ufh53585tqbnr7gjq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOF13vNixECbdHGiVSOXpaPf5V8gzrAw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743083597128-krc7gdtg08nio9ufh53585tqbnr7gjq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
