@@ -6,8 +6,7 @@ import 'package:untitled1/auth/verify_email/verify_email_bloc.dart';
 import 'package:untitled1/auth/verify_email/verify_email_state.dart';
 
 class EmailVerificationField extends StatelessWidget {
-  final TextEditingController? otpController;
-  const EmailVerificationField({Key? key,this.otpController}) : super(key: key);
+  const EmailVerificationField({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VerifyEmailBloc, VerifyEmailState>(
@@ -17,7 +16,6 @@ class EmailVerificationField extends StatelessWidget {
         style: const TextStyle(
           color: Colors.black54,
         ),
-        controller: otpController,
         maxLines: 1,
         obscureText: false,
         onChanged: (value) {

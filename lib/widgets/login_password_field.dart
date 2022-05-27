@@ -6,8 +6,7 @@ import '../auth/form_submission_status.dart';
 import '../auth/login/login_state.dart';
 
 class LoginPasswordField extends StatelessWidget{
-  final TextEditingController? textEditingController;
-  const LoginPasswordField({Key? key,this.textEditingController}) : super(key: key);
+  const LoginPasswordField({Key? key,}) : super(key: key);
 
   @override
   Widget build(context) {
@@ -18,7 +17,6 @@ class LoginPasswordField extends StatelessWidget{
           style: const TextStyle(
             color: Colors.black54,
           ),
-          controller: textEditingController,
           maxLines: 1,
           obscureText: true,
           onChanged: (value){

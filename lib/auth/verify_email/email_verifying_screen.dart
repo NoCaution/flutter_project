@@ -14,9 +14,8 @@ import 'package:untitled1/widgets/email_verification_field.dart';
 
 class EmailVerifyingScreen extends StatefulWidget {
   final AuthCubit? authCubit;
-  const EmailVerifyingScreen({
-    Key? key,this.authCubit
-  }) : super(key: key);
+
+  const EmailVerifyingScreen({Key? key, this.authCubit}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -32,28 +31,31 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
           backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
           centerTitle: true,
-          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              "Meet",
-              style: GoogleFonts.kanit(
-                  textStyle:
-                      const TextStyle(color: Colors.white, fontSize: 32)),
-            ),
-            Text("Up",
+          title: Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "Meet",
                 style: GoogleFonts.kanit(
-                    textStyle: const TextStyle(
-                        color: Color.fromRGBO(255, 222, 118, 1),
-                        fontSize: 32))),
-          ])),
+                    textStyle:
+                        const TextStyle(color: Colors.white, fontSize: 35)),
+              ),
+              Text("Up",
+                  style: GoogleFonts.kanit(
+                      textStyle: const TextStyle(
+                          color: Color.fromRGBO(255, 222, 118, 1),
+                          fontSize: 35))),
+              const Padding(padding: EdgeInsets.all(20)),
+            ]),
+          )),
       body: BlocProvider(
         create: (context) => VerifyEmailBloc(
             authRepo: context.read<AuthRepository>(),
             authCubit: context.read<AuthCubit>()),
         child: Container(
-          color: const Color.fromRGBO(220, 220, 220, 1),
+          color: const Color.fromRGBO(230, 230, 230, 1),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -63,9 +65,9 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
                   alignment: Alignment.center,
                   child: Column(children: [
                     Text(
-                      "'${widget.authCubit?.credentials!.eMail!.trim()}' email hesabına bir kod yolladık. email hesabını doğrulayabilmemiz için lütfen kodu aşağıya gir..",
+                      "${widget.authCubit?.credentials!.eMail!.trim()} email hesabına bir kod yolladık. email hesabını doğrulayabilmemiz için lütfen kodu aşağıya gir.",
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.black54,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -73,18 +75,18 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
                   ]),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 40,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: BlocListener<VerifyEmailBloc, VerifyEmailState>(
-                    listener: (BuildContext context, state) {
-                      var formStatus = state.formStatus;
-                      // exception management
-                      checkForExceptions(formStatus!);
-                    },
-                    child: buildFormField(),
-                  ),
+                BlocListener<VerifyEmailBloc, VerifyEmailState>(
+                  listener: (BuildContext context, state) {
+                    var formStatus = state.formStatus;
+                    // exception management
+                    checkForExceptions(formStatus!);
+                  },
+                  child: buildFormField(),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -101,26 +103,39 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
     );
   }
 
-  Form buildFormField(){
+  Form buildFormField() {
     return Form(
       key: formKey,
-      child: EmailVerificationField(otpController: otpController,),
+      child: const EmailVerificationField(),
     );
   }
+
   Widget buildSubmitButton() {
     return BlocBuilder<VerifyEmailBloc, VerifyEmailState>(
         builder: (context, state) {
-          return state.formStatus is FormSubmitted
-              ? const CircularProgressIndicator()
-              : TextButton(
+      return state.formStatus is FormSubmitted
+          ? const CircularProgressIndicator()
+          : TextButton(
               onPressed: () {
                 onPressed(context);
               },
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      const EdgeInsets.only(
+                    left: 35,
+                    right: 35,
+                  )),
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    side: BorderSide.none,
+                  ))),
               child: const Text(
                 "Onayla",
                 style: TextStyle(
-                  fontSize: 20,
-                  color: Color.fromRGBO(47, 183, 254, 0.9),
+                  fontSize: 15,
+                  color: Colors.black45,
                 ),
               ));
     });
@@ -144,6 +159,8 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
           style: TextStyle(fontSize: 15, color: Colors.black45),
         ),
         style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                EdgeInsets.only(left: 20, right: 20)),
             backgroundColor: MaterialStateProperty.all(Colors.white),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -178,6 +195,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
       toastLength: Toast.LENGTH_LONG,
     );
   }
+
   void checkForExceptions(FormSubmissionStatus formStatus) {
     if (formStatus is SubmissionFailed) {
       showToast(formStatus.error!);

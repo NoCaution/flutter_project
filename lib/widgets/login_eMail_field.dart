@@ -7,9 +7,8 @@ import '../auth/login/login_bloc.dart';
 import '../auth/login/login_state.dart';
 
 class LoginEmailField extends StatelessWidget {
-  final TextEditingController? textEditingController;
 
-  const LoginEmailField({Key? key, this.textEditingController}) : super(key: key);
+  const LoginEmailField({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,6 @@ class LoginEmailField extends StatelessWidget {
           style: const TextStyle(
             color: Colors.black54,
           ),
-          controller: textEditingController,
           maxLines: 1,
           onChanged: (value){
             context.read<LoginBloc>().add(RestartFormStatus());

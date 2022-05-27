@@ -1,4 +1,4 @@
-class Validators{
+class Validations{
 
   String? passwordValidator(String? password) {
     if (password == null) {
@@ -11,7 +11,7 @@ class Validators{
       return "şifre en fazla 15 karakter olabilir!";
     }
     else{
-      return "";
+      return null;
     }
   }
 
@@ -19,15 +19,15 @@ class Validators{
     if (eMail == null) {
       return "bir Email girmelisin!";
     }
-    if (isValidEmail(eMail) == false) {
+    if (isEmailValid(eMail) == false) {
       return "geçerli bir Email girmelisin!";
     }
     else{
-      return "";
+      return null;
     }
   }
 
-  bool isValidEmail(String eMail) {
+  bool isEmailValid(String eMail) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern.toString());
@@ -44,7 +44,7 @@ class Validators{
       return "doğum tarihi gelecekte olamaz!";
     }
     else{
-      return "";
+      return null;
     }
   }
 }

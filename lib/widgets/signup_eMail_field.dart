@@ -5,9 +5,8 @@ import 'package:untitled1/auth/signup/signup_state.dart';
 import '../auth/signup/signup_bloc.dart';
 
 class SignUpEmailField extends StatelessWidget {
-  final TextEditingController? textEditingController;
 
-  const SignUpEmailField({Key? key, this.textEditingController}) : super(key: key);
+  const SignUpEmailField({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +16,9 @@ class SignUpEmailField extends StatelessWidget {
           style: const TextStyle(
             color: Colors.black54,
           ),
-          controller: textEditingController,
           maxLines: 1,
           onChanged: (value){
+            context.read<SignupBloc>().add(RestartFormStatus());
             context.read<SignupBloc>().add(SignupEmailChanged(eMail: value));
           },
           validator: (eMail) {

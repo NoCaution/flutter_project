@@ -7,9 +7,8 @@ import '../auth/signup/signup_state.dart';
 
 
 class NameField extends StatelessWidget {
-  final TextEditingController? textEditingController;
 
-  const NameField({Key? key, this.textEditingController}) : super(key: key);
+  const NameField({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,6 @@ class NameField extends StatelessWidget {
             style: const TextStyle(
               color: Colors.black54,
             ),
-            controller: textEditingController,
             maxLines: 1,
             validator: (name) {
               if (name!.isEmpty) {
@@ -29,6 +27,7 @@ class NameField extends StatelessWidget {
               return null;
             },
             onChanged: (value){
+              context.read<SignupBloc>().add(RestartFormStatus());
               context.read<SignupBloc>().add(SignupNameChanged(name: value));
             },
             keyboardType: TextInputType.text,

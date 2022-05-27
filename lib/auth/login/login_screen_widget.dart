@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
 import 'package:untitled1/auth/login/auth_repository.dart';
@@ -24,8 +23,6 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   static const iconColor = Color.fromRGBO(47, 183, 254, 0.9);
-  TextEditingController eMailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   User? user;
 
@@ -85,9 +82,9 @@ class LoginScreenState extends State<LoginScreen> {
                         height: 10,
                       ),
                       BlocListener<LoginBloc, LoginState>(
-                        listener: (context, state) {
+                        listener: (context1, state) {
                           final formStatus = state.formStatus;
-                          exceptionManagement(formStatus);
+                          exceptionManagement(formStatus: formStatus,context: context);
                         },
                         child: formField(), //form
                       ),
@@ -95,11 +92,7 @@ class LoginScreenState extends State<LoginScreen> {
                         height: 20,
                       ),
                       Center(
-                        child: SizedBox(
-                          height: 37,
-                          width: 100,
-                          child: buildSubmitButton(),
-                        ),
+                        child: buildSubmitButton(),
                       ),
                       Expanded(
                         child: buildBottomPart(context, width),
@@ -113,17 +106,14 @@ class LoginScreenState extends State<LoginScreen> {
     return Form(
       key: formKey,
       child: Column(
-        children: [
+        children: const [
           Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: LoginEmailField(
-              textEditingController: eMailController,
-            ),
+            padding: EdgeInsets.only(bottom: 5),
+            child: LoginEmailField(),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 5),
+            padding: EdgeInsets.only(bottom: 5),
             child: LoginPasswordField(
-              textEditingController: passwordController,
             ),
           ),
         ],
@@ -177,6 +167,8 @@ class LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(color: Colors.black45),
               ),
               style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      const EdgeInsets.only(left: 30, right: 30)),
                   backgroundColor: MaterialStateProperty.all(Colors.white70),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -193,25 +185,37 @@ class LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void exceptionManagement(FormSubmissionStatus formStatus) {
+  void exceptionManagement({FormSubmissionStatus? formStatus,BuildContext? context}) {
     if (formStatus is SubmissionFailed) {
-      if (formStatus.exception.toString() =="[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
-        showToast("kullanıcı adı ya da şifre hatalı!", Colors.red);
+      if (formStatus.exception.toString().split(" ")[0] ==
+          "[firebase_auth/wrong-password]") {
+        showMessage(message: "kullanıcı adı ya da şifre hatalı!",context: context!,);
       } else if (formStatus.exception.toString() == "null") {
-        showToast(formStatus.error!, Colors.red);
+        showMessage(message: formStatus.error!,context: context! );
+      } else if (formStatus.exception.toString().split(" ")[0] ==
+          "[firebase_auth/user-not-found]") {
+        showMessage(message: "kullanıcı adı ya da şifre hatalı!",context: context!);
+      } else if(formStatus.exception.toString().split(" ")[0] == "[firebase_auth/too-many-requests]"){
+        showMessage(message: "lütfen bir süre bekleyin..",context: context!);
+      } else {
+        showMessage(message: formStatus.exception.toString(),context: context!);
       }
     }
   }
 
-  void showToast(String message, Color backGroundColor) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: backGroundColor,
-      textColor: Colors.white,
-      fontSize: 8.0,
+  void showMessage({String? message, BuildContext? context}) {
+    final snackBar = SnackBar(
+        content: Text(message!,style: const TextStyle(fontSize: 15,color: Colors.white),textAlign: TextAlign.center,),
+        backgroundColor: Colors.red[400],
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.only(bottom: 40,left: 5,right: 5),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          side: BorderSide.none,
+        ),
     );
+    ScaffoldMessenger.of(context!).showSnackBar(snackBar);
   }
 }

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled1/auth/login/auth_repository.dart';
+import 'package:untitled1/main_screen_cubit.dart';
 import 'package:untitled1/widgets/post_card_widget.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key,}) : super(key: key);
-
+  final AuthRepository? authRepo;
+  final MainScreenCubit? mainScreenCubit;
+  const MainScreen({Key? key,this.mainScreenCubit,this.authRepo}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return MainScreenState();
   }
 }
 
-class MainScreenState extends State {
+class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +37,12 @@ class MainScreenState extends State {
       body: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(20),
-          child: const PostCardWidget(),
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('./lib/assets/images/imageflutter.jpeg')),
+          child: TextButton(
+            onPressed: (){
+              widget.authRepo?.signOut();
+              widget.mainScreenCubit?.showAuth();
+            },
+            child: Text("çıkış yap"),
           ),
         ),
     );

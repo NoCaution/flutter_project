@@ -5,9 +5,7 @@ import 'package:untitled1/auth/signup/signup_state.dart';
 import '../auth/signup/signup_bloc.dart';
 
 class SignUpPasswordField extends StatelessWidget{
-  final BuildContext? context;
-  final TextEditingController? textEditingController;
-  const SignUpPasswordField({Key? key,this.textEditingController,this.context}) : super(key: key);
+  const SignUpPasswordField({Key? key,}) : super(key: key);
 
   @override
   Widget build(context) {
@@ -18,10 +16,10 @@ class SignUpPasswordField extends StatelessWidget{
             style: const TextStyle(
               color: Colors.black54,
             ),
-            controller: textEditingController,
             maxLines: 1,
             obscureText: true,
             onChanged: (value){
+              context.read<SignupBloc>().add(RestartFormStatus());
               context.read<SignupBloc>().add(SignupPasswordChanged(password: value));
             },
             validator: (password) {

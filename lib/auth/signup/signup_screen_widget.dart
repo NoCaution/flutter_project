@@ -26,24 +26,13 @@ class SignupScreenWidget extends StatefulWidget {
 
 class SignupScreenWidgetState extends State<SignupScreenWidget> {
   var key = GlobalKey<FormState>();
-  var eMailController = TextEditingController();
-  var nameController = TextEditingController();
-  var lastNameController = TextEditingController();
-  var passwordController = TextEditingController();
-  var passwordConfirmController = TextEditingController();
   AuthRepository? authRepo;
   AuthCubit? authCubit;
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    var height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -54,7 +43,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
               "Meet",
               style: GoogleFonts.kanit(
                   textStyle:
-                  const TextStyle(color: Colors.white, fontSize: 32)),
+                      const TextStyle(color: Colors.white, fontSize: 32)),
             ),
             Text("Up",
                 style: GoogleFonts.kanit(
@@ -63,10 +52,9 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
                         fontSize: 32))),
           ])),
       body: BlocProvider(
-        create: (context) =>
-            SignupBloc(
-                authRepo: context.read<AuthRepository>(),
-                authCubit: context.read<AuthCubit>()),
+        create: (context) => SignupBloc(
+            authRepo: context.read<AuthRepository>(),
+            authCubit: context.read<AuthCubit>()),
         child: Container(
             decoration: const BoxDecoration(
               color: Color.fromRGBO(240, 240, 240, 1),
@@ -84,14 +72,16 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
                       listener: (context, state) {
                         final formStatus = state.formStatus;
                         // exceptions management//
-                        exceptionManagement(formStatus!);
+                        exceptionManagement(
+                            formStatus: formStatus, context: context);
                       },
-                      child: buildFormField(), //signup button inside//
+                      child: buildFormField(height), //signup button inside//
                     )),
                 buildBottomPart(context),
               ],
             )),
-      ),);
+      ),
+    );
   }
 
   //COMPONENTS//
@@ -101,30 +91,26 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Hesabın var mı?",
-                  style: TextStyle(color: Colors.black45),
-                ),
-                TextButton(
-                  onPressed: () =>
-                      context.read<AuthCubit>().showLogin(),
-                  child: const Text(
-                    "giriş yap",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54),
-                  ),
-                ),
-              ])
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Text(
+              "Hesabın var mı?",
+              style: TextStyle(color: Colors.black45),
+            ),
+            TextButton(
+              onPressed: () => context.read<AuthCubit>().showLogin(),
+              child: const Text(
+                "giriş yap",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black54),
+              ),
+            ),
+          ])
         ],
       ),
     );
   }
 
-  Form buildFormField() {
+  Form buildFormField(double height) {
     return Form(
       key: key,
       child: Column(
@@ -132,50 +118,40 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
           Padding(
             child: Center(
                 child: Text(
-                  "KAYDOL",
-                  style: GoogleFonts.asap(
-                      color: const Color.fromRGBO(126, 124, 255, 0.7),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                )),
+              "KAYDOL",
+              style: GoogleFonts.asap(
+                  color: const Color.fromRGBO(126, 124, 255, 0.7),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            )),
             padding: const EdgeInsets.only(top: 0, bottom: 10),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-            child: NameField(
-              textEditingController: nameController,
-            ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: NameField(),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-            child: LastNameField(
-              textEditingController: lastNameController,
-            ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+            child: LastNameField(),
           ),
-          Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-              child: SignUpEmailField(
-                textEditingController: eMailController,
-              )),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-            child: SignUpPasswordField(
-                textEditingController: passwordController, context: context),
+          const Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+              child: SignUpEmailField()),
+          const Padding(
+            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+            child: SignUpPasswordField(),
+          ),
+          SizedBox(
+            height: height / 28,
           ),
           //signup button here//
-          Padding(
-              padding: const EdgeInsets.only(
-                  top: 20, left: 10, right: 10, bottom: 20),
-              child: SizedBox(
-                child: BlocBuilder<SignupBloc, SignupState>(
-                  builder: (context, state) {
-                    return state.formStatus is FormSubmitted
-                        ? const CircularProgressIndicator()
-                        : buildSignUpButton(context, state);
-                  },
-                ),
-                width: 100,
-              ))
+          BlocBuilder<SignupBloc, SignupState>(
+            builder: (context, state) {
+              return state.formStatus is FormSubmitted
+                  ? const CircularProgressIndicator()
+                  : buildSignUpButton(context, state);
+            },
+          ),
         ],
       ),
     );
@@ -192,11 +168,13 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
       ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white70),
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+              const EdgeInsets.only(left: 40, right: 40)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-                side: BorderSide.none,
-              ))),
+            borderRadius: BorderRadius.circular(30),
+            side: BorderSide.none,
+          ))),
     );
   }
 
@@ -205,22 +183,35 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
       context.read<SignupBloc>().add(SignupSubmitted());
     }
   }
-  void exceptionManagement(FormSubmissionStatus formStatus) {
+
+  void exceptionManagement(
+      {FormSubmissionStatus? formStatus, BuildContext? context}) {
     if (formStatus is SubmissionFailed) {
-      showToast(message: formStatus.error!);
+      showMessage(message: formStatus.error!, context: context);
     }
     if (formStatus is SubmissionFailed &&
         formStatus.exception.toString() != "null") {
-      showToast(message: formStatus.exception.toString());
+      showMessage(message: formStatus.exception.toString(), context: context);
     }
   }
-  void showToast({String? message}) {
-    Fluttertoast.showToast(
-      msg: message!,
-      gravity: ToastGravity.BOTTOM,
-      toastLength: Toast.LENGTH_LONG,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
+
+  void showMessage({String? message, BuildContext? context}) {
+    final snackBar = SnackBar(
+      content: Text(
+        message!,
+        style: const TextStyle(fontSize: 15, color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: Colors.red[400],
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.only(bottom: 40, left: 5, right: 5),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+        side: BorderSide.none,
+      ),
     );
+    ScaffoldMessenger.of(context!).showSnackBar(snackBar);
   }
 }

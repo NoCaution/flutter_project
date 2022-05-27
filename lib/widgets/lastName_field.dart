@@ -5,8 +5,7 @@ import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
 
 class LastNameField extends StatelessWidget{
-  final TextEditingController? textEditingController;
-  const LastNameField({Key? key,this.textEditingController}) : super(key: key);
+  const LastNameField({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +15,10 @@ class LastNameField extends StatelessWidget{
           style: const TextStyle(
             color: Colors.black54,
           ),
-          controller: textEditingController,
           maxLines: 1,
           onChanged: (value){
-            context.read<SignupBloc>().add(SignupLastNameChanged());
+            context.read<SignupBloc>().add(RestartFormStatus());
+            context.read<SignupBloc>().add(SignupLastNameChanged(lastName: value));
           },
           validator: (lastName) {
             if (lastName!.isEmpty) {
