@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
+import 'package:untitled1/validators/validations.dart';
 import '../auth/signup/signup_bloc.dart';
 
-class SignUpEmailField extends StatelessWidget {
+class SignUpEmailField extends StatelessWidget with Validations{
 
   const SignUpEmailField({Key? key,}) : super(key: key);
 
@@ -21,15 +22,7 @@ class SignUpEmailField extends StatelessWidget {
             context.read<SignupBloc>().add(RestartFormStatus());
             context.read<SignupBloc>().add(SignupEmailChanged(eMail: value));
           },
-          validator: (eMail) {
-            if (eMail!.isEmpty) {
-              return "bir Email girmelisin!";
-            }
-            if (isValidEmail(eMail) == false) {
-              return "geçerli bir Email girmelisin!";
-            }
-            return null;
-          },
+          validator: eMailValidator,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
               prefixIcon: const Icon(
@@ -57,10 +50,4 @@ class SignUpEmailField extends StatelessWidget {
     });
   }
 
-  bool isValidEmail(String eMail) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = RegExp(pattern.toString());
-    return (!regex.hasMatch(eMail)) ? false : true;
-  }
 }

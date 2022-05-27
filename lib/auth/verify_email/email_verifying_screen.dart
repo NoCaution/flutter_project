@@ -10,6 +10,7 @@ import 'package:untitled1/auth/verify_email/verif_email_event.dart'
     as verify_email_event;
 import 'package:untitled1/auth/verify_email/verify_email_bloc.dart';
 import 'package:untitled1/auth/verify_email/verify_email_state.dart';
+import 'package:untitled1/validators/validations.dart';
 import 'package:untitled1/widgets/email_verification_field.dart';
 
 class EmailVerifyingScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class EmailVerifyingScreen extends StatefulWidget {
   }
 }
 
-class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
+class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validations {
   final otpController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
@@ -81,7 +82,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
                   listener: (BuildContext context, state) {
                     var formStatus = state.formStatus;
                     // exception management
-                    checkForExceptions(formStatus!);
+                    printException(formStatus: formStatus,context: context);
                   },
                   child: buildFormField(),
                 ),
@@ -160,7 +161,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
         ),
         style: ButtonStyle(
             padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                EdgeInsets.only(left: 20, right: 20)),
+                const EdgeInsets.only(left: 20, right: 20)),
             backgroundColor: MaterialStateProperty.all(Colors.white),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -185,24 +186,31 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen> {
     return response;
   }
 
-  void showToast(String msg) {
-    Fluttertoast.showToast(
-      msg: msg,
-      gravity: ToastGravity.CENTER,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      timeInSecForIosWeb: 1,
-      toastLength: Toast.LENGTH_LONG,
-    );
+  void printException({FormSubmissionStatus? formStatus, BuildContext? context}){
+    String? message = verifyEmailExceptionPicker(formStatus!);
+    if(message !=null){
+      showMessage(message: message,context: context); //exception picker in validations
+    }
   }
 
-  void checkForExceptions(FormSubmissionStatus formStatus) {
-    if (formStatus is SubmissionFailed) {
-      showToast(formStatus.error!);
-    }
-    if (formStatus is SubmissionFailed &&
-        formStatus.exception.toString() != "null") {
-      showToast(formStatus.exception.toString());
-    }
+  void showMessage({String? message, BuildContext? context}) {
+    final snackBar = SnackBar(
+      content: Text(
+        message!,
+        style: const TextStyle(fontSize: 15, color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: Colors.red[400],
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.only(bottom: 40, left: 5, right: 5),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+        side: BorderSide.none,
+      ),
+    );
+    ScaffoldMessenger.of(context!).showSnackBar(snackBar);
   }
+
 }

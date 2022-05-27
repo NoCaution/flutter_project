@@ -6,9 +6,9 @@ import 'package:untitled1/auth/form_submission_status.dart';
 import 'package:untitled1/auth/login/auth_repository.dart';
 import 'package:untitled1/auth/login/login_bloc.dart';
 import 'package:untitled1/models/user.dart';
+import 'package:untitled1/validators/validations.dart';
 import 'package:untitled1/widgets/login_eMail_field.dart';
 import 'package:untitled1/widgets/login_password_field.dart';
-
 import 'login_event.dart';
 import 'login_state.dart';
 
@@ -21,7 +21,7 @@ class LoginScreen extends StatefulWidget {
   }
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> with Validations{
   static const iconColor = Color.fromRGBO(47, 183, 254, 0.9);
   var formKey = GlobalKey<FormState>();
   User? user;
@@ -74,7 +74,7 @@ class LoginScreenState extends State<LoginScreen> {
                             style: GoogleFonts.asap(
                                 color: const Color.fromRGBO(126, 124, 255, 0.7),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                                fontSize: 25),
                           ),
                         ),
                       ),
@@ -82,9 +82,10 @@ class LoginScreenState extends State<LoginScreen> {
                         height: 10,
                       ),
                       BlocListener<LoginBloc, LoginState>(
-                        listener: (context1, state) {
+                        listener: (context, state) {
                           final formStatus = state.formStatus;
-                          exceptionManagement(formStatus: formStatus,context: context);
+                          printException(
+                              formStatus: formStatus, context: context); //if there is an exception, print it.
                         },
                         child: formField(), //form
                       ),
@@ -113,8 +114,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 5),
-            child: LoginPasswordField(
-            ),
+            child: LoginPasswordField(),
           ),
         ],
       ),
@@ -160,7 +160,7 @@ class LoginScreenState extends State<LoginScreen> {
           ? const CircularProgressIndicator()
           : TextButton(
               onPressed: () {
-                onPressed(context);
+                _onPressed(context);
               },
               child: const Text(
                 "Giriş yap",
@@ -179,42 +179,35 @@ class LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void onPressed(BuildContext context) {
+  void _onPressed(BuildContext context) {
     if (formKey.currentState!.validate() == true) {
       context.read<LoginBloc>().add(LoginSubmitted());
     }
   }
 
-  void exceptionManagement({FormSubmissionStatus? formStatus,BuildContext? context}) {
-    if (formStatus is SubmissionFailed) {
-      if (formStatus.exception.toString().split(" ")[0] ==
-          "[firebase_auth/wrong-password]") {
-        showMessage(message: "kullanıcı adı ya da şifre hatalı!",context: context!,);
-      } else if (formStatus.exception.toString() == "null") {
-        showMessage(message: formStatus.error!,context: context! );
-      } else if (formStatus.exception.toString().split(" ")[0] ==
-          "[firebase_auth/user-not-found]") {
-        showMessage(message: "kullanıcı adı ya da şifre hatalı!",context: context!);
-      } else if(formStatus.exception.toString().split(" ")[0] == "[firebase_auth/too-many-requests]"){
-        showMessage(message: "lütfen bir süre bekleyin..",context: context!);
-      } else {
-        showMessage(message: formStatus.exception.toString(),context: context!);
-      }
+  void printException({ FormSubmissionStatus? formStatus,BuildContext? context}){
+    String? message = loginExceptionPicker(formStatus: formStatus);
+    if(message != null){
+      showMessage(message: message,context: context ); //exceptionPicker in validations
     }
   }
 
   void showMessage({String? message, BuildContext? context}) {
     final snackBar = SnackBar(
-        content: Text(message!,style: const TextStyle(fontSize: 15,color: Colors.white),textAlign: TextAlign.center,),
-        backgroundColor: Colors.red[400],
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.only(bottom: 40,left: 5,right: 5),
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-          side: BorderSide.none,
-        ),
+      content: Text(
+        message!,
+        style: const TextStyle(fontSize: 15, color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: Colors.red[400],
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.only(bottom: 40, left: 5, right: 5),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+        side: BorderSide.none,
+      ),
     );
     ScaffoldMessenger.of(context!).showSnackBar(snackBar);
   }

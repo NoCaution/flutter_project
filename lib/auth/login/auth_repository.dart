@@ -38,7 +38,7 @@ class AuthRepository {
     return user;
   }
 
-  Future<void> userExist(String? eMail) async {
+  Future<void> doesUserExist(String? eMail) async {
     await UserService().getUserByEmail(eMail);
   }
 

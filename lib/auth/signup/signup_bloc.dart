@@ -29,7 +29,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     on<SignupSubmitted>((event, emit) async {
       emit(state.copyWith(formStatus: FormSubmitted()));
       try {
-        await authRepo?.userExist(state.eMail);
+        await authRepo?.doesUserExist(state.eMail);
         emit(state.copyWith(formStatus: SubmissionFailed(error: "bu email kullanılmaktadır!")));
 
       } catch (e) {

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
+import 'package:untitled1/validators/validations.dart';
 import '../auth/signup/signup_bloc.dart';
 
-class SignUpPasswordField extends StatelessWidget{
+class SignUpPasswordField extends StatelessWidget with Validations{
   const SignUpPasswordField({Key? key,}) : super(key: key);
 
   @override
@@ -22,18 +23,7 @@ class SignUpPasswordField extends StatelessWidget{
               context.read<SignupBloc>().add(RestartFormStatus());
               context.read<SignupBloc>().add(SignupPasswordChanged(password: value));
             },
-            validator: (password) {
-              if (password!.isEmpty) {
-                return "Şifre girmelisin!";
-              }
-              if (password.length < 10) {
-                return "şifre en az 10 karakter olmalı!";
-              }
-              if (password.length > 15) {
-                return "şifre en fazla 15 karakter olabilir!";
-              }
-              return null;
-            },
+            validator: passwordValidator,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
                 prefixIcon: const Icon(

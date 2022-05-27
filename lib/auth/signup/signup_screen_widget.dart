@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
 import 'package:untitled1/auth/login/auth_repository.dart';
 import 'package:untitled1/auth/signup/signup_bloc.dart';
 import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
+import 'package:untitled1/validators/validations.dart';
 import 'package:untitled1/widgets/lastName_field.dart';
 import 'package:untitled1/widgets/name_field.dart';
 import '../../widgets/signup_eMail_field.dart';
@@ -24,7 +24,8 @@ class SignupScreenWidget extends StatefulWidget {
   }
 }
 
-class SignupScreenWidgetState extends State<SignupScreenWidget> {
+class SignupScreenWidgetState extends State<SignupScreenWidget>
+    with Validations {
   var key = GlobalKey<FormState>();
   AuthRepository? authRepo;
   AuthCubit? authCubit;
@@ -68,15 +69,8 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
                     height: height / 1.57,
                     margin: const EdgeInsets.only(
                         left: 20, right: 20, top: 25, bottom: 0),
-                    child: BlocListener<SignupBloc, SignupState>(
-                      listener: (context, state) {
-                        final formStatus = state.formStatus;
-                        // exceptions management//
-                        exceptionManagement(
-                            formStatus: formStatus, context: context);
-                      },
-                      child: buildFormField(height), //signup button inside//
-                    )),
+                    child: buildFormField(height)),//signup button inside--
+
                 buildBottomPart(context),
               ],
             )),
@@ -110,51 +104,59 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
     );
   }
 
-  Form buildFormField(double height) {
-    return Form(
-      key: key,
-      child: Column(
-        children: [
-          Padding(
-            child: Center(
-                child: Text(
-              "KAYDOL",
-              style: GoogleFonts.asap(
-                  color: const Color.fromRGBO(126, 124, 255, 0.7),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-            )),
-            padding: const EdgeInsets.only(top: 0, bottom: 10),
+  Widget buildFormField(double height) {
+    return BlocListener<SignupBloc, SignupState>(
+        listener: (context, state) {
+          final formStatus = state.formStatus;
+          // exceptions management//
+          printException(
+              formStatus: formStatus,
+              context: context); //if there is an exception, print it.
+        },
+        child: Form(
+          key: key,
+          child: Column(
+            children: [
+              Padding(
+                child: Center(
+                    child: Text(
+                  "KAYDOL",
+                  style: GoogleFonts.asap(
+                      color: const Color.fromRGBO(126, 124, 255, 0.7),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25),
+                )),
+                padding: const EdgeInsets.only(top: 0, bottom: 10),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: NameField(),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                child: LastNameField(),
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                  child: SignUpEmailField()),
+              const Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                child: SignUpPasswordField(),
+              ),
+              SizedBox(
+                height: height / 28,
+              ),
+              //signup button here//
+              BlocBuilder<SignupBloc, SignupState>(
+                builder: (context, state) {
+                  return state.formStatus is FormSubmitted
+                      ? const CircularProgressIndicator()
+                      : buildSignUpButton(context, state);
+                },
+              ),
+            ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
-            child: NameField(),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
-            child: LastNameField(),
-          ),
-          const Padding(
-              padding: EdgeInsets.only(left: 10, right: 10, top: 5),
-              child: SignUpEmailField()),
-          const Padding(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
-            child: SignUpPasswordField(),
-          ),
-          SizedBox(
-            height: height / 28,
-          ),
-          //signup button here//
-          BlocBuilder<SignupBloc, SignupState>(
-            builder: (context, state) {
-              return state.formStatus is FormSubmitted
-                  ? const CircularProgressIndicator()
-                  : buildSignUpButton(context, state);
-            },
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   TextButton buildSignUpButton(BuildContext context, SignupState state) {
@@ -184,14 +186,12 @@ class SignupScreenWidgetState extends State<SignupScreenWidget> {
     }
   }
 
-  void exceptionManagement(
+  void printException(
       {FormSubmissionStatus? formStatus, BuildContext? context}) {
-    if (formStatus is SubmissionFailed) {
-      showMessage(message: formStatus.error!, context: context);
-    }
-    if (formStatus is SubmissionFailed &&
-        formStatus.exception.toString() != "null") {
-      showMessage(message: formStatus.exception.toString(), context: context);
+    String? message = signupExceptionPicker(formStatus: formStatus);
+    if (message != null) {
+      showMessage(
+          message: message, context: context); //exceptionPicker in validations
     }
   }
 
