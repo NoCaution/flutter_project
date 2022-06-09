@@ -42,11 +42,9 @@ class UserService {
 
   Future<User>? getUserById(String? id)async{
     var  ref = reference.collection("users");
-    return await ref.doc(id).get().then((snapshot){
-      var e = snapshot;
-      return User.fromMap(e);
-    });
-  }
+    var document = await ref.doc(id).get();
+    return User.fromMap(document.data());
+    }
   Future<void> updateUser(User user)async{
     var ref = reference.collection("users").doc(user.id);
     ref.update(user.toMap());

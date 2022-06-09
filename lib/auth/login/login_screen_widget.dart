@@ -3,17 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
-import 'package:untitled1/auth/login/auth_repository.dart';
+import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/login/login_bloc.dart';
 import 'package:untitled1/models/user.dart';
 import 'package:untitled1/validators/validations.dart';
-import 'package:untitled1/widgets/login_eMail_field.dart';
-import 'package:untitled1/widgets/login_password_field.dart';
+import 'package:untitled1/auth_widgets/login_eMail_field.dart';
+import 'package:untitled1/auth_widgets/login_password_field.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key, this.authRepo}) : super(key: key);
+  final AuthRepository? authRepo;
 
   @override
   State<StatefulWidget> createState() {
@@ -21,7 +22,7 @@ class LoginScreen extends StatefulWidget {
   }
 }
 
-class LoginScreenState extends State<LoginScreen> with Validations{
+class LoginScreenState extends State<LoginScreen> with Validations {
   static const iconColor = Color.fromRGBO(47, 183, 254, 0.9);
   var formKey = GlobalKey<FormState>();
   User? user;
@@ -31,6 +32,7 @@ class LoginScreenState extends State<LoginScreen> with Validations{
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
+        backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
             backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
@@ -38,12 +40,12 @@ class LoginScreenState extends State<LoginScreen> with Validations{
             title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 "Meet",
-                style: GoogleFonts.kanit(
+                style: GoogleFonts.gentiumBasic(
                     textStyle:
                         const TextStyle(color: Colors.white, fontSize: 32)),
               ),
               Text("Up",
-                  style: GoogleFonts.kanit(
+                  style: GoogleFonts.gentiumBasic(
                       textStyle: const TextStyle(
                           color: Color.fromRGBO(255, 222, 118, 1),
                           fontSize: 32))),
@@ -53,53 +55,50 @@ class LoginScreenState extends State<LoginScreen> with Validations{
               authRepository: context.read<AuthRepository>(),
               authCubit: context.read<AuthCubit>()),
           child: Container(
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(240, 240, 240, 1),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
+                height: 30,
               ),
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Center(
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: width / 2.5,
-                          height: height / 15,
-                          child: Text(
-                            "GİRİŞ YAP",
-                            style: GoogleFonts.asap(
-                                color: const Color.fromRGBO(126, 124, 255, 0.7),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      BlocListener<LoginBloc, LoginState>(
-                        listener: (context, state) {
-                          final formStatus = state.formStatus;
-                          printException(
-                              formStatus: formStatus, context: context); //if there is an exception, print it.
-                        },
-                        child: formField(), //form
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: buildSubmitButton(),
-                      ),
-                      Expanded(
-                        child: buildBottomPart(context, width),
-                      ),
-                    ]),
-              )),
+              Center(
+                child: Container(
+                  alignment: Alignment.center,
+                  width: width / 2.5,
+                  height: height / 15,
+                  child: Text(
+                    "GİRİŞ YAP",
+                    style: GoogleFonts.asap(
+                        color: const Color.fromRGBO(126, 124, 255, 0.7),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  final formStatus = state.formStatus;
+                  printException(
+                      formStatus: formStatus,
+                      context: context); //if there is an exception, print it.
+                },
+                child: formField(), //form
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(height: height/40,),
+              Center(
+                child: buildSubmitButton(),
+              ),
+              Expanded(
+                child: buildBottomPart(context, width),
+              ),
+            ]),
+          ),
         ));
   }
 
@@ -185,10 +184,12 @@ class LoginScreenState extends State<LoginScreen> with Validations{
     }
   }
 
-  void printException({ FormSubmissionStatus? formStatus,BuildContext? context}){
+  void printException(
+      {FormSubmissionStatus? formStatus, BuildContext? context}) {
     String? message = loginExceptionPicker(formStatus: formStatus);
-    if(message != null){
-      showMessage(message: message,context: context ); //exceptionPicker in validations
+    if (message != null) {
+      showMessage(
+          message: message, context: context); //exceptionPicker in validations
     }
   }
 

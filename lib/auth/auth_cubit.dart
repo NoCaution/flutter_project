@@ -1,16 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled1/main_screen_cubit.dart';
+import 'package:untitled1/session_cubit.dart';
 import '../models/user.dart';
 import 'auth_credentials.dart';
 
 enum AuthState { login, signUp, verifyEmail,passwordForgot, }
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit({this.mainScreenCubit,}) : super(AuthState.login);
+  AuthCubit({this.sessionCubit,}) : super(AuthState.login);
   AuthCredentials? credentials;
-  AuthCredentials? loginCredentials;
-  AuthCredentials? signupCredentials;
-  final MainScreenCubit? mainScreenCubit;
+  final SessionCubit? sessionCubit;
 
 
   void showLogin() {
@@ -37,18 +35,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void showPasswordForgot(){
-
     emit(AuthState.passwordForgot);
   }
 
-  void loginShowMainScreen(User? loginUser){
-    loginCredentials= AuthCredentials(user: loginUser);
-    mainScreenCubit?.showMainScreen(loginUser);
-  }
-
-  void signupShowMainScreen(User? signupUser){
-    mainScreenCubit?.showMainScreen(signupUser);
-    signupCredentials = AuthCredentials(user: signupUser);
+  void showMainScreen(){
+    sessionCubit?.showMainScreen();
   }
 
 }

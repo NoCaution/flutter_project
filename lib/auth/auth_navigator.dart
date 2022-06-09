@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
+import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/signup/signup_screen_widget.dart';
 import 'package:untitled1/auth/verify_email/email_verifying_screen.dart';
 import 'login/login_screen_widget.dart';

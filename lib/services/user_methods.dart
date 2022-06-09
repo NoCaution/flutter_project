@@ -27,7 +27,7 @@ class UserMethods{
     return user;
   }
 
-  String? isUserSignedIn(){
+  String? getCurrentUserUid(){
     var result = authReference.currentUser;
     return result?.uid;
   }

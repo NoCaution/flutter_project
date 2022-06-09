@@ -1,7 +1,7 @@
 import 'package:email_auth/email_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
-import 'package:untitled1/auth/login/auth_repository.dart';
+import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
 import '../auth_cubit.dart';

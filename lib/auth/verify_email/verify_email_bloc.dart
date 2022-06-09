@@ -1,9 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
-import 'package:untitled1/auth/login/auth_repository.dart';
+import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/verify_email/verif_email_event.dart';
 import 'package:untitled1/auth/verify_email/verify_email_state.dart';
-
 import '../auth_cubit.dart';
 
 class VerifyEmailBloc extends Bloc<VerifyEmailEvent, VerifyEmailState> {
@@ -25,7 +24,7 @@ class VerifyEmailBloc extends Bloc<VerifyEmailEvent, VerifyEmailState> {
         if(response==true){
           var user = await authRepo?.signUp(name: authCredentials.name, lastName: authCredentials.lastName, eMail: authCredentials.eMail, password: authCredentials.password);
           emit(state.copyWith(formStatus: SubmissionSuccess()));
-          authCubit?.signupShowMainScreen(user);
+          authCubit?.showMainScreen();
         }
         else if(response==false){
           emit(state.copyWith(formStatus: SubmissionFailed(error: "girilen kod yanlış!")));

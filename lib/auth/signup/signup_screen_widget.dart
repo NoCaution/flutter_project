@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
-import 'package:untitled1/auth/login/auth_repository.dart';
+import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/signup/signup_bloc.dart';
 import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
 import 'package:untitled1/validators/validations.dart';
-import 'package:untitled1/widgets/lastName_field.dart';
-import 'package:untitled1/widgets/name_field.dart';
-import '../../widgets/signup_eMail_field.dart';
-import '../../widgets/signup_password_field.dart';
+import 'package:untitled1/auth_widgets/lastName_field.dart';
+import 'package:untitled1/auth_widgets/name_field.dart';
+import '../../auth_widgets/signup_eMail_field.dart';
+import '../../auth_widgets/signup_password_field.dart';
 import '../auth_cubit.dart';
 
 class SignupScreenWidget extends StatefulWidget {
@@ -35,6 +35,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
           backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
@@ -42,12 +43,12 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
           title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               "Meet",
-              style: GoogleFonts.kanit(
+              style: GoogleFonts.gentiumBasic(
                   textStyle:
                       const TextStyle(color: Colors.white, fontSize: 32)),
             ),
             Text("Up",
-                style: GoogleFonts.kanit(
+                style: GoogleFonts.gentiumBasic(
                     textStyle: const TextStyle(
                         color: Color.fromRGBO(255, 222, 118, 1),
                         fontSize: 32))),
@@ -56,24 +57,20 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
         create: (context) => SignupBloc(
             authRepo: context.read<AuthRepository>(),
             authCubit: context.read<AuthCubit>()),
-        child: Container(
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(240, 240, 240, 1),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 15,
             ),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 15,
-                ),
-                Container(
-                    height: height / 1.57,
-                    margin: const EdgeInsets.only(
-                        left: 20, right: 20, top: 25, bottom: 0),
-                    child: buildFormField(height)),//signup button inside--
+            Container(
+                height: height / 1.57,
+                margin: const EdgeInsets.only(
+                    left: 20, right: 20, top: 25, bottom: 0),
+                child: buildFormField(height)), //signup button inside--
 
-                buildBottomPart(context),
-              ],
-            )),
+            buildBottomPart(context),
+          ],
+        ),
       ),
     );
   }
@@ -162,7 +159,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
   TextButton buildSignUpButton(BuildContext context, SignupState state) {
     return TextButton(
       onPressed: () {
-        _onPressed(context, state);
+        _onPressed(context);
       },
       child: const Text(
         "Kaydol",
@@ -180,7 +177,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
     );
   }
 
-  void _onPressed(BuildContext context, SignupState state) async {
+  void _onPressed(BuildContext context) async {
     if (key.currentState!.validate() == true) {
       context.read<SignupBloc>().add(SignupSubmitted());
     }

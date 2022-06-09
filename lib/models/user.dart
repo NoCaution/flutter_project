@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:untitled1/models/post.dart';
 
 class User {
@@ -34,7 +35,7 @@ class User {
   }
 
   Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["id"] = id;
     map["name"] = name;
     map["lastName"] = lastName;

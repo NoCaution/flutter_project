@@ -37,7 +37,7 @@ class Post {
     userId = doc.data()!["userId"];
   }
   Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map["id"] = id;
     map["whatToDo"] = whatToDo;
     map["description"] = description;

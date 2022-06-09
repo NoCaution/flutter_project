@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/auth_navigator.dart';
-import 'package:untitled1/auth/login/auth_repository.dart';
+import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/loading_screen.dart';
-import 'package:untitled1/main_screen_cubit.dart';
-import 'package:untitled1/main_screen_state.dart';
-import 'package:untitled1/screens/main_screen.dart' as main_screen;
+import 'package:untitled1/session_cubit.dart';
+import 'package:untitled1/session_state.dart';
+import 'package:untitled1/in_app/in_app_screens/main_screen.dart' as main_screen;
 
 import 'auth/auth_cubit.dart';
 
@@ -15,17 +15,17 @@ class AppNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainScreenCubit, MainScreenState>(
+    return BlocBuilder<SessionCubit, SessionState>(
         builder: (context, state) {
       return  Navigator(
         pages: [
           if(state is UnknownMainScreenState)
             const MaterialPage(child:LoadingScreen()),
           if(state is UnAuthenticated)
-            MaterialPage(child: BlocProvider<AuthCubit>(create: (context)=>AuthCubit(mainScreenCubit: context.read<MainScreenCubit>()),
+            MaterialPage(child: BlocProvider<AuthCubit>(create: (context)=>AuthCubit(sessionCubit: context.read<SessionCubit>()),
             child: const AuthNavigator(),)),
           if(state is Authenticated)
-            MaterialPage(child: main_screen.MainScreen(mainScreenCubit: context.read<MainScreenCubit>(),authRepo: context.read<AuthRepository>(),)),
+            MaterialPage(child: main_screen.MainScreen(mainScreenCubit: context.read<SessionCubit>(),authRepo: context.read<AuthRepository>(),)),
         ],
         onPopPage: (route,result)=> route.didPop(result),
       );

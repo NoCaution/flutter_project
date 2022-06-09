@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../models/post.dart';
-import '../models/user.dart';
+import '../../models/post.dart';
+import '../../models/user.dart';
+
 
 class PostCardWidget extends StatefulWidget{
   final Post? post;
