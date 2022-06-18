@@ -12,6 +12,7 @@ class User {
   String? mobile;
   String? imageUrl;
   Post? post;
+  bool? autoLogin;
 
   User(
       {this.id,
@@ -21,7 +22,8 @@ class User {
       this.eMail,
       this.password,
       this.mobile,
-      this.imageUrl,});
+      this.imageUrl,
+      this.autoLogin});
 
   User.fromMap(dynamic o) {
     id = o["id"];
@@ -32,6 +34,7 @@ class User {
     password = o["password"];
     mobile = o["mobile"];
     imageUrl = o["imageUrl"];
+    autoLogin = o["autoLogin"];
   }
 
   Map<String, dynamic> toMap() {
@@ -44,6 +47,7 @@ class User {
     map["password"] = password;
     map["mobile"] = mobile;
     map["imageUrl"]= imageUrl;
+    map["autoLogin"]= autoLogin;
     return map;
   }
   User.fromDocumentSnapshot(DocumentSnapshot<Map<String,dynamic>> doc){
@@ -55,5 +59,6 @@ class User {
     password = doc.data()!["password"];
     mobile = doc.data()!["mobile"];
     imageUrl = doc.data()!["imageUrl"];
+    autoLogin = doc.data()!["autoLogin"];
   }
 }

@@ -87,10 +87,29 @@ class LoginScreenState extends State<LoginScreen> with Validations {
                 },
                 child: formField(), //form
               ),
-              const SizedBox(
-                height: 20,
+              BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("oturumumu açık tut",
+                        style: TextStyle(color: Colors.black54)),
+                    Switch.adaptive(
+                        value: state.autoLogin!,
+                        onChanged: (value) {
+                          value == true
+                              ? context
+                                  .read<LoginBloc>()
+                                  .add(AutoLoginActivated())
+                              : context
+                                  .read<LoginBloc>()
+                                  .add(AutoLoginDeactivated());
+                        })
+                  ],
+                );
+              }),
+              SizedBox(
+                height: height / 40,
               ),
-              SizedBox(height: height/40,),
               Center(
                 child: buildSubmitButton(),
               ),
