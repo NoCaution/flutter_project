@@ -1,5 +1,3 @@
-import 'dart:js_util/js_util_wasm.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/message.dart';
 
@@ -21,12 +19,14 @@ class MessageService {
     List<Message>? messages = [message];
     if(ref1.data()!.isNotEmpty){
       ref1.data()?.addAll(message.toMap());
+      sentTo.update(ref1.data() as Map<String,dynamic>);
     }
     else{
       sentTo.set({ for (var element in messages) element.messageSentTo! : {"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
     }
     if(ref2.data()!.isNotEmpty){
       ref2.data()?.addAll(message.toMap());
+      sentBy.update(ref2.data() as Map<String,dynamic>);
     }
     else{
       sentBy.set({ for (var element in messages) element.messageSentTo! : {"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
@@ -43,9 +43,9 @@ class MessageService {
   Future<List<Message>?> getMessagesByUserId(String? uid) async {
     List<Message>? messages;
     var ref = await reference.collection("messages").doc(uid).get();
-    int length = ref.data()!.length;
-    if(length > 0){
-      for(var i =0; i< length; i++){
+    var data = ref.data()!;
+    if(data.isNotEmpty){
+      for(var i =0; i< data.length; i++){
         messages?.add(Message.fromMap(ref.data()![i]));
       }
     }
