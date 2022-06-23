@@ -14,22 +14,22 @@ class MessageService {
   Future<void> sendMessage(Message message)async{
     var sentTo = reference.collection("messages").doc(message.messageSentTo);
     var ref1 = await sentTo.get();
-    var sentBy = reference.collection("messages").doc(message.messageSentBy?.uid);
+    var sentBy = reference.collection("messages").doc(message.messageSentBy?.id);
     var ref2 = await sentBy.get();
     List<Message>? messages = [message];
     if(ref1.data()!.isNotEmpty){
       ref1.data()?.addAll(message.toMap());
-      sentTo.update(ref1.data() as Map<String,dynamic>);
+      sentTo.update(ref1.data() as Map<String,dynamic> );
     }
     else{
-      sentTo.set({ for (var element in messages) element.messageSentTo! : {"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
+      sentTo.set({ for (var element in messages) element.message! : {"messageSentTo": element.messageSentTo,"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
     }
     if(ref2.data()!.isNotEmpty){
       ref2.data()?.addAll(message.toMap());
       sentBy.update(ref2.data() as Map<String,dynamic>);
     }
     else{
-      sentBy.set({ for (var element in messages) element.messageSentTo! : {"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
+      sentBy.set({ for (var element in messages) element.message! : {"messageSentTo": element.messageSentTo,"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
     }
   }
 

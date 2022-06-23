@@ -1,16 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/auth/auth_repository.dart';
+import 'package:untitled1/services/post_services.dart';
+import 'package:untitled1/services/user_services.dart';
 import 'package:untitled1/session_cubit.dart';
-import '../../models/user.dart';
+import 'package:untitled1/widgets/post_card_widget.dart';
+import '../models/user.dart';
 
 class MainScreen extends StatefulWidget {
   final AuthRepository? authRepo;
-  final SessionCubit? mainScreenCubit;
+  final SessionCubit? sessionCubit;
 
   const MainScreen({
     Key? key,
-    this.mainScreenCubit,
+    this.sessionCubit,
     this.authRepo,
   }) : super(key: key);
 
@@ -21,10 +25,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  User? user;
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width/100;
+    double height = MediaQuery.of(context).size.height/100;
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
@@ -59,16 +63,32 @@ class MainScreenState extends State<MainScreen> {
             ]),
       ),
       body: Container(
-        alignment: Alignment.center,
         padding: const EdgeInsets.all(20),
-        child: TextButton(
-          onPressed: () {
-            widget.authRepo?.signOut();
-            widget.mainScreenCubit?.showAuth();
-          },
-          child: const Text("çıkış yap"),
+        child: SingleChildScrollView(
+          child: DemoMessageScreen(sessionCubit: widget.sessionCubit,),
+
         ),
+            //TextButton(
+            //onPressed: () {
+              //widget.authRepo?.signOut();
+              //widget.sessionCubit?.showAuth();
+            //},
+            //child: const Text("çıkış yap"),
+          //),
       ),
     );
   }
+}
+
+class DemoMessageScreen extends StatelessWidget{
+  final SessionCubit? sessionCubit;
+  DemoMessageScreen({Key? key,this.sessionCubit}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    var user = sessionCubit?.getCurrentUser;
+    return Container(
+      child: PostCardWidget(user: user,),
+    );
+  }
+
 }
