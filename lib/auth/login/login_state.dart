@@ -1,5 +1,7 @@
 import 'package:untitled1/auth/form_submission_status.dart';
 
+import '../../models/user.dart';
+
 class LoginState{
   final String? eMail;
   final String? password;

@@ -15,7 +15,8 @@ class User {
   bool? autoLogin;
 
   User(
-      {this.id,
+      {
+      this.id,
       this.name,
       this.lastName,
       this.birth,
@@ -23,7 +24,8 @@ class User {
       this.password,
       this.mobile,
       this.imageUrl,
-      this.autoLogin});
+      this.autoLogin
+      });
 
   User.fromMap(dynamic o) {
     id = o["id"];

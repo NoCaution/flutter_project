@@ -24,16 +24,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(formStatus: FormSubmitting()));
       });
       on<AutoLoginActivated>((event, emit) async {
+        emit(state.copyWith(autoLogin: true));
         User user = await UserService().getUserByEmail(state.eMail)!;
         user.autoLogin = true;
         await UserService().updateUser(user);
-        emit(state.copyWith(autoLogin: true)
-        );
       });
       on<AutoLoginDeactivated>((event, emit)async {
+        emit(state.copyWith(autoLogin: false));
         User user = await UserService().getUserByEmail(state.eMail)!;
         user.autoLogin = false;
-        emit(state.copyWith(autoLogin: false));
+        await UserService().updateUser(user);
       });
       on<LoginSubmitted>((event, emit) async {
         emit(state.copyWith(formStatus: FormSubmitted()));

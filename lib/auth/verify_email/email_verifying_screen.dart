@@ -30,26 +30,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validati
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
-          centerTitle: true,
-          title: Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
-                "Meet",
-                style: GoogleFonts.gentiumBasic(
-                    textStyle:
-                        const TextStyle(color: Colors.white, fontSize: 35)),
-              ),
-              Text("Up",
-                  style: GoogleFonts.gentiumBasic(
-                      textStyle: const TextStyle(
-                          color: Color.fromRGBO(255, 222, 118, 1),
-                          fontSize: 35))),
-              const Padding(padding: EdgeInsets.all(20)),
-            ]),
-          )),
+      appBar: _appBar(),
       body: BlocProvider(
         create: (context) => VerifyEmailBloc(
             authRepo: context.read<AuthRepository>(),
@@ -117,7 +98,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validati
           ? const CircularProgressIndicator()
           : TextButton(
               onPressed: () {
-                onPressed(context);
+                _onPressed(context);
               },
               style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -171,7 +152,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validati
     });
   }
 
-  void onPressed(BuildContext context) async {
+  void _onPressed(BuildContext context) async {
     if (formKey.currentState!.validate() == true) {
       context
           .read<VerifyEmailBloc>()
@@ -211,5 +192,28 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validati
     );
     ScaffoldMessenger.of(context!).showSnackBar(snackBar);
   }
-
+  PreferredSize _appBar(){
+    return PreferredSize(
+        child: AppBar(
+            backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
+            centerTitle: true,
+            title: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  "Meet",
+                  style: GoogleFonts.gentiumBasic(
+                      textStyle:
+                      const TextStyle(color: Colors.white, fontSize: 35)),
+                ),
+                Text("Up",
+                    style: GoogleFonts.gentiumBasic(
+                        textStyle: const TextStyle(
+                            color: Color.fromRGBO(255, 222, 118, 1),
+                            fontSize: 35))),
+                const Padding(padding: EdgeInsets.all(20)),
+              ]),
+            )),
+        preferredSize: AppBar().preferredSize);
+  }
 }

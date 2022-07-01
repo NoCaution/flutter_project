@@ -24,4 +24,11 @@ class Message{
     message = o["message"];
     date = (o["date"] as Timestamp).toDate();
   }
+
+  Message.fromDocumentSnapshot(DocumentSnapshot<Map<String,dynamic>> doc){
+    messageSentTo = doc.data()!["messageSentTo"];
+    messageSentBy = doc.data()!["messageSentBy"];
+    message = doc.data()!["message"];
+    date= doc.data()!["date"];
+  }
 }

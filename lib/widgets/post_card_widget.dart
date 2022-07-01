@@ -32,7 +32,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
       width: width*90,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
-        color: const Color.fromRGBO(230, 230, 230, 1),
+        color: Colors.white,
       ),
       child: Column(
         children: [
@@ -48,9 +48,9 @@ class PostCardWidgetState extends State<PostCardWidget> {
               SizedBox(
                 width: width * 5,
               ),
-              customText(color: color,width: width,text: userName),
+              customText(color: color,width: width,text: userName), //description part
               const SizedBox(width: 7),
-              customText(color: color,width: width,text: userLastName),
+              customText(color: color,width: width,text: userLastName), // whatToDo part
             ],
           ),
           Padding(
@@ -73,7 +73,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 35,right: 35, top: 15),
+            padding: const EdgeInsets.only(left: 25,right: 35, top: 15),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -81,7 +81,8 @@ class PostCardWidgetState extends State<PostCardWidget> {
               ),
               height: height * 6,
               width: width * 70,
-              child: const Text("kahve içeceğim.."),
+              child: Text("kahve içeceğim..",style: GoogleFonts.montserrat(
+                  textStyle: TextStyle(fontSize: width * 3, color: color))),
               padding: const EdgeInsets.all(10),
             ),
           ),
@@ -96,7 +97,6 @@ class PostCardWidgetState extends State<PostCardWidget> {
           ),
           const SizedBox(height: 30,)
         ],
-
       ),
     );
   }
@@ -122,7 +122,8 @@ class PostCardWidgetState extends State<PostCardWidget> {
   }
 
   Widget customText({Color? color,double? width,String? text}){
-    return Text(text!,
+    return Text(
+        text!,
         style: GoogleFonts.montserrat(
             textStyle: TextStyle(
                 fontSize: width! * 5,

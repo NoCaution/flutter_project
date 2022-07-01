@@ -37,22 +37,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
-          centerTitle: true,
-          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              "Meet",
-              style: GoogleFonts.gentiumBasic(
-                  textStyle:
-                      const TextStyle(color: Colors.white, fontSize: 32)),
-            ),
-            Text("Up",
-                style: GoogleFonts.gentiumBasic(
-                    textStyle: const TextStyle(
-                        color: Color.fromRGBO(255, 222, 118, 1),
-                        fontSize: 32))),
-          ])),
+      appBar: _appBar(),
       body: BlocProvider(
         create: (context) => SignupBloc(
             authRepo: context.read<AuthRepository>(),
@@ -210,5 +195,26 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
       ),
     );
     ScaffoldMessenger.of(context!).showSnackBar(snackBar);
+  }
+
+  PreferredSize _appBar(){
+    return PreferredSize(
+        child: AppBar(
+            backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
+            centerTitle: true,
+            title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "Meet",
+                style: GoogleFonts.gentiumBasic(
+                    textStyle:
+                    const TextStyle(color: Colors.white, fontSize: 32)),
+              ),
+              Text("Up",
+                  style: GoogleFonts.gentiumBasic(
+                      textStyle: const TextStyle(
+                          color: Color.fromRGBO(255, 222, 118, 1),
+                          fontSize: 32))),
+            ])),
+        preferredSize: AppBar().preferredSize);
   }
 }

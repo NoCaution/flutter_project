@@ -11,44 +11,34 @@ class MessageService {
 
   MessageService._internal();
 
-  Future<void> sendMessage(Message message)async{
-    var sentTo = reference.collection("messages").doc(message.messageSentTo);
-    var ref1 = await sentTo.get();
-    var sentBy = reference.collection("messages").doc(message.messageSentBy?.id);
-    var ref2 = await sentBy.get();
-    List<Message>? messages = [message];
-    if(ref1.data()!.isNotEmpty){
-      ref1.data()?.addAll(message.toMap());
-      sentTo.update(ref1.data() as Map<String,dynamic> );
-    }
-    else{
-      sentTo.set({ for (var element in messages) element.message! : {"messageSentTo": element.messageSentTo,"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
-    }
-    if(ref2.data()!.isNotEmpty){
-      ref2.data()?.addAll(message.toMap());
-      sentBy.update(ref2.data() as Map<String,dynamic>);
-    }
-    else{
-      sentBy.set({ for (var element in messages) element.message! : {"messageSentTo": element.messageSentTo,"messageSentBy": element.messageSentBy,"message" : element.message,"date": element.date} });
-    }
+  Future<void> sendMessage(Message message) async {
+    var sentTo = reference.collection("messages")
+        .doc(message.messageSentTo)
+        .collection("specificMessages");
+    var sentBy = reference.collection("messages")
+        .doc(message.messageSentBy?.id)
+        .collection("specificMessages");
+    await sentTo.add(message.toMap());
+    await sentBy.add(message.toMap());
   }
 
-  Future<void> deleteMessage(Message message)async{
-    var ref = reference.collection("messages").doc(message.messageSentTo);
-    var ref2 = await ref.get();
-    ref2.data()?.removeWhere((key, value) => value == message.message);
-    ref.update(ref2.data() as Map<String,dynamic>);
+  Future<void> deleteMessage(Message message) async {
+    var ref = reference.collection("messages")
+        .doc(message.messageSentTo)
+        .collection("specificMessages").where("message",isEqualTo: message);
   }
 
-  Future<List<Message>?> getMessagesByUserId(String? uid) async {
+  Future<List<Message>?> getMessagesByUserId({String? messageSentTo,String? messageSentBy}) async { //messageSentTo = current user's id
     List<Message>? messages;
-    var ref = await reference.collection("messages").doc(uid).get();
-    var data = ref.data()!;
-    if(data.isNotEmpty){
-      for(var i =0; i< data.length; i++){
-        messages?.add(Message.fromMap(ref.data()![i]));
-      }
+    var ref = await reference.collection("messages").doc(messageSentTo).collection(
+        "specificMessages").get();
+    var data = ref.docs.where((element) => Message.fromDocumentSnapshot(element).messageSentBy?.id == messageSentBy || Message.fromDocumentSnapshot(element).messageSentTo ==messageSentBy).toList();
+    for(var i=0; i<data.length;i++){
+      messages?.add(Message.fromDocumentSnapshot(data[i]));
     }
+    messages?.sort((a, b) {
+      return a.date!.compareTo(b.date!);
+    });
     return messages;
   }
 }
