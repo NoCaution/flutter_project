@@ -22,14 +22,14 @@ class PostCardWidgetState extends State<PostCardWidget> {
     double height = MediaQuery.of(context).size.height / 100;
     double width = MediaQuery.of(context).size.width / 100;
     User? user = widget.user;
-    String? userName = user?.name?.replaceFirst(
-        user.name!.substring(0, 1), user!.name!.substring(0, 1).toUpperCase());
-    String? userLastName = user?.lastName?.replaceFirst(
+    String? userName = user!.name?.replaceFirst(
+        user.name!.substring(0, 1), user.name!.substring(0, 1).toUpperCase());
+    String? userLastName = user.lastName?.replaceFirst(
         user.lastName!.substring(0, 1),
         user.lastName!.substring(0, 1).toUpperCase());
     Color color = const Color.fromRGBO(0, 0, 0, 0.75);
     return Container(
-      width: width*90,
+      width: width*100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         color: Colors.white,
@@ -42,11 +42,11 @@ class PostCardWidgetState extends State<PostCardWidget> {
           Row(
             children: [
               const SizedBox(
-                width: 35,
+                width: 30,
               ),
               circleAvatar(user!, width, height), // avatar
-              SizedBox(
-                width: width * 5,
+              const SizedBox(
+                width: 20,
               ),
               customText(color: color,width: width,text: userName), //description part
               const SizedBox(width: 7),
@@ -60,20 +60,21 @@ class PostCardWidgetState extends State<PostCardWidget> {
               top: 30,
             ),
             child: Container(
-              height: 1,
+              height: 0.2,
               color: Colors.black45,
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(35),
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 30,top: 10,bottom: 60),
             child: Text(
-              "    merhaba benim adım mete ! //widget.post.description//  ",
+              "   "+widget.post!.description!,
               style: GoogleFonts.montserrat(
                   textStyle: TextStyle(fontSize: width * 3, color: color)),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 25,right: 35, top: 15),
+            padding: const EdgeInsets.only(right: 35, top: 15),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -81,7 +82,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
               ),
               height: height * 6,
               width: width * 70,
-              child: Text("kahve içeceğim..",style: GoogleFonts.montserrat(
+              child: Text(widget.post!.whatToDo!,style: GoogleFonts.montserrat(
                   textStyle: TextStyle(fontSize: width * 3, color: color))),
               padding: const EdgeInsets.all(10),
             ),

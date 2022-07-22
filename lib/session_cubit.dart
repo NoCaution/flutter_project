@@ -1,23 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled1/services/post_services.dart';
 import 'package:untitled1/services/user_services.dart';
 import 'package:untitled1/session_state.dart';
 import 'auth/auth_repository.dart';
-import 'models/post.dart';
 import 'models/user.dart';
 
 class SessionCubit extends Cubit<SessionState> {
   final AuthRepository? authRepo;
   User? get getCurrentUser => (state as Authenticated).user;
 
-  User? get getSelectedUser => (state as Authenticated).selectedUser;
-
-  bool get isCurrentUserSelected =>
-      getSelectedUser == null || getCurrentUser?.id == getSelectedUser?.id;
 
   SessionCubit({
     this.authRepo,
-  }) : super(UnknownMainScreenState(),) {
+  }) : super(UnknownMainScreenState()) {
     attemptAutoLogin();
     //if user is signed in in firebase, it will autologin
   }

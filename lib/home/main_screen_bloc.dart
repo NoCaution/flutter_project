@@ -2,50 +2,56 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/home/post_status.dart';
+import 'package:untitled1/models/user.dart' as my_user;
 import 'package:untitled1/services/user_services.dart';
-import '../home/main_screen_state.dart';
+import 'package:untitled1/session_cubit.dart';
+import '../home/main_screen_state.dart' ;
 import 'package:untitled1/home/main_screen_events.dart';
 import 'package:untitled1/services/post_services.dart';
 
-class MainScreenBloc extends Bloc<MainScreenEvent, MainScreenState> {
-  var firebaseUser = FirebaseAuth.instance.currentUser;
-  static final _singleton = MainScreenBloc._internal();
+class MainScreenBloc extends Bloc<MainScreenEvent, HomeScreenState> {
+  var currentUser = FirebaseAuth.instance.currentUser;
+  static final MainScreenBloc _signleton = MainScreenBloc._internal();
 
-  factory MainScreenBloc() {
-    return _singleton;
+  factory MainScreenBloc(){
+    return _signleton;
   }
 
-  MainScreenBloc._internal() : super(MainScreenState()) {
+
+  MainScreenBloc._internal(): super(HomeScreenState()){
     on<PullToRefresh>((event, emit) async {
       try {
         var posts = await PostService().getPosts();
-        emit(state.copyWith(posts: posts));
-        emit(state.copyWith(postStatus: GetPostsSuccessful()));
+        emit(state.copyWith(posts: posts,postStatus: GetPostsSuccessful()));
       } catch (e) {
         emit(state.copyWith(
             postStatus: GetPostsFailed(exception: e as Exception)));
       }
     });
 
-    on<Refresh>((event,emit)async{
-      try{
+    on<Refresh>((event, emit) async {
+      try {
         emit(state.copyWith(postStatus: GettingPosts()));
         var posts = await PostService().getPosts();
-        emit(state.copyWith(posts: posts));
-        emit(state.copyWith(postStatus: GetPostsSuccessful()));
-      }catch(e){
-        emit(state.copyWith(postStatus: GetPostsFailed(exception: e as Exception)));
+        emit(state.copyWith(posts: posts,postStatus: GetPostsSuccessful()));
+        print(state.posts!.first.description);
+
+      } catch (e) {
+        emit(state.copyWith(
+            postStatus: GetPostsFailed(exception: e as Exception)));
       }
     });
 
     on<GetCurrentUser>((event, emit) async {
-      var currentUser = await UserService().getUserById(firebaseUser?.uid);
-      emit(state.copyWith(currentUser: [currentUser!]));
+      var user = await UserService().getUserById(currentUser!.uid);
+      emit(state.copyWith(currentUser: user!));
+      print(state.currentUser!.name);
     });
 
     on<GetCurrentUserPost>((event, emit) async {
-      var currentUserPost = await PostService().getPostById(firebaseUser?.uid);
-      emit(state.copyWith(currentUserPost: [currentUserPost!]));
+      var currentUserPost =await PostService().getPostById(currentUser!.uid);
+      emit(state.copyWith(currentUserPost: currentUserPost!));
+      print(currentUserPost.description);
     });
   }
 }

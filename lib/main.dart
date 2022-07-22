@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/auth_repository.dart';
-import 'package:untitled1/auth/login/login_screen_widget.dart';
 import 'package:untitled1/session_cubit.dart';
-
 import 'app_navigator.dart';
-import 'auth/login/login_state.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

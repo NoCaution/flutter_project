@@ -1,29 +1,27 @@
-import 'package:untitled1/home/main_screen.dart';
 import 'package:untitled1/home/post_status.dart';
-
 import '../models/post.dart';
 import '../models/user.dart';
 
-class MainScreenState {
+class HomeScreenState {
   final List<Post>? posts;
-  final List<User>? currentUser;
-  final List<Post>? currentUserPost;
+  final User? currentUser;
+  final Post? currentUserPost;
   final PostStatus? postStatus;
 
-  MainScreenState({
-    this.posts = const [],
-    this.currentUser = const [] ,
-    this.currentUserPost = const [],
+  HomeScreenState({
+    this.posts,
+    this.currentUser ,
+    this.currentUserPost,
     this.postStatus = const InitialPostStatus(),
-  });
+  }) ;
 
-  MainScreenState copyWith({
+  HomeScreenState copyWith({
     List<Post>? posts,
-    List<User>? currentUser,
-    List<Post>? currentUserPost,
+    User? currentUser,
+    Post? currentUserPost,
     PostStatus? postStatus,
   }){
-    return MainScreenState(
+    return HomeScreenState(
       posts: posts ?? this.posts,
       currentUser: currentUser ?? this.currentUser,
       currentUserPost: currentUserPost ?? this.currentUserPost,

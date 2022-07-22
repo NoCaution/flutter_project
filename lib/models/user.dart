@@ -11,33 +11,33 @@ class User {
   String? password;
   String? mobile;
   String? imageUrl;
-  Post? post;
   bool? autoLogin;
 
-  User(
-      {
-      this.id,
-      this.name,
-      this.lastName,
-      this.birth,
-      this.eMail,
-      this.password,
-      this.mobile,
-      this.imageUrl,
-      this.autoLogin
-      });
+  User({
+    this.id,
+    this.name,
+    this.lastName,
+    this.birth,
+    this.eMail,
+    this.password,
+    this.mobile,
+    this.imageUrl,
+    this.autoLogin});
 
-  User.fromMap(dynamic o) {
-    id = o["id"];
-    name = o["name"];
-    lastName = o["lastName"];
-    birth = (o["birth"] as Timestamp).toDate();
-    eMail = o["eMail"];
-    password = o["password"];
-    mobile = o["mobile"];
-    imageUrl = o["imageUrl"];
-    autoLogin = o["autoLogin"];
+
+
+  User.fromMap(dynamic o){
+    id= o["id"];
+    name=o["name"];
+    lastName= o["lastName"];
+    birth= (o["birth"] as Timestamp).toDate();
+    eMail= o["eMail"];
+    password= o["password"];
+    mobile= o["mobile"];
+    imageUrl= o["imageUrl"];
+    autoLogin= o["autoLogin"];
   }
+
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
@@ -48,18 +48,20 @@ class User {
     map["eMail"] = eMail;
     map["password"] = password;
     map["mobile"] = mobile;
-    map["imageUrl"]= imageUrl;
-    map["autoLogin"]= autoLogin;
+    map["imageUrl"] = imageUrl;
+    map["autoLogin"] = autoLogin;
     return map;
   }
-  User.fromDocumentSnapshot(DocumentSnapshot<Map<String,dynamic>> doc){
+
+
+  User.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {
     id = doc.id;
     name = doc.data()!["name"];
     lastName = doc.data()!["lastName"];
-    birth = doc.data()!["birth"];
+    birth= (doc.data()!["birth"] as Timestamp).toDate();
     eMail = doc.data()!["eMail"];
     password = doc.data()!["password"];
-    mobile = doc.data()!["mobile"];
+    mobile= doc.data()!["mobile"];
     imageUrl = doc.data()!["imageUrl"];
     autoLogin = doc.data()!["autoLogin"];
   }

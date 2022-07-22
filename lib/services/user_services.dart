@@ -29,7 +29,7 @@ class UserService {
 
   Future<List<User>>? getUsers() async{
     var snapshot = await reference.collection("users").get();
-    return snapshot.docs.map((documentSnapshot) => User.fromDocumentSnapshot(documentSnapshot)).toList();
+    return snapshot.docs.map((documentSnapshot) =>User.fromMap(documentSnapshot)).toList();
   }
 
   Future<User>? getUserByEmail(String? eMail)async{
