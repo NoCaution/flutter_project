@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/home/post_status.dart';
-import 'package:untitled1/models/user.dart' as my_user;
 import 'package:untitled1/services/user_services.dart';
-import 'package:untitled1/session_cubit.dart';
 import '../home/main_screen_state.dart' ;
 import 'package:untitled1/home/main_screen_events.dart';
 import 'package:untitled1/services/post_services.dart';
@@ -34,7 +31,6 @@ class MainScreenBloc extends Bloc<MainScreenEvent, HomeScreenState> {
         emit(state.copyWith(postStatus: GettingPosts()));
         var posts = await PostService().getPosts();
         emit(state.copyWith(posts: posts,postStatus: GetPostsSuccessful()));
-        print(state.posts!.first.description);
 
       } catch (e) {
         emit(state.copyWith(
@@ -45,13 +41,12 @@ class MainScreenBloc extends Bloc<MainScreenEvent, HomeScreenState> {
     on<GetCurrentUser>((event, emit) async {
       var user = await UserService().getUserById(currentUser!.uid);
       emit(state.copyWith(currentUser: user!));
-      print(state.currentUser!.name);
+
     });
 
     on<GetCurrentUserPost>((event, emit) async {
       var currentUserPost =await PostService().getPostById(currentUser!.uid);
       emit(state.copyWith(currentUserPost: currentUserPost!));
-      print(currentUserPost.description);
     });
   }
 }

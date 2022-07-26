@@ -16,7 +16,7 @@ class MainScreen extends StatefulWidget {
   final AuthRepository? authRepo;
   final SessionCubit? sessionCubit;
 
-  const MainScreen({
+  MainScreen({
     Key? key,
     this.sessionCubit,
     this.authRepo,
@@ -47,6 +47,7 @@ class MainScreenState extends State<MainScreen> {
             create: (context) => MainScreenBloc(),
             child: Container(
               height: height * 100,
+              width: width * 100,
               color: const Color.fromRGBO(230, 230, 230, 1),
               padding: const EdgeInsets.all(13),
               child: SingleChildScrollView(
@@ -60,10 +61,10 @@ class MainScreenState extends State<MainScreen> {
 Widget postCardWidget(double height) {
   return BlocBuilder<MainScreenBloc, HomeScreenState>(
     builder: (context, state) {
-      return  PostCardWidget(
-          user: state.currentUser,
-          post: state.currentUserPost,
-        );
+      return PostCardWidget(
+        user: state.currentUser,
+        post: state.currentUserPost,
+      );
     },
   );
 }

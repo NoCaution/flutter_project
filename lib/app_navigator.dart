@@ -6,8 +6,6 @@ import 'package:untitled1/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:untitled1/loading_screen.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/session_state.dart';
-import 'package:untitled1/home/main_screen.dart' as main_screen;
-
 import 'auth/auth_cubit.dart';
 
 class AppNavigator extends StatelessWidget {

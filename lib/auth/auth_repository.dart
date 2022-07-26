@@ -33,7 +33,7 @@ class AuthRepository {
     @required String? eMail,
     @required String? password,
   }) async {
-    var user = User(id: "",name: name, lastName: lastName,birth: DateTime(2022,12,30,0,0) ,eMail: eMail, password: password,mobile: "",imageUrl: "",);
+    var user = User(id: "",name: name, lastName: lastName,birth: "2022-12-30" ,eMail: eMail, password: password,mobile: "",imageUrl: "",);
     UserMethods().createUser(user);
     return user;
   }

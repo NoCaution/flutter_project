@@ -38,7 +38,8 @@ class LoginScreenState extends State<LoginScreen> with Validations {
         body: BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(
               authRepository: context.read<AuthRepository>(),
-              authCubit: context.read<AuthCubit>()),
+              authCubit: context.read<AuthCubit>(),
+              user: context.read<User>()),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child:

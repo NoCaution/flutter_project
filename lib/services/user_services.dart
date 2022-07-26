@@ -18,8 +18,7 @@ class UserService {
 
   Future<void> addUser(User? user) async {
     var ref = reference.collection("users");
-    var documentReference = await ref.doc(user?.id).set(user!.toMap());
-
+    await ref.doc(user?.id).set(user!.toMap());
   }
 
   Future<void> deleteUser(String? id) {
