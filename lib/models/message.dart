@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user.dart';
 
 class Message{
-  String? messageSentTo;
-  User? messageSentBy;
-  String? message;
-  DateTime? date;
+  final String? messageSentTo;
+  final User? messageSentBy;
+  final String? message;
+  final String? date;
 
-  Message({this.messageSentTo,this.messageSentBy,this.message,this.date});
+  const Message({this.messageSentTo,this.messageSentBy,this.message,this.date});
 
   Map<String,dynamic> toMap(){
     Map<String,dynamic> map = <String,dynamic>{};
@@ -18,17 +18,17 @@ class Message{
     return map;
   }
 
-  Message.fromMap(dynamic o){
-    messageSentTo= o["messageSentTo"];
-    messageSentBy = o["messageSentBy"];
-    message = o["message"];
-    date = (o["date"] as Timestamp).toDate();
-  }
+  Message.fromMap(dynamic o) :
+    messageSentTo= o["messageSentTo"],
+    messageSentBy = o["messageSentBy"],
+    message = o["message"],
+    date = o["date"];
 
-  Message.fromDocumentSnapshot(DocumentSnapshot<Map<String,dynamic>> doc){
-    messageSentTo = doc.data()!["messageSentTo"];
-    messageSentBy = doc.data()!["messageSentBy"];
-    message = doc.data()!["message"];
+
+  Message.fromDocumentSnapshot(DocumentSnapshot<Map<String,dynamic>> doc) :
+    messageSentTo = doc.data()!["messageSentTo"],
+    messageSentBy = doc.data()!["messageSentBy"],
+    message = doc.data()!["message"],
     date= doc.data()!["date"];
-  }
+
 }

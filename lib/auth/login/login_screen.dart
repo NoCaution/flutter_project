@@ -25,7 +25,6 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> with Validations {
   static const iconColor = Color.fromRGBO(47, 183, 254, 0.9);
   var formKey = GlobalKey<FormState>();
-  User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +38,7 @@ class LoginScreenState extends State<LoginScreen> with Validations {
           create: (context) => LoginBloc(
               authRepository: context.read<AuthRepository>(),
               authCubit: context.read<AuthCubit>(),
-              user: context.read<User>()),
+              user: const User()),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child:
@@ -84,8 +83,8 @@ class LoginScreenState extends State<LoginScreen> with Validations {
                         onChanged: (value) {
                           value == true
                               ? context
-                                  .read<LoginBloc>()
-                                  .add(AutoLoginActivated())
+                                .read<LoginBloc>()
+                                .add(AutoLoginActivated())
                               : context
                                   .read<LoginBloc>()
                                   .add(AutoLoginDeactivated());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled1/data_repository.dart';
 
 import '../models/post.dart';
 import '../models/user.dart';
@@ -7,8 +8,9 @@ import '../models/user.dart';
 class PostCardWidget extends StatefulWidget {
   final Post? post;
   final User? user;
+  final DataRepository? dataRepo;
 
-  const PostCardWidget({Key? key, this.post, this.user}) : super(key: key);
+  const PostCardWidget({Key? key, this.post, this.user,this.dataRepo}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,11 +24,8 @@ class PostCardWidgetState extends State<PostCardWidget> {
     double height = MediaQuery.of(context).size.height / 100;
     double width = MediaQuery.of(context).size.width / 100;
     User? user = widget.user;
-    String? userName = user!.name?.replaceFirst(
-        user.name!.substring(0, 1), user.name!.substring(0, 1).toUpperCase());
-    String? userLastName = user.lastName?.replaceFirst(
-        user.lastName!.substring(0, 1),
-        user.lastName!.substring(0, 1).toUpperCase());
+    String? userName = widget.dataRepo?.capitalizeFirstLetter(user!.name!);
+    String? userLastName = widget.dataRepo?.capitalizeFirstLetter(user!.lastName!);
     Color color = const Color.fromRGBO(0, 0, 0, 0.75);
     return Container(
       width: width * 100,
@@ -44,31 +43,26 @@ class PostCardWidgetState extends State<PostCardWidget> {
               const SizedBox(
                 width: 30,
               ),
-              circleAvatar(user, width, height),  // avatar
+              circleAvatar(user!, width, height),  // avatar
+
               const SizedBox(
                 width: 20,
               ),
-              customText(color: color, width: width, text: userName), // user name
+              Text(userName!,style: textStyle(color, width*4),), // user name
+
               const SizedBox(width: 7),
-              customText(color: color, width: width, text: userLastName), // user last name
+
+              Text(userLastName!,style: textStyle(color, width*4),), // user last name
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 30,
-              right: 30,
-              top: 30,
-            ),
-            child: Container(
-              height: 0.2,
-              color: Colors.black45,
-            ),
-          ),
-          descriptionPart(width: width, height: height, color: color), //description part here
+          thinLinePart(), //thin divider
 
-          whatToDoPart(width: width, height: height, color: color), //whatToDo part here
+          descriptionPart(width: width, height: height, color: color), //description part
 
-          likeButton(), //like button here
+          whatToDoPart(width: width, height: height, color: color), //whatToDo part
+
+          likeButton(), //like button
+
           const SizedBox(
             height: 30,
           )
@@ -76,7 +70,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
       ),
     );
   }
-
+//COMPONENTS
   Widget circleAvatar(User user, double width, double height) {
     return CircleAvatar(
         backgroundImage: AssetImage(user.imageUrl!),
@@ -96,15 +90,13 @@ class PostCardWidgetState extends State<PostCardWidget> {
                 height: 0,
               ));
   }
-
-  Text customText({Color? color, double? width, String? text}) {
-    return Text(text!,
-        style: GoogleFonts.montserrat(
-            textStyle: TextStyle(
-                fontSize: width! * 4,
-                color: color,
-                fontWeight: FontWeight.bold)));
+  TextStyle textStyle(Color? color, double? width){
+    return TextStyle(
+        fontSize: width,
+        color: color,
+        fontWeight: FontWeight.bold);
   }
+  
 
   Padding whatToDoPart(
       {required double height, required double width, Color? color}) {
@@ -146,6 +138,20 @@ class PostCardWidgetState extends State<PostCardWidget> {
         "   "+widget.post!.description!,
         style: GoogleFonts.montserrat(
             textStyle: TextStyle(fontSize: width * 3, color: color)),
+      ),
+    );
+  }
+
+  Widget thinLinePart() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 30,
+        right: 30,
+        top: 30,
+      ),
+      child: Container(
+        height: 0.2,
+        color: Colors.black45,
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:email_auth/email_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:untitled1/services/user_methods.dart';
 import 'package:untitled1/services/user_services.dart';
 import '../../models/user.dart';
+import '../services/user_methods.dart';
+
 
 class AuthRepository {
 
@@ -33,7 +34,7 @@ class AuthRepository {
     @required String? eMail,
     @required String? password,
   }) async {
-    var user = User(id: "",name: name, lastName: lastName,birth: "2022-12-30" ,eMail: eMail, password: password,mobile: "",imageUrl: "",);
+    var user = User(id: " ",name: name, lastName: lastName,birth: " " ,eMail: eMail, password: password,mobile: " ",imageUrl: " ",);
     UserMethods().createUser(user);
     return user;
   }

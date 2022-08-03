@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/session_cubit.dart';
-import '../models/user.dart';
 import 'auth_credentials.dart';
 
 enum AuthState { login, signUp, verifyEmail,passwordForgot, }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
-import 'package:untitled1/home/main_screen_bloc.dart';
+import 'package:untitled1/home/home_navigator.dart';
+import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/my_post/my_post_screen.dart';
 
-import '../auth/auth_repository.dart';
-import '../home/main_screen.dart';
-import '../session_cubit.dart';
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  const BottomNavBar({Key? key,this.homeNavCubit}) : super(key: key);
+  final HomeNavigatorCubit? homeNavCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +20,24 @@ class BottomNavBar extends StatelessWidget {
           return Scaffold(
               body: IndexedStack(
                 index: state,
-                children:  [
-                  MainScreen(sessionCubit: context.read<SessionCubit>(),authRepo: context.read<AuthRepository>(),),
-                  const MyPostScreen(),
+                children:  const [
+                  HomeNavigator(),
+                  MyPostScreen(),
                 ],
               ),
               bottomNavigationBar: BottomNavigationBar(
+                selectedLabelStyle: GoogleFonts.gentiumBasic(),
+                unselectedLabelStyle: GoogleFonts.gentiumBasic(),
                 selectedItemColor: Colors.black,
-                unselectedItemColor: Colors.grey,
                 currentIndex: state,
                 type: BottomNavigationBarType.fixed,
                 elevation: 0,
-                onTap: (index) =>
-                    context.read<BottomNavigationBarCubit>().selectIndex(index),
+                onTap: (index){
+                  context.read<BottomNavigationBarCubit>().selectIndex(index);
+                  if(state == 0){
+                    homeNavCubit?.showHome();
+                  }
+                },
                 items: [
                   home(state),
                   myPost(state),
@@ -44,14 +49,14 @@ class BottomNavBar extends StatelessWidget {
   BottomNavigationBarItem home(int state){
     return BottomNavigationBarItem(
         icon: state ==0 ? const Icon(Icons.home) : const Icon(Icons.home_outlined),
-        label: "home"
+        label: "Ana Sayfa"
     );
   }
 
   BottomNavigationBarItem myPost(int state){
     return BottomNavigationBarItem(
         icon: state == 1 ? const Icon(Icons.add_circle) : const Icon(Icons.add_circle_outline),
-        label: "myPost"
+        label: "Etkinliğim"
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
 import 'package:untitled1/auth/auth_repository.dart';
-import 'package:untitled1/services/user_methods.dart';
 import 'package:untitled1/services/user_services.dart';
 import '../../models/user.dart';
 import '../auth_cubit.dart';

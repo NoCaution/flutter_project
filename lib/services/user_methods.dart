@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_user;
 import 'package:untitled1/services/user_services.dart';
-import '../models/user.dart' ;
+
+import '../models/user.dart';
+
 class UserMethods{
-  static final UserMethods _singleton= UserMethods._internal();
   final firebase_user.FirebaseAuth authReference = firebase_user.FirebaseAuth.instance;
+  static final UserMethods _signleton = UserMethods.internal();
 
   factory UserMethods(){
-    return _singleton;
+    return _signleton;
   }
-  UserMethods._internal();
-
+  UserMethods.internal();
   Future<User?> signIn(String? eMail,String? password)async{
     var user = await authReference.signInWithEmailAndPassword(email: eMail!, password: password!);
     var user2 = await UserService().getUserByEmail(user.user?.email);
@@ -31,7 +32,4 @@ class UserMethods{
     var result = authReference.currentUser;
     return result?.uid;
   }
-
-
-
 }

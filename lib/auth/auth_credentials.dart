@@ -1,5 +1,3 @@
-import '../models/user.dart';
-
 class AuthCredentials {
   final String? eMail;
   final String? name;

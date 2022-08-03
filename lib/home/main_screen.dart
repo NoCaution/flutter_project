@@ -1,22 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/auth/auth_repository.dart';
+import 'package:untitled1/data_repository.dart';
+import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/home/main_screen_events.dart';
-import 'package:untitled1/services/post_services.dart';
-import 'package:untitled1/services/user_services.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/widgets/post_card_widget.dart';
-import '../models/user.dart';
 import 'main_screen_state.dart';
 
 class MainScreen extends StatefulWidget {
   final AuthRepository? authRepo;
   final SessionCubit? sessionCubit;
 
-  MainScreen({
+  const MainScreen({
     Key? key,
     this.sessionCubit,
     this.authRepo,
@@ -42,7 +40,7 @@ class MainScreenState extends State<MainScreen> {
     double width = MediaQuery.of(context).size.width / 100;
     double height = MediaQuery.of(context).size.height / 100;
     return Scaffold(
-        appBar: _appBar(),
+        appBar: _appBar(context),
         body: BlocProvider<MainScreenBloc>(
             create: (context) => MainScreenBloc(),
             child: Container(
@@ -64,12 +62,14 @@ Widget postCardWidget(double height) {
       return PostCardWidget(
         user: state.currentUser,
         post: state.currentUserPost,
+        dataRepo: DataRepository(),
       );
     },
   );
 }
+//COMPONENTS
 
-PreferredSize _appBar() {
+PreferredSize _appBar(BuildContext context){
   return PreferredSize(
       preferredSize: AppBar().preferredSize,
       child: AppBar(
@@ -100,12 +100,12 @@ PreferredSize _appBar() {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {BlocProvider.of<HomeNavigatorCubit>(context).showArchive();},
                 icon: const Icon(Icons.archive_rounded),
                 splashRadius: 20.0,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {BlocProvider.of<HomeNavigatorCubit>(context).showMessages();},
                 icon: const Icon(Icons.message_rounded),
                 splashRadius: 20.0,
               ),

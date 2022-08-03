@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Post {
   final String? id;
   final String? whatToDo;
@@ -29,6 +28,9 @@ class Post {
     userId = o["userId"];
 
 
+
+
+
   Post.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) :
     id = doc.id,
     whatToDo = doc.data()!["whatToDo"],
@@ -37,7 +39,6 @@ class Post {
     age2 = doc.data()!["age2"],
     location = doc.data()!["location"],
     userId = doc.data()!["userId"];
-
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
