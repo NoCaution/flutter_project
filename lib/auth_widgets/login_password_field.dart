@@ -5,7 +5,7 @@ import 'package:untitled1/auth/login/login_event.dart';
 import 'package:untitled1/validators/validations.dart';
 import '../auth/login/login_state.dart';
 
-class LoginPasswordField extends StatelessWidget with Validations{
+class LoginPasswordField extends StatelessWidget{
   const LoginPasswordField({Key? key,}) : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class LoginPasswordField extends StatelessWidget with Validations{
             context.read<LoginBloc>().add(RestartFormStatus());
             context.read<LoginBloc>().add(LoginPasswordChanged(password: value));
           },
-          validator: passwordValidator,
+          validator: Validations().passwordValidator,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
               prefixIcon: const Icon(

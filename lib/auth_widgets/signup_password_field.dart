@@ -5,7 +5,7 @@ import 'package:untitled1/auth/signup/signup_state.dart';
 import 'package:untitled1/validators/validations.dart';
 import '../auth/signup/signup_bloc.dart';
 
-class SignUpPasswordField extends StatelessWidget with Validations{
+class SignUpPasswordField extends StatelessWidget{
   const SignUpPasswordField({Key? key,}) : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class SignUpPasswordField extends StatelessWidget with Validations{
               context.read<SignupBloc>().add(RestartFormStatus());
               context.read<SignupBloc>().add(SignupPasswordChanged(password: value));
             },
-            validator: passwordValidator,
+            validator: Validations().passwordValidator,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
                 prefixIcon: const Icon(

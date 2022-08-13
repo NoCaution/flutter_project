@@ -1,6 +1,13 @@
 import '../auth/form_submission_status.dart';
 
 class Validations {
+  static final Validations _singleton = Validations._internal();
+  factory Validations(){
+    return _singleton;
+  }
+  Validations._internal();
+
+
   String? loginExceptionPicker({FormSubmissionStatus? formStatus}) {
     if (formStatus is SubmissionFailed) {
       if (formStatus.exception.toString().split(" ")[0] ==

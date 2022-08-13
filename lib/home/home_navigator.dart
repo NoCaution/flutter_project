@@ -4,6 +4,7 @@ import 'package:untitled1/archive/archive_screen.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/home/main_screen.dart';
 import 'package:untitled1/messaging/messages/messages_screen.dart';
+import 'package:untitled1/repositories/data_repository.dart';
 import '../auth/auth_repository.dart';
 import '../messaging/message_details.dart';
 import '../session_cubit.dart';
@@ -20,7 +21,7 @@ class HomeNavigator extends StatelessWidget {
         builder: (context, state) {
           return Navigator(
             pages: [
-              MaterialPage(child: MainScreen(sessionCubit: SessionCubit(),authRepo: AuthRepository())),
+              MaterialPage(child: MainScreen(sessionCubit: SessionCubit(),authRepo: AuthRepository(dataRepo: context.read<DataRepository>()))),
               if (state == HomeNavigatorState.archive)
                 const MaterialPage(child: ArchiveScreen()),
               if(state == HomeNavigatorState.messages)

@@ -1,4 +1,3 @@
-import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,13 +8,15 @@ import 'package:untitled1/auth/verify_email/verif_email_event.dart'
     as verify_email_event;
 import 'package:untitled1/auth/verify_email/verify_email_bloc.dart';
 import 'package:untitled1/auth/verify_email/verify_email_state.dart';
-import 'package:untitled1/validators/validations.dart';
+import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/auth_widgets/email_verification_field.dart';
 
 class EmailVerifyingScreen extends StatefulWidget {
   final AuthCubit? authCubit;
+  final AuthRepository authRepo;
+  final DataRepository dataRepo;
 
-  const EmailVerifyingScreen({Key? key, this.authCubit}) : super(key: key);
+  const EmailVerifyingScreen({Key? key, this.authCubit,required this.authRepo,required this.dataRepo}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +24,7 @@ class EmailVerifyingScreen extends StatefulWidget {
   }
 }
 
-class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validations {
+class EmailVerifyingScreenState extends State<EmailVerifyingScreen>{
   final otpController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
@@ -62,7 +63,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validati
                   listener: (BuildContext context, state) {
                     var formStatus = state.formStatus;
                     // exception management
-                    printException(formStatus: formStatus,context: context);
+                    widget.authRepo.printException(formStatus: formStatus,context: context,pickerType: "eMailVerify");
                   },
                   child: buildFormField(),
                 ),
@@ -133,7 +134,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validati
           context
               .read<VerifyEmailBloc>()
               .add(verify_email_event.VerifyEmailCodeChanged(code: ""));
-          await sendOTP(widget.authCubit!.credentials!.eMail!);
+          await widget.authRepo.sendOtp(eMail: widget.authCubit?.credentials?.eMail!);
         },
         child: const Text(
           "Kod gönder",
@@ -160,38 +161,6 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>with Validati
     }
   }
 
-  Future<bool> sendOTP(String eMail) async {
-    var response =
-        await EmailAuth(sessionName: "session").sendOtp(recipientMail: eMail);
-    return response;
-  }
-
-  void printException({FormSubmissionStatus? formStatus, BuildContext? context}){
-    String? message = verifyEmailExceptionPicker(formStatus!);
-    if(message !=null){
-      showMessage(message: message,context: context); //exception picker in validations
-    }
-  }
-
-  void showMessage({String? message, BuildContext? context}) {
-    final snackBar = SnackBar(
-      content: Text(
-        message!,
-        style: const TextStyle(fontSize: 15, color: Colors.white),
-        textAlign: TextAlign.center,
-      ),
-      backgroundColor: Colors.red[400],
-      duration: const Duration(seconds: 2),
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.only(bottom: 40, left: 5, right: 5),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-        side: BorderSide.none,
-      ),
-    );
-    ScaffoldMessenger.of(context!).showSnackBar(snackBar);
-  }
   PreferredSize _appBar(){
     return PreferredSize(
         child: AppBar(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/auth/auth_repository.dart';
-import 'package:untitled1/data_repository.dart';
+import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/home/main_screen_events.dart';
@@ -55,6 +55,7 @@ class MainScreenState extends State<MainScreen> {
             )));
   }
 }
+//COMPONENTS
 
 Widget postCardWidget(double height) {
   return BlocBuilder<MainScreenBloc, HomeScreenState>(
@@ -67,7 +68,6 @@ Widget postCardWidget(double height) {
     },
   );
 }
-//COMPONENTS
 
 PreferredSize _appBar(BuildContext context){
   return PreferredSize(

@@ -6,15 +6,17 @@ import 'package:untitled1/auth/form_submission_status.dart';
 import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/login/login_bloc.dart';
 import 'package:untitled1/models/user.dart';
-import 'package:untitled1/validators/validations.dart';
+import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/auth_widgets/login_eMail_field.dart';
 import 'package:untitled1/auth_widgets/login_password_field.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key, this.authRepo}) : super(key: key);
-  final AuthRepository? authRepo;
+  const LoginScreen({Key? key, required this.authRepo, required this.dataRepo})
+      : super(key: key);
+  final AuthRepository authRepo;
+  final DataRepository dataRepo;
 
   @override
   State<StatefulWidget> createState() {
@@ -22,7 +24,7 @@ class LoginScreen extends StatefulWidget {
   }
 }
 
-class LoginScreenState extends State<LoginScreen> with Validations {
+class LoginScreenState extends State<LoginScreen> {
   static const iconColor = Color.fromRGBO(47, 183, 254, 0.9);
   var formKey = GlobalKey<FormState>();
 
@@ -33,7 +35,7 @@ class LoginScreenState extends State<LoginScreen> with Validations {
     return Scaffold(
         backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
         resizeToAvoidBottomInset: false,
-        appBar: _appBar() ,
+        appBar: _appBar(),
         body: BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(
               authRepository: context.read<AuthRepository>(),
@@ -63,15 +65,7 @@ class LoginScreenState extends State<LoginScreen> with Validations {
               const SizedBox(
                 height: 10,
               ),
-              BlocListener<LoginBloc, LoginState>(
-                listener: (context, state) {
-                  final formStatus = state.formStatus;
-                  printException(
-                      formStatus: formStatus,
-                      context: context); //if there is an exception, print it.
-                },
-                child: formField(), //form
-              ),
+              formField(),
               BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -83,8 +77,8 @@ class LoginScreenState extends State<LoginScreen> with Validations {
                         onChanged: (value) {
                           value == true
                               ? context
-                                .read<LoginBloc>()
-                                .add(AutoLoginActivated())
+                                  .read<LoginBloc>()
+                                  .add(AutoLoginActivated())
                               : context
                                   .read<LoginBloc>()
                                   .add(AutoLoginDeactivated());
@@ -107,20 +101,30 @@ class LoginScreenState extends State<LoginScreen> with Validations {
   }
 
   Widget formField() {
-    return Form(
-      key: formKey,
-      child: Column(
-        children: const [
-          Padding(
-            padding: EdgeInsets.only(bottom: 5),
-            child: LoginEmailField(),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 5),
-            child: LoginPasswordField(),
-          ),
-        ],
-      ),
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        final formStatus = state.formStatus;
+        widget.authRepo.printException(
+          pickerType: "login",
+          formStatus: formStatus,
+          context: context,
+        ); //if there is an exception, print it.
+      },
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: const [
+            Padding(
+              padding: EdgeInsets.only(bottom: 5),
+              child: LoginEmailField(),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 5),
+              child: LoginPasswordField(),
+            ),
+          ],
+        ),
+      ), //form
     );
   }
 
@@ -183,41 +187,12 @@ class LoginScreenState extends State<LoginScreen> with Validations {
   }
 
   void _onPressed(BuildContext context) {
-    if (formKey.currentState!.validate() == true) {
+    if (formKey.currentState?.validate() == true) {
       context.read<LoginBloc>().add(LoginSubmitted());
     }
   }
 
-  void printException(
-      {FormSubmissionStatus? formStatus, BuildContext? context}) {
-    String? message = loginExceptionPicker(formStatus: formStatus);
-    if (message != null) {
-      showMessage(
-          message: message, context: context); //exceptionPicker in validations
-    }
-  }
-
-  void showMessage({String? message, BuildContext? context}) {
-    final snackBar = SnackBar(
-      content: Text(
-        message!,
-        style: const TextStyle(fontSize: 15, color: Colors.white),
-        textAlign: TextAlign.center,
-      ),
-      backgroundColor: Colors.red[400],
-      duration: const Duration(seconds: 2),
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.only(bottom: 40, left: 5, right: 5),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-        side: BorderSide.none,
-      ),
-    );
-    ScaffoldMessenger.of(context!).showSnackBar(snackBar);
-  }
-
-  PreferredSize _appBar(){
+  PreferredSize _appBar() {
     return PreferredSize(
         child: AppBar(
             backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
@@ -227,7 +202,7 @@ class LoginScreenState extends State<LoginScreen> with Validations {
                 "Meet",
                 style: GoogleFonts.gentiumBasic(
                     textStyle:
-                    const TextStyle(color: Colors.white, fontSize: 32)),
+                        const TextStyle(color: Colors.white, fontSize: 32)),
               ),
               Text("Up",
                   style: GoogleFonts.gentiumBasic(

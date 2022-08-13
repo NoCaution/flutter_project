@@ -2,15 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/post.dart';
 import '../models/user.dart';
 
-class PostService {
+class PostRepository{
   final FirebaseFirestore reference = FirebaseFirestore.instance;
-  static final _singleton = PostService._internal();
+  static final PostRepository _singleton= PostRepository._internal();
 
-  factory PostService() {
+  factory PostRepository(){
     return _singleton;
   }
 
-  PostService._internal();
+  PostRepository._internal();
 
   Future<void> addPost(Post? post, User? user) async {
     var ref = reference.collection("posts");

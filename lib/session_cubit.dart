@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled1/services/user_services.dart';
+import 'package:untitled1/repositories/user_repository.dart';
 import 'package:untitled1/session_state.dart';
 import 'auth/auth_repository.dart';
 import 'models/user.dart';
@@ -21,7 +21,7 @@ class SessionCubit extends Cubit<SessionState> {
     if (userId == null) {
       emit(UnAuthenticated());
     } else {
-      User user = await UserService().getUserById(userId)!;
+      User user = await UserRepository().getUserById(userId)!;
       if (user.autoLogin == true) {
         emit(Authenticated(user: user));
       } else {

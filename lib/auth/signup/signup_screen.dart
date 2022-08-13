@@ -6,6 +6,7 @@ import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/signup/signup_bloc.dart';
 import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
+import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/validators/validations.dart';
 import 'package:untitled1/auth_widgets/lastName_field.dart';
 import 'package:untitled1/auth_widgets/name_field.dart';
@@ -14,8 +15,11 @@ import '../../auth_widgets/signup_password_field.dart';
 import '../auth_cubit.dart';
 
 class SignupScreenWidget extends StatefulWidget {
+  final DataRepository dataRepo;
+  final AuthRepository authRepo;
   const SignupScreenWidget({
     Key? key,
+    required this.dataRepo, required this.authRepo
   }) : super(key: key);
 
   @override
@@ -24,8 +28,7 @@ class SignupScreenWidget extends StatefulWidget {
   }
 }
 
-class SignupScreenWidgetState extends State<SignupScreenWidget>
-    with Validations {
+class SignupScreenWidgetState extends State<SignupScreenWidget>{
   var key = GlobalKey<FormState>();
   AuthRepository? authRepo;
   AuthCubit? authCubit;
@@ -91,7 +94,8 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
         listener: (context, state) {
           final formStatus = state.formStatus;
           // exceptions management//
-          printException(
+          widget.authRepo.printException(
+              pickerType: "signUp",
               formStatus: formStatus,
               context: context); //if there is an exception, print it.
         },
@@ -166,35 +170,6 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>
     if (key.currentState!.validate() == true) {
       context.read<SignupBloc>().add(SignupSubmitted());
     }
-  }
-
-  void printException(
-      {FormSubmissionStatus? formStatus, BuildContext? context}) {
-    String? message = signupExceptionPicker(formStatus: formStatus);
-    if (message != null) {
-      showMessage(
-          message: message, context: context); //exceptionPicker in validations
-    }
-  }
-
-  void showMessage({String? message, BuildContext? context}) {
-    final snackBar = SnackBar(
-      content: Text(
-        message!,
-        style: const TextStyle(fontSize: 15, color: Colors.white),
-        textAlign: TextAlign.center,
-      ),
-      backgroundColor: Colors.red[400],
-      duration: const Duration(seconds: 2),
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.only(bottom: 40, left: 5, right: 5),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-        side: BorderSide.none,
-      ),
-    );
-    ScaffoldMessenger.of(context!).showSnackBar(snackBar);
   }
 
   PreferredSize _appBar(){

@@ -5,7 +5,7 @@ import 'package:untitled1/validators/validations.dart';
 import '../auth/login/login_bloc.dart';
 import '../auth/login/login_state.dart';
 
-class LoginEmailField extends StatelessWidget with Validations{
+class LoginEmailField extends StatelessWidget{
 
   const LoginEmailField({Key? key,}) : super(key: key);
 
@@ -22,7 +22,7 @@ class LoginEmailField extends StatelessWidget with Validations{
             context.read<LoginBloc>().add(RestartFormStatus());
             context.read<LoginBloc>().add(LoginEmailChanged(eMail: value));
           },
-          validator: eMailValidator,
+          validator: Validations().eMailValidator,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
               prefixIcon: const Icon(

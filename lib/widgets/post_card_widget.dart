@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled1/data_repository.dart';
+import 'package:untitled1/repositories/data_repository.dart';
 
 import '../models/post.dart';
 import '../models/user.dart';

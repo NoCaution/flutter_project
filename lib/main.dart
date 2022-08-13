@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/auth_repository.dart';
-import 'package:untitled1/data_repository.dart';
+import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'app_navigator.dart';
 
@@ -20,8 +20,11 @@ class MeetUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RepositoryProvider(
-        create: (context)=> AuthRepository(),
+      home: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(create: (context)=> AuthRepository(dataRepo: DataRepository()),),
+          RepositoryProvider(create: (context)=> DataRepository()),
+          ],
         child: BlocProvider(
             create: (context)=>SessionCubit(authRepo: context.read<AuthRepository>()),
             child: AppNavigator(authCubit: AuthCubit(),),
