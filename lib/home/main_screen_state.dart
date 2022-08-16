@@ -11,7 +11,7 @@ class HomeScreenState {
 
   HomeScreenState({
     this.posts= const[ Post(id: " ",whatToDo: " ",description: " ",age2: 0,age1: 0,location: " ",userId: " ")],
-    this.currentUser = const User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false),
+    this.currentUser = const User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false,userName: ""),
     this.currentUserPost = const Post(id: " ",whatToDo: " ",description: " ",age2: 0,age1: 0,location: " ",userId: " "),
     this.postStatus = const InitialPostStatus(),
   }) ;

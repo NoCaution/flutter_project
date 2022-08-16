@@ -47,9 +47,9 @@ class PostRepository{
     ref.update(post.toMap());
   }
 
-  Future<Post>? getPostById(String? postId) async {
+  Future<Post>? getPostById(String? userId) async {
     var ref = reference.collection("posts");
-    return await ref.where("userId", isEqualTo: postId).get().then((snapshot) {
+    return await ref.where("userId", isEqualTo: userId).get().then((snapshot) {
       var e = snapshot.docs.single.data();
       return Post.fromMap(e);
     });

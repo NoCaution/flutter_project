@@ -6,6 +6,7 @@ import 'models/user.dart';
 
 class SessionCubit extends Cubit<SessionState> {
   final AuthRepository? authRepo;
+
   User? get getCurrentUser => (state as Authenticated).user;
 
 
@@ -22,24 +23,21 @@ class SessionCubit extends Cubit<SessionState> {
       emit(UnAuthenticated());
     } else {
       User user = await UserRepository().getUserById(userId)!;
-      if (user.autoLogin == true) {
-        emit(Authenticated(user: user));
-      } else {
-        emit(UnAuthenticated());
-      }
+      user.autoLogin == true
+          ? emit(Authenticated(user: user))
+          : emit(UnAuthenticated());
     }
   }
 
-  void showAuth() {
-    emit(UnAuthenticated());
-  }
-
-  void showMainScreen() {
-    emit(Authenticated());
-  }
-
-  void signOut() {
-    authRepo?.signOut();
-    emit(UnAuthenticated());
-  }
+void showAuth() {
+  emit(UnAuthenticated());
 }
+
+void showMainScreen() {
+  emit(Authenticated());
+}
+
+void signOut() {
+  authRepo?.signOut();
+  emit(UnAuthenticated());
+}}

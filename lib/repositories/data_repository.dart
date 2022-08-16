@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_user;
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
+
 class DataRepository {
   final firebase_user.FirebaseAuth authReference = firebase_user.FirebaseAuth.instance;
   String? capitalizeFirstLetter(String? word) {
@@ -26,5 +28,20 @@ class DataRepository {
       ),
     );
     ScaffoldMessenger.of(context!).showSnackBar(snackBar);
+  }
+
+  User? changeUserProperty({required User user, String? property, String? value}) {
+    return user.copyWith(
+      id: property == "id" ? value : user.id,
+      name: property == "name" ? value : user.name,
+      lastName: property == "lastName" ? value : user.lastName,
+      birth: property == "birth" ? value : user.birth,
+      eMail: property == "eMail" ? value : user.eMail,
+      password: property == "password" ? value : user.password,
+      mobile: property == "mobile" ? value : user.mobile,
+      imageUrl: property == "imageUrl" ? value : user.imageUrl,
+      userName: property == "userName" ? value : user.userName,
+      autoLogin: property == "autoLogin" ? value == "true" : user.autoLogin,
+    );
   }
 }

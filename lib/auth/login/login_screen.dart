@@ -40,7 +40,7 @@ class LoginScreenState extends State<LoginScreen> {
           create: (context) => LoginBloc(
               authRepository: context.read<AuthRepository>(),
               authCubit: context.read<AuthCubit>(),
-              user: const User()),
+              dataRepo: context.read<DataRepository>(),),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child:

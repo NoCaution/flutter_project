@@ -7,8 +7,10 @@ import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/home/main_screen_events.dart';
 import 'package:untitled1/session_cubit.dart';
+import 'package:untitled1/utils/constants.dart' as constants;
 import 'package:untitled1/widgets/post_card_widget.dart';
 import 'main_screen_state.dart';
+
 
 class MainScreen extends StatefulWidget {
   final AuthRepository? authRepo;
@@ -46,7 +48,7 @@ class MainScreenState extends State<MainScreen> {
             child: Container(
               height: height * 100,
               width: width * 100,
-              color: const Color.fromRGBO(230, 230, 230, 1),
+              color: constants.backGroundColor,
               padding: const EdgeInsets.all(13),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -73,7 +75,7 @@ PreferredSize _appBar(BuildContext context){
   return PreferredSize(
       preferredSize: AppBar().preferredSize,
       child: AppBar(
-        backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
+        backgroundColor: constants.appBarColor.withOpacity(0.9),
         centerTitle: true,
         title:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -91,7 +93,7 @@ PreferredSize _appBar(BuildContext context){
                 Text("Up",
                     style: GoogleFonts.gentiumBasic(
                         textStyle: const TextStyle(
-                            color: Color.fromRGBO(255, 222, 118, 1),
+                            color: constants.appNameSecondColor,
                             fontSize: 32)))
               ],
             ),

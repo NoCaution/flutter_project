@@ -21,8 +21,8 @@ class VerifyEmailBloc extends Bloc<VerifyEmailEvent, VerifyEmailState> {
       try {
         var authCredentials = authCubit!.credentials!;
         var response = authRepo?.verify(eMail: authCredentials.eMail,code: state.code);
-        if(response==true){
-          var user = await authRepo?.signUp(name: authCredentials.name, lastName: authCredentials.lastName, eMail: authCredentials.eMail, password: authCredentials.password);
+        if(response ==true ){
+          await authRepo?.signUp(name: authCredentials.name, lastName: authCredentials.lastName, eMail: authCredentials.eMail, password: authCredentials.password);
           emit(state.copyWith(formStatus: SubmissionSuccess()));
           authCubit?.showMainScreen();
         }

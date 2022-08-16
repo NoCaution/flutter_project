@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/repositories/data_repository.dart';
-
+import 'package:untitled1/utils/constants.dart' as constants;
 import '../models/post.dart';
 import '../models/user.dart';
 
@@ -26,7 +26,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
     User? user = widget.user;
     String? userName = widget.dataRepo?.capitalizeFirstLetter(user!.name!);
     String? userLastName = widget.dataRepo?.capitalizeFirstLetter(user!.lastName!);
-    Color color = const Color.fromRGBO(0, 0, 0, 0.75);
+    Color color = constants.primaryTextColor;
     return Container(
       width: width * 100,
       decoration: BoxDecoration(
@@ -43,7 +43,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
               const SizedBox(
                 width: 30,
               ),
-              circleAvatar(user!, width, height),  // avatar
+              _circleAvatar(user!, width, height),  // avatar
 
               const SizedBox(
                 width: 20,
@@ -55,13 +55,13 @@ class PostCardWidgetState extends State<PostCardWidget> {
               Text(userLastName!,style: textStyle(color, width*4),), // user last name
             ],
           ),
-          thinLinePart(), //thin divider
+          _thinLinePart(), //thin divider
 
-          descriptionPart(width: width, height: height, color: color), //description part
+          _descriptionPart(width: width, height: height, color: color), //description part
 
-          whatToDoPart(width: width, height: height, color: color), //whatToDo part
+          _whatToDoPart(width: width, height: height, color: color), //whatToDo part
 
-          likeButton(), //like button
+          _likeButton(), //like button
 
           const SizedBox(
             height: 30,
@@ -71,10 +71,10 @@ class PostCardWidgetState extends State<PostCardWidget> {
     );
   }
 //COMPONENTS
-  Widget circleAvatar(User user, double width, double height) {
+  Widget _circleAvatar(User user, double width, double height) {
     return CircleAvatar(
         backgroundImage: AssetImage(user.imageUrl!),
-        backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
+        backgroundColor: constants.appBarColor.withOpacity(0.9),
         radius: width * 8,
         child: user.imageUrl! == " "
             ? Text(
@@ -98,7 +98,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
   }
   
 
-  Padding whatToDoPart(
+  Padding _whatToDoPart(
       {required double height, required double width, Color? color}) {
     return Padding(
       padding: const EdgeInsets.only(right: 45, top: 15),
@@ -117,7 +117,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
     );
   }
 
-  Padding likeButton() {
+  Padding _likeButton() {
     return Padding(
       padding: const EdgeInsets.only(right: 30, top: 15),
       child: Row(
@@ -129,7 +129,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
     );
   }
 
-  Container descriptionPart(
+  Container _descriptionPart(
       {required double width, required double height, required Color color}) {
     return Container(
       alignment: Alignment.topLeft,
@@ -142,7 +142,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
     );
   }
 
-  Widget thinLinePart() {
+  Widget _thinLinePart() {
     return Padding(
       padding: const EdgeInsets.only(
         left: 30,

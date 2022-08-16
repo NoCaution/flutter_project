@@ -10,6 +10,7 @@ class User {
   final String? mobile;
   final String? imageUrl;
   final bool? autoLogin;
+  final String? userName;
 
   const User(
       {this.id,
@@ -20,28 +21,33 @@ class User {
       this.password,
       this.mobile,
       this.imageUrl,
-      this.autoLogin});
+      this.autoLogin,
+      this.userName});
 
-  User copyWith(
-      {String? id,
-      String? name,
-      String? lastName,
-      String? birth,
-      String? eMail,
-      String? password,
-      String? mobile,
-      String? imageUrl,
-      bool? autoLogin}) {
+  User copyWith({
+    String? id,
+    String? name,
+    String? lastName,
+    String? birth,
+    String? eMail,
+    String? password,
+    String? mobile,
+    String? imageUrl,
+    bool? autoLogin,
+    String? userName,
+  }) {
     return User(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        lastName: lastName ?? this.lastName,
-        birth: birth ?? this.birth,
-        eMail: eMail ?? this.eMail,
-        password: password ?? this.password,
-        mobile: mobile ?? this.mobile,
-        imageUrl: imageUrl ?? this.imageUrl,
-        autoLogin: autoLogin ?? this.autoLogin);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      lastName: lastName ?? this.lastName,
+      birth: birth ?? this.birth,
+      eMail: eMail ?? this.eMail,
+      password: password ?? this.password,
+      mobile: mobile ?? this.mobile,
+      imageUrl: imageUrl ?? this.imageUrl,
+      autoLogin: autoLogin ?? this.autoLogin,
+      userName: userName ?? this.userName,
+    );
   }
 
   User.fromMap(dynamic map)
@@ -53,7 +59,8 @@ class User {
         password = map["password"],
         mobile = map["mobile"],
         imageUrl = map["imageUrl"],
-        autoLogin = map["autoLogin"];
+        autoLogin = map["autoLogin"],
+        userName = map["userName"];
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
@@ -66,6 +73,7 @@ class User {
     map["mobile"] = mobile;
     map["imageUrl"] = imageUrl;
     map["autoLogin"] = autoLogin;
+    map["userName"] = userName;
     return map;
   }
 
@@ -78,5 +86,6 @@ class User {
         password = doc.data()!["password"],
         mobile = doc.data()!["mobile"],
         imageUrl = doc.data()!["imageUrl"],
-        autoLogin = doc.data()!["autoLogin"];
+        autoLogin = doc.data()!["autoLogin"],
+        userName = doc.data()!["userName"];
 }

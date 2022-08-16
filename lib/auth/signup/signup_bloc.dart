@@ -1,4 +1,3 @@
-import 'package:email_auth/email_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
 import 'package:untitled1/auth/auth_repository.dart';
@@ -34,9 +33,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
       } catch (e) {
         if(e.toString()=="Bad state: No element"){
-          await authRepo?.sendOtp(eMail: state.eMail);
           emit(state.copyWith(formStatus: SubmissionSuccess()));
           authCubit?.showVerifyEmail(name: state.name,lastName: state.lastName,eMail: state.eMail,password: state.password,);
+          await authRepo?.sendOtp(eMail: state.eMail);
         }
         else {
           emit(state.copyWith(formStatus: SubmissionFailed(exception: e)));

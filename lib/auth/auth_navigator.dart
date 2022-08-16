@@ -8,7 +8,7 @@ import '../repositories/data_repository.dart';
 import 'login/login_screen.dart';
 
 class AuthNavigator extends StatelessWidget {
-  const AuthNavigator({Key? key}) : super(key: key);
+  const AuthNavigator({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,12 @@ class AuthNavigator extends StatelessWidget {
                 MaterialPage(child: EmailVerifyingScreen(authCubit: context.read<AuthCubit>(), authRepo: context.read<AuthRepository>(), dataRepo: context.read<DataRepository>(),)),
             ]
           ],
-          onPopPage: (route, result) => route.didPop(result));
+          onPopPage: (route, result){
+            if(state == AuthState.verifyEmail){
+              context.read<AuthCubit>().showSignUp();
+            }
+            return route.didPop(result);
+          });
     });
   }
 }
