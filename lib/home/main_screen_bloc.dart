@@ -2,18 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/home/post_status.dart';
 import 'package:untitled1/repositories/post_repository.dart';
+import 'package:untitled1/repositories/user_credantial_repository.dart';
 import '../home/main_screen_state.dart' ;
 import 'package:untitled1/home/main_screen_events.dart';
 import '../repositories/user_repository.dart';
 
 class MainScreenBloc extends Bloc<MainScreenEvent, HomeScreenState> {
   var currentUser = FirebaseAuth.instance.currentUser;
-  static final MainScreenBloc _signleton = MainScreenBloc._internal();
-
+  static final MainScreenBloc _signleton =MainScreenBloc._internal();
   factory MainScreenBloc(){
     return _signleton;
   }
-
 
   MainScreenBloc._internal(): super(HomeScreenState()){
     on<PullToRefresh>((event, emit) async {

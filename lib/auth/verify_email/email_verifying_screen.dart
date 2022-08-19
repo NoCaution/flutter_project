@@ -12,11 +12,7 @@ import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/auth_widgets/email_verification_field.dart';
 
 class EmailVerifyingScreen extends StatefulWidget {
-  final AuthCubit? authCubit;
-  final AuthRepository authRepo;
-  final DataRepository dataRepo;
-
-  const EmailVerifyingScreen({Key? key, this.authCubit,required this.authRepo,required this.dataRepo}) : super(key: key);
+  const EmailVerifyingScreen({Key? key,}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -47,7 +43,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>{
                   alignment: Alignment.center,
                   child: Column(children: [
                     Text(
-                      "${widget.authCubit?.credentials!.eMail!.trim()} email hesabına bir kod yolladık. email hesabını doğrulayabilmemiz için lütfen kodu aşağıya gir.",
+                      "${context.read<AuthCubit>().credentials!.eMail!.trim()} email hesabına bir kod yolladık. email hesabını doğrulayabilmemiz için lütfen kodu aşağıya gir.",
                       style: const TextStyle(
                         color: Colors.black54,
                         fontSize: 20,
@@ -63,7 +59,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>{
                   listener: (BuildContext context, state) {
                     var formStatus = state.formStatus;
                     // exception management
-                    widget.authRepo.printException(formStatus: formStatus,context: context,pickerType: "eMailVerify");
+                    context.read<AuthRepository>().printException(formStatus: formStatus,context: context,pickerType: "eMailVerify");
                   },
                   child: buildFormField(),
                 ),
@@ -134,7 +130,7 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>{
           context
               .read<VerifyEmailBloc>()
               .add(verify_email_event.VerifyEmailCodeChanged(code: ""));
-          await widget.authRepo.sendOtp(eMail: widget.authCubit?.credentials?.eMail!);
+          await context.read<AuthRepository>().sendOtp(eMail: context.read<AuthCubit>().credentials?.eMail!);
         },
         child: const Text(
           "Kod gönder",

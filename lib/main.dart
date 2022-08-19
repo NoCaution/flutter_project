@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/auth_repository.dart';
+import 'package:untitled1/home/main_screen_bloc.dart';
+import 'package:untitled1/home/main_screen_state.dart';
+import 'package:untitled1/my_post/my_post_bloc.dart';
 import 'package:untitled1/repositories/data_repository.dart';
+import 'package:untitled1/repositories/user_credantial_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'app_navigator.dart';
+import 'home/home_navigator_cubit.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,10 +29,19 @@ class MeetUp extends StatelessWidget {
         providers: [
           RepositoryProvider(create: (context)=> AuthRepository(dataRepo: DataRepository()),),
           RepositoryProvider(create: (context)=> DataRepository()),
+          RepositoryProvider(create: (context)=>UserCredentialRepository()),
           ],
-        child: BlocProvider(
-            create: (context)=>SessionCubit(authRepo: context.read<AuthRepository>()),
-            child: AppNavigator(authCubit: AuthCubit(),),
+        child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context)=>SessionCubit(authRepo: context.read<AuthRepository>(), userCredentialRepo: context.read<UserCredentialRepository>())),
+              BlocProvider(
+                create: (context)=>MyPostBloc(userCredential: context.read<UserCredentialRepository>()),
+              ),
+              BlocProvider(create: (context)=>MainScreenBloc()),
+              BlocProvider(create: (context)=>HomeNavigatorCubit()),
+            ],
+            child: AppNavigator(authCubit: AuthCubit(), ),
         )
       )
     );

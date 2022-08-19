@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum HomeNavigatorState {home,archive,messages,messageDetails}
+enum HomeNavigatorState {home,archive,messages,messageDetails,addPost}
 
 class HomeNavigatorCubit extends Cubit<HomeNavigatorState>{
   static final HomeNavigatorCubit _signleton = HomeNavigatorCubit._internal();
@@ -15,5 +15,6 @@ class HomeNavigatorCubit extends Cubit<HomeNavigatorState>{
   void showArchive()=>emit(HomeNavigatorState.archive);
   void showMessages()=>emit(HomeNavigatorState.messages);
   void showMessaging()=> emit(HomeNavigatorState.messageDetails);
+  void showAddPost()=>emit(HomeNavigatorState.addPost);
 
 }

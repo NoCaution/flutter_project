@@ -7,10 +7,11 @@ import 'package:untitled1/loading_screen.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/session_state.dart';
 import 'auth/auth_cubit.dart';
+import 'home/main_screen_state.dart';
 
 class AppNavigator extends StatelessWidget {
   final AuthCubit? authCubit;
-  const AppNavigator({Key? key,this.authCubit}) : super(key: key);
+  const AppNavigator({Key? key,this.authCubit,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

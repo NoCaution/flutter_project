@@ -19,9 +19,6 @@ class PostRepository{
         id: documentReference.id,
         whatToDo: post.whatToDo,
         description: post.description,
-        age1: post.age1,
-        age2: post.age2,
-        location: post.location,
         userId: user?.id));
   }
 

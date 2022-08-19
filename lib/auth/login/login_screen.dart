@@ -11,6 +11,7 @@ import 'package:untitled1/auth_widgets/login_eMail_field.dart';
 import 'package:untitled1/auth_widgets/login_password_field.dart';
 import 'login_event.dart';
 import 'login_state.dart';
+import 'package:untitled1/utils/constants.dart' as constants;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key, required this.authRepo, required this.dataRepo})
@@ -38,9 +39,10 @@ class LoginScreenState extends State<LoginScreen> {
         appBar: _appBar(),
         body: BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(
-              authRepository: context.read<AuthRepository>(),
-              authCubit: context.read<AuthCubit>(),
-              dataRepo: context.read<DataRepository>(),),
+            authRepository: context.read<AuthRepository>(),
+            authCubit: context.read<AuthCubit>(),
+            dataRepo: context.read<DataRepository>(),
+          ),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child:
@@ -58,34 +60,15 @@ class LoginScreenState extends State<LoginScreen> {
                     style: GoogleFonts.asap(
                         color: const Color.fromRGBO(126, 124, 255, 0.7),
                         fontWeight: FontWeight.bold,
-                        fontSize: 25),
+                        fontSize: width*0.045),
                   ),
                 ),
               ),
               const SizedBox(
                 height: 10,
               ),
-              formField(),
-              BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("oturumumu açık tut",
-                        style: TextStyle(color: Colors.black54)),
-                    Switch.adaptive(
-                        value: state.autoLogin!,
-                        onChanged: (value) {
-                          value == true
-                              ? context
-                                  .read<LoginBloc>()
-                                  .add(AutoLoginActivated())
-                              : context
-                                  .read<LoginBloc>()
-                                  .add(AutoLoginDeactivated());
-                        })
-                  ],
-                );
-              }),
+              formField(),  //FORM FIELD
+              keepMeSignedIn(), //KEEP ME SIGNED IN PART
               SizedBox(
                 height: height / 40,
               ),
@@ -99,6 +82,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         ));
   }
+    //COMPONENTS
 
   Widget formField() {
     return BlocListener<LoginBloc, LoginState>(
@@ -169,9 +153,10 @@ class LoginScreenState extends State<LoginScreen> {
               onPressed: () {
                 _onPressed(context);
               },
-              child: const Text(
+              child: Text(
                 "Giriş yap",
-                style: TextStyle(color: Colors.black45),
+                style: TextStyle(
+                    color: constants.primaryTextColor.withOpacity(0.6)),
               ),
               style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -192,10 +177,30 @@ class LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  BlocBuilder keepMeSignedIn() {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("oturumumu açık tut",
+              style: TextStyle(
+                  color: constants.primaryTextColor.withOpacity(0.7))),
+          Switch.adaptive(
+              value: state.autoLogin!,
+              onChanged: (value) {
+                value == true
+                    ? context.read<LoginBloc>().add(AutoLoginActivated())
+                    : context.read<LoginBloc>().add(AutoLoginDeactivated());
+              }),
+        ],
+      );
+    });
+  }
+
   PreferredSize _appBar() {
     return PreferredSize(
         child: AppBar(
-            backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
+            backgroundColor: constants.appBarColor.withOpacity(0.9),
             centerTitle: true,
             title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
@@ -207,8 +212,7 @@ class LoginScreenState extends State<LoginScreen> {
               Text("Up",
                   style: GoogleFonts.gentiumBasic(
                       textStyle: const TextStyle(
-                          color: Color.fromRGBO(255, 222, 118, 1),
-                          fontSize: 32))),
+                          color: constants.appNameColor, fontSize: 32))),
             ])),
         preferredSize: AppBar().preferredSize);
   }

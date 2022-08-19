@@ -6,9 +6,12 @@ import 'package:untitled1/home/home_navigator.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/my_post/my_post_screen.dart';
 
+import '../models/user.dart';
+import '../my_post/my_post_bloc.dart';
+
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({Key? key,this.homeNavCubit}) : super(key: key);
+  const BottomNavBar({Key? key,this.homeNavCubit,}) : super(key: key);
   final HomeNavigatorCubit? homeNavCubit;
 
   @override
@@ -20,9 +23,9 @@ class BottomNavBar extends StatelessWidget {
           return Scaffold(
               body: IndexedStack(
                 index: state,
-                children:  const [
-                  HomeNavigator(),
-                  MyPostScreen(),
+                children:  [
+                  const HomeNavigator(),
+                  MyPostScreen(postBloc: context.read<MyPostBloc>(),),
                 ],
               ),
               bottomNavigationBar: BottomNavigationBar(

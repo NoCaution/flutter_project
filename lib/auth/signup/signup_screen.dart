@@ -7,12 +7,12 @@ import 'package:untitled1/auth/signup/signup_bloc.dart';
 import 'package:untitled1/auth/signup/signup_event.dart';
 import 'package:untitled1/auth/signup/signup_state.dart';
 import 'package:untitled1/repositories/data_repository.dart';
-import 'package:untitled1/validators/validations.dart';
 import 'package:untitled1/auth_widgets/lastName_field.dart';
 import 'package:untitled1/auth_widgets/name_field.dart';
 import '../../auth_widgets/signup_eMail_field.dart';
 import '../../auth_widgets/signup_password_field.dart';
 import '../auth_cubit.dart';
+import 'package:untitled1/utils/constants.dart' as constants;
 
 class SignupScreenWidget extends StatefulWidget {
   final DataRepository dataRepo;
@@ -32,7 +32,6 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
   var key = GlobalKey<FormState>();
   AuthRepository? authRepo;
   AuthCubit? authCubit;
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -54,8 +53,8 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
                 height: height / 1.57,
                 margin: const EdgeInsets.only(
                     left: 20, right: 20, top: 25, bottom: 0),
-                child: buildFormField(height)), //signup button inside--
-
+                child: buildFormField(height,width)
+            ), //signup button inside--
             buildBottomPart(context),
           ],
         ),
@@ -89,7 +88,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
     );
   }
 
-  Widget buildFormField(double height) {
+  Widget buildFormField(double height,double width) {
     return BlocListener<SignupBloc, SignupState>(
         listener: (context, state) {
           final formStatus = state.formStatus;
@@ -110,7 +109,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
                   style: GoogleFonts.asap(
                       color: const Color.fromRGBO(126, 124, 255, 0.7),
                       fontWeight: FontWeight.bold,
-                      fontSize: 25),
+                      fontSize: width*0.045),
                 )),
                 padding: const EdgeInsets.only(top: 0, bottom: 10),
               ),
@@ -150,9 +149,9 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
       onPressed: () {
         _onPressed(context);
       },
-      child: const Text(
+      child: Text(
         "Kaydol",
-        style: TextStyle(color: Colors.black54),
+        style: TextStyle(color: constants.primaryTextColor.withOpacity(0.6)),
       ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white70),
@@ -175,7 +174,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
   PreferredSize _appBar(){
     return PreferredSize(
         child: AppBar(
-            backgroundColor: const Color.fromRGBO(255, 123, 78, 0.9),
+            backgroundColor: constants.appBarColor.withOpacity(0.9),
             centerTitle: true,
             title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
@@ -187,7 +186,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
               Text("Up",
                   style: GoogleFonts.gentiumBasic(
                       textStyle: const TextStyle(
-                          color: Color.fromRGBO(255, 222, 118, 1),
+                          color: constants.appNameColor,
                           fontSize: 32))),
             ])),
         preferredSize: AppBar().preferredSize);

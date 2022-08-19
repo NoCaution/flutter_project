@@ -20,7 +20,7 @@ class AuthNavigator extends StatelessWidget {
             if(state == AuthState.signUp || state == AuthState.verifyEmail)...[
               MaterialPage(child: SignupScreenWidget(dataRepo: DataRepository(), authRepo: context.read<AuthRepository>(),)),
               if(state == AuthState.verifyEmail)
-                MaterialPage(child: EmailVerifyingScreen(authCubit: context.read<AuthCubit>(), authRepo: context.read<AuthRepository>(), dataRepo: context.read<DataRepository>(),)),
+                const MaterialPage(child: EmailVerifyingScreen()),
             ]
           ],
           onPopPage: (route, result){

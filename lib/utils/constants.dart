@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const Color appBarColor = Color(0XFFff7b4e);
-const Color appNameSecondColor = Color(0XFFffde76);
+const Color appNameColor = Color(0XFFffde76);
 double fontSize(BuildContext context) {
   return (MediaQuery.of(context).size.width*3)/100;
 }

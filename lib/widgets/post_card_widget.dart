@@ -26,7 +26,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
     User? user = widget.user;
     String? userName = widget.dataRepo?.capitalizeFirstLetter(user!.name!);
     String? userLastName = widget.dataRepo?.capitalizeFirstLetter(user!.lastName!);
-    Color color = constants.primaryTextColor;
+    Color color = constants.primaryTextColor.withOpacity(0.75);
     return Container(
       width: width * 100,
       decoration: BoxDecoration(
@@ -44,7 +44,6 @@ class PostCardWidgetState extends State<PostCardWidget> {
                 width: 30,
               ),
               _circleAvatar(user!, width, height),  // avatar
-
               const SizedBox(
                 width: 20,
               ),
@@ -70,10 +69,11 @@ class PostCardWidgetState extends State<PostCardWidget> {
       ),
     );
   }
+
 //COMPONENTS
   Widget _circleAvatar(User user, double width, double height) {
     return CircleAvatar(
-        backgroundImage: AssetImage(user.imageUrl!),
+        backgroundImage: AssetImage("lib/assets/images/imageflutter.jpeg"),
         backgroundColor: constants.appBarColor.withOpacity(0.9),
         radius: width * 8,
         child: user.imageUrl! == " "
@@ -101,7 +101,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
   Padding _whatToDoPart(
       {required double height, required double width, Color? color}) {
     return Padding(
-      padding: const EdgeInsets.only(right: 45, top: 15),
+      padding: const EdgeInsets.only(right: 20, top: 20),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -110,8 +110,8 @@ class PostCardWidgetState extends State<PostCardWidget> {
         height: height * 6,
         width: width * 70,
         child: Text(widget.post!.whatToDo!,
-            style: GoogleFonts.montserrat(
-                textStyle: TextStyle(fontSize: width * 3, color: color))),
+            style: GoogleFonts.gentiumBasic(
+                textStyle: TextStyle(fontSize: width * 3.3, color: color))),
         padding: const EdgeInsets.all(10),
       ),
     );
@@ -133,11 +133,11 @@ class PostCardWidgetState extends State<PostCardWidget> {
       {required double width, required double height, required Color color}) {
     return Container(
       alignment: Alignment.topLeft,
-      padding: const EdgeInsets.only(left: 30, top: 20, bottom: 40,right: 30),
+      padding: const EdgeInsets.only(left: 30, top: 20, bottom:30,right: 30),
       child: Text(
         "   "+widget.post!.description!,
-        style: GoogleFonts.montserrat(
-            textStyle: TextStyle(fontSize: width * 3, color: color)),
+        style: GoogleFonts.gentiumBasic(
+            textStyle: TextStyle(fontSize: width * 3.3, color: color)),
       ),
     );
   }
