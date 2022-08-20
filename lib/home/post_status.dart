@@ -6,11 +6,13 @@ abstract class PostStatus {
 class InitialPostStatus extends PostStatus{
   const InitialPostStatus();
 }
+
+class GetPostsSubmitted extends PostStatus{}
+
 class GettingPosts extends PostStatus {}
 
 class GetPostsFailed extends PostStatus {
   final Exception? exception;
-
   GetPostsFailed({this.exception});
 }
 

@@ -1,43 +1,50 @@
 import 'dart:ui';
 import '../auth/form_submission_status.dart';
+import '../home/post_status.dart';
 import '../models/post.dart';
 import '../models/user.dart';
 import 'package:untitled1/utils/constants.dart'as constants;
 
-class MyPostScreenState {
+class AddPostScreenState {
   final String? description;
   final String? whatToDo;
   final FormSubmissionStatus formStatus;
-  final Post? currentPost;
+  final PostStatus postStatus;
+  final Post? newPost;
   final User? currentUser;
   final Color? primaryTextColor;
 
-  MyPostScreenState({
+
+  AddPostScreenState({
     String? description,
     Color? primaryTextColor,
     String? whatToDo,
     FormSubmissionStatus? formStatus,
-    required Post? currentPost,
+    PostStatus? postStatus,
+    required Post? newPost,
     required User? currentUser,
   })  : description = description,
         whatToDo = whatToDo,
+        postStatus= const InitialPostStatus(),
         formStatus = const InitialFormStatus(),
-        currentPost = currentPost,
+        newPost = newPost,
         currentUser = currentUser,
         primaryTextColor = constants.primaryTextColor.withOpacity(0.75);
 
-  MyPostScreenState copyWith({
+  AddPostScreenState copyWith({
     String? description,
     String? whatToDo,
+    PostStatus? postStatus,
     FormSubmissionStatus? formStatus,
-    Post? currentPost,
+    Post? newPost,
     User? currentUser,
   }) {
-    return MyPostScreenState(
+    return AddPostScreenState(
         description: description ?? this.description,
         whatToDo: whatToDo ?? this.whatToDo,
+        postStatus: postStatus?? this.postStatus,
         formStatus: formStatus ?? this.formStatus,
-        currentPost: currentPost ?? this.currentPost,
+        newPost: newPost ?? this.newPost,
         currentUser: currentUser ?? this.currentUser);
   }
 }

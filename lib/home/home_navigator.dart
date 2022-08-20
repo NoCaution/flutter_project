@@ -7,7 +7,7 @@ import 'package:untitled1/home/main_screen.dart';
 import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/messaging/messages/messages_screen.dart';
 import 'package:untitled1/repositories/data_repository.dart';
-import 'package:untitled1/repositories/user_credantial_repository.dart';
+import 'package:untitled1/repositories/user_credential_repository.dart';
 import '../auth/auth_repository.dart';
 import '../messaging/message_details.dart';
 import '../session_cubit.dart';

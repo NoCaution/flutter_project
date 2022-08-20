@@ -5,8 +5,6 @@ import 'package:untitled1/bottom_navigation_bar/bottom_navigation_bar_cubit.dart
 import 'package:untitled1/home/home_navigator.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/my_post/my_post_screen.dart';
-
-import '../models/user.dart';
 import '../my_post/my_post_bloc.dart';
 
 

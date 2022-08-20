@@ -9,8 +9,9 @@ class PostCardWidget extends StatefulWidget {
   final Post? post;
   final User? user;
   final DataRepository? dataRepo;
+  final bool? onHome;
 
-  const PostCardWidget({Key? key, this.post, this.user,this.dataRepo}) : super(key: key);
+  const PostCardWidget({Key? key, this.post, this.user,this.dataRepo,this.onHome}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -28,7 +29,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
     String? userLastName = widget.dataRepo?.capitalizeFirstLetter(user!.lastName!);
     Color color = constants.primaryTextColor.withOpacity(0.75);
     return Container(
-      width: width * 100,
+      width: width * 93,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         color: Colors.white,
@@ -48,20 +49,16 @@ class PostCardWidgetState extends State<PostCardWidget> {
                 width: 20,
               ),
               Text(userName!,style: textStyle(color, width*4),), // user name
-
               const SizedBox(width: 7),
-
               Text(userLastName!,style: textStyle(color, width*4),), // user last name
             ],
           ),
           _thinLinePart(), //thin divider
-
           _descriptionPart(width: width, height: height, color: color), //description part
-
           _whatToDoPart(width: width, height: height, color: color), //whatToDo part
-
-          _likeButton(), //like button
-
+          widget.onHome ==true
+              ? _likeButton()
+              : _editButton(),
           const SizedBox(
             height: 30,
           )
@@ -128,6 +125,19 @@ class PostCardWidgetState extends State<PostCardWidget> {
       ),
     );
   }
+
+  Padding _editButton() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 30, top: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: const [
+          Icon(Icons.edit),
+        ],
+      ),
+    );
+  }
+
 
   Container _descriptionPart(
       {required double width, required double height, required Color color}) {

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/repositories/post_repository.dart';
-import 'package:untitled1/repositories/user_credantial_repository.dart';
+import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/repositories/user_repository.dart';
 import 'package:untitled1/session_state.dart';
 import 'auth/auth_repository.dart';

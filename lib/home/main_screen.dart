@@ -6,7 +6,7 @@ import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/home/main_screen_events.dart';
-import 'package:untitled1/repositories/user_credantial_repository.dart';
+import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'package:untitled1/widgets/post_card_widget.dart';
@@ -45,18 +45,21 @@ class MainScreenState extends State<MainScreen> {
     double width = MediaQuery.of(context).size.width / 100;
     double height = MediaQuery.of(context).size.height / 100;
     return Scaffold(
+        backgroundColor: constants.backGroundColor,
         appBar: _appBar(context),
         body: BlocProvider<MainScreenBloc>(
             create: (context) => MainScreenBloc(),
-            child: Container(
-              height: height * 100,
-              width: width * 100,
-              color: constants.backGroundColor,
-              padding: const EdgeInsets.all(13),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: postCardWidget(height),
-              ),
+            child: Column(
+              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.start,),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: postCardWidget(height),
+                  ),
+                ),
+              ],
             )));
   }
 }
@@ -69,6 +72,7 @@ Widget postCardWidget(double height) {
         user: state.currentUser,
         post: state.currentUserPost,
         dataRepo: context.read<DataRepository>(),
+        onHome: true,
       );
     },
   );

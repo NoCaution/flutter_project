@@ -5,12 +5,13 @@ import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/home/main_screen_state.dart';
-import 'package:untitled1/my_post/my_post_bloc.dart';
+import 'package:untitled1/add_post/add_post_bloc.dart';
 import 'package:untitled1/repositories/data_repository.dart';
-import 'package:untitled1/repositories/user_credantial_repository.dart';
+import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'app_navigator.dart';
 import 'home/home_navigator_cubit.dart';
+import 'my_post/my_post_bloc.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
