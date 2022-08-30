@@ -6,10 +6,10 @@ import 'package:untitled1/auth/signup/signup_state.dart';
 import '../auth_cubit.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
-  final AuthRepository? authRepo;
-  final AuthCubit? authCubit;
+  final AuthRepository authRepo;
+  final AuthCubit authCubit;
 
-  SignupBloc({this.authRepo, this.authCubit}) : super(SignupState()) {
+  SignupBloc({required this.authRepo, required this.authCubit}) : super(SignupState()) {
     on<SignupNameChanged>((event, emit) {
       emit(state.copyWith(name: event.name));
     });
@@ -28,14 +28,14 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     on<SignupSubmitted>((event, emit) async {
       emit(state.copyWith(formStatus: FormSubmitted()));
       try {
-        await authRepo?.doesUserExist(state.eMail);
+        await authRepo.doesUserExist(state.eMail);
         emit(state.copyWith(formStatus: SubmissionFailed(error: "bu email kullanılmaktadır!")));
 
       } catch (e) {
         if(e.toString()=="Bad state: No element"){
           emit(state.copyWith(formStatus: SubmissionSuccess()));
-          authCubit?.showVerifyEmail(name: state.name,lastName: state.lastName,eMail: state.eMail,password: state.password,);
-          await authRepo?.sendOtp(eMail: state.eMail);
+          authCubit.showVerifyEmail(name: state.name,lastName: state.lastName,eMail: state.eMail,password: state.password,);
+          await authRepo.sendOtp(eMail: state.eMail);
         }
         else {
           emit(state.copyWith(formStatus: SubmissionFailed(exception: e)));

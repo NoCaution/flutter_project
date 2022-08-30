@@ -29,6 +29,8 @@ class UserRepository {
   Future<User?> createUser(User? user1) async {
     var result = await authReference.createUserWithEmailAndPassword(
         email: user1!.eMail!, password: user1.password!);
+    var date = DateTime.now();
+    var now = convertDateTime(dateTime: date);
     var user = User(
         id: result.user!.uid,
         name: user1.name,
@@ -38,7 +40,8 @@ class UserRepository {
         password: user1.password,
         mobile: user1.mobile,
         imageUrl: user1.imageUrl,
-        userName: user1.userName);
+        userName: user1.userName,
+        joinedAt: now);
     await _addUser(user);
     return user;
   }
@@ -82,5 +85,8 @@ class UserRepository {
   Future<void> updateUser(User user) async {
     var ref = reference.collection("users").doc(user.id);
     ref.update(user.toMap());
+  }
+  String convertDateTime({required DateTime dateTime}){
+    return "${dateTime.year.toString()}-${dateTime.month.toString().padLeft(2,'0')}-${dateTime.day.toString().padLeft(2,'0')} ${dateTime.hour.toString().padLeft(2,'0')}-${dateTime.minute.toString().padLeft(2,'0')}";
   }
 }

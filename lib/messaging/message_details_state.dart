@@ -6,9 +6,9 @@ class MessagingState{
   final List<Message>? messages;
   final User? currentUser;
   MessagingState({
-    this.targetUser = const User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false,userName: " "),
-    this.messages = const [Message(messageSentTo: " ",messageSentBy: User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false,userName: " "),message: " ",date: " "  )],
-    this.currentUser = const User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false,userName: " "),
+    this.targetUser = const User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false,userName: " ", joinedAt: ""),
+    this.messages = const [Message(messageSentTo: " ",messageSentBy: User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false,userName: " ", joinedAt: ""),message: " ",date: " "  )],
+    this.currentUser = const User(id: " ",name: " ",lastName: " ", birth: " ",eMail: " ",password: " ",mobile: " ",imageUrl: " ",autoLogin: false,userName: " ", joinedAt: ""),
   });
 
   MessagingState copyWith({

@@ -14,9 +14,17 @@ class AddPostScreenState extends State<AddPostScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Yeni etkinlik oluştur"),
-      ),
+      appBar: _appBar(),
     );
   }
+}
+
+
+PreferredSize _appBar(){
+  return PreferredSize(
+      child: AppBar(
+
+      ),
+      preferredSize: AppBar().preferredSize,
+  );
 }

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/add_post/add_post_screen.dart';
-import 'package:untitled1/archive/archive_screen.dart';
+import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/home/main_screen.dart';
-import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/messaging/messages/messages_screen.dart';
-import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/repositories/user_credential_repository.dart';
-import '../auth/auth_repository.dart';
+import 'package:untitled1/session_cubit.dart';
 import '../messaging/message_details.dart';
-import '../session_cubit.dart';
 
 class HomeNavigator extends StatelessWidget {
   const HomeNavigator({Key? key}) : super(key: key);
@@ -24,9 +21,7 @@ class HomeNavigator extends StatelessWidget {
         builder: (context, state) {
           return Navigator(
             pages: [
-              MaterialPage(child: MainScreen(sessionCubit: context.read<SessionCubit>(),authRepo: AuthRepository(dataRepo: context.read<DataRepository>()), userCredential: context.read<UserCredentialRepository>(),)),
-              if (state == HomeNavigatorState.archive)
-                const MaterialPage(child: ArchiveScreen()),
+              MaterialPage(child: MainScreen(userCredential: context.read<UserCredentialRepository>(),sessionCubit: context.read<SessionCubit>(),authRepo: context.read<AuthRepository>(),)),
               if(state == HomeNavigatorState.messages)
                 const MaterialPage(child: MessagesScreen()),
               if(state == HomeNavigatorState.messageDetails)

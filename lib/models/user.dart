@@ -11,6 +11,7 @@ class User {
   final String? imageUrl;
   final bool? autoLogin;
   final String? userName;
+  final String joinedAt;
 
   const User(
       {this.id,
@@ -22,7 +23,8 @@ class User {
       this.mobile,
       this.imageUrl,
       this.autoLogin,
-      this.userName});
+      this.userName,
+      required this.joinedAt});
 
   User copyWith({
     String? id,
@@ -35,6 +37,7 @@ class User {
     String? imageUrl,
     bool? autoLogin,
     String? userName,
+    String? joinedAt,
   }) {
     return User(
       id: id ?? this.id,
@@ -47,6 +50,7 @@ class User {
       imageUrl: imageUrl ?? this.imageUrl,
       autoLogin: autoLogin ?? this.autoLogin,
       userName: userName ?? this.userName,
+      joinedAt: joinedAt ?? this.joinedAt
     );
   }
 
@@ -60,7 +64,8 @@ class User {
         mobile = map["mobile"],
         imageUrl = map["imageUrl"],
         autoLogin = map["autoLogin"],
-        userName = map["userName"];
+        userName = map["userName"],
+        joinedAt =map["joinedAt"];
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
@@ -74,6 +79,7 @@ class User {
     map["imageUrl"] = imageUrl;
     map["autoLogin"] = autoLogin;
     map["userName"] = userName;
+    map["joinedAt"]= joinedAt;
     return map;
   }
 
@@ -87,5 +93,6 @@ class User {
         mobile = doc.data()!["mobile"],
         imageUrl = doc.data()!["imageUrl"],
         autoLogin = doc.data()!["autoLogin"],
-        userName = doc.data()!["userName"];
+        userName = doc.data()!["userName"],
+        joinedAt = doc.data()!["joinedAt"];
 }

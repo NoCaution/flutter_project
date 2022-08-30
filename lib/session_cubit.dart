@@ -28,8 +28,10 @@ class SessionCubit extends Cubit<SessionState> {
     } else {
       User user = await UserRepository().getUserById(userId)!;
       Post post = await PostRepository().getPostById(userId)!;
+      List<Post>? archivedPosts = await PostRepository().getArchivedPostsById(userId);
       userCredentialRepo.user=user;
       userCredentialRepo.post = post;
+      userCredentialRepo.archivedPosts = archivedPosts;
       if(user.autoLogin == true){
         emit(Authenticated(user: user,post: post));
       }else{
@@ -51,8 +53,10 @@ void showMainScreen() async{
   }else{
     User? user = await UserRepository().getUserById(userId);
     Post? post = await PostRepository().getPostById(userId);
+    List<Post>? archivedPosts = await PostRepository().getArchivedPostsById(userId);
     userCredentialRepo.user =user ;
     userCredentialRepo.post =post;
+    userCredentialRepo.archivedPosts = archivedPosts;
     emit(Authenticated(user: user,post: post));
   }
 }

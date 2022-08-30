@@ -9,11 +9,11 @@ import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthRepository? authRepository;
-  final AuthCubit? authCubit;
-  final DataRepository? dataRepo;
+  final AuthRepository authRepository;
+  final AuthCubit authCubit;
+  final DataRepository dataRepo;
 
-  LoginBloc( {this.authRepository, this.authCubit,this.dataRepo})
+  LoginBloc( {required this.authRepository, required this.authCubit,required this.dataRepo})
       : super(LoginState()) {
     {
       on<LoginEmailChanged>((event, emit) {
@@ -35,16 +35,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(formStatus: FormSubmitted()));
         try {
           User? user = await UserRepository().getUserByEmail(state.eMail);
-          await authRepository?.login(
+          await authRepository.login(
             eMail: state.eMail!.trim(),
             password: state.password!.trim(),
           );
           emit(state.copyWith(formStatus: SubmissionSuccess()));
           if(state.autoLogin == true){
-            User? newUser = dataRepo?.changeUserProperty(user: user!,property: "autoLogin",value: "true")!;
-            await UserRepository().updateUser(newUser!);
+            User? newUser = dataRepo.changeUserProperty(user: user!,property: "autoLogin",value: "true")!;
+            await UserRepository().updateUser(newUser);
           }
-          authCubit?.showMainScreen();
+          authCubit.showMainScreen();
         } catch (e) {
           emit(state.copyWith(formStatus: SubmissionFailed(exception: e)));
         }

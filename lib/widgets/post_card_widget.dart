@@ -10,8 +10,9 @@ class PostCardWidget extends StatefulWidget {
   final User? user;
   final DataRepository? dataRepo;
   final bool? onHome;
+  final bool? archived;
 
-  const PostCardWidget({Key? key, this.post, this.user,this.dataRepo,this.onHome}) : super(key: key);
+  const PostCardWidget({Key? key, this.post, this.user,this.dataRepo,this.onHome,this.archived =false}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -41,13 +42,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
           ),
           Row(
             children: [
-              const SizedBox(
-                width: 30,
-              ),
               _circleAvatar(user!, width, height),  // avatar
-              const SizedBox(
-                width: 20,
-              ),
               Text(userName!,style: textStyle(color, width*4),), // user name
               const SizedBox(width: 7),
               Text(userLastName!,style: textStyle(color, width*4),), // user last name
@@ -58,6 +53,8 @@ class PostCardWidgetState extends State<PostCardWidget> {
           _whatToDoPart(width: width, height: height, color: color), //whatToDo part
           widget.onHome ==true
               ? _likeButton()
+              : widget.archived == true
+              ? const SizedBox(height: 0,width: 0,)
               : _editButton(),
           const SizedBox(
             height: 30,
@@ -69,23 +66,26 @@ class PostCardWidgetState extends State<PostCardWidget> {
 
 //COMPONENTS
   Widget _circleAvatar(User user, double width, double height) {
-    return CircleAvatar(
-        backgroundImage: AssetImage("lib/assets/images/imageflutter.jpeg"),
-        backgroundColor: constants.appBarColor.withOpacity(0.9),
-        radius: width * 8,
-        child: user.imageUrl! == " "
-            ? Text(
-                user.name!.substring(0, 1).toUpperCase(),
-                style: TextStyle(
-                  fontSize: width * 7,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              )
-            : const SizedBox(
-                width: 0,
-                height: 0,
-              ));
+    return Padding(
+      padding: const EdgeInsets.only(left: 30,right: 20),
+      child: CircleAvatar(
+          backgroundImage: AssetImage("lib/assets/images/imageflutter.jpeg"),
+          backgroundColor: constants.appBarColor.withOpacity(0.9),
+          radius: width * 8,
+          child: user.imageUrl! == " "
+              ? Text(
+                  user.name!.substring(0, 1).toUpperCase(),
+                  style: TextStyle(
+                    fontSize: width * 7,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                )),
+    );
   }
   TextStyle textStyle(Color? color, double? width){
     return TextStyle(

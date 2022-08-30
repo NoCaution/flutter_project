@@ -37,7 +37,7 @@ class AuthRepository {
     @required String? eMail,
     @required String? password,
   }) async {
-    var user = User(id: "",name: name, lastName: lastName,birth: "" ,eMail: eMail, password: password,mobile: "",imageUrl: "",userName: "");
+    var user = User(id: "",name: name, lastName: lastName,birth: "" ,eMail: eMail, password: password,mobile: "",imageUrl: "",userName: "", joinedAt: "");
     UserRepository().createUser(user);
     return user;
   }

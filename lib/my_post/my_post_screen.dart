@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled1/home/main_screen_events.dart';
+import 'package:untitled1/archive/archive_screen.dart';
+import 'package:untitled1/archive/archive_screen_bloc.dart';
 import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/widgets/post_card_widget.dart';
@@ -9,7 +10,6 @@ import '../home/home_navigator_cubit.dart';
 import 'my_post_screen_state.dart' as s;
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'my_post_bloc.dart';
-import 'my_post_screen_event.dart' as e;
 
 class MyPostScreen extends StatefulWidget {
   const MyPostScreen({Key? key, required this.postBloc}) : super(key: key);
@@ -33,7 +33,7 @@ class MyPostScreenState extends State<MyPostScreen> {
     double height = MediaQuery.of(context).size.height / 100;
     return Scaffold(
       backgroundColor: constants.backGroundColor,
-      appBar: _appBar(width: width),
+      appBar: _appBar(width: width, newContext: context),
       body: BlocProvider(
         create: (BuildContext context) => MyPostBloc(
             userCredential: context.read<UserCredentialRepository>()),
@@ -74,8 +74,8 @@ class MyPostScreenState extends State<MyPostScreen> {
     return Padding(
       child: SingleChildScrollView(
         child: PostCardWidget(
-          user: state.currentUser,
-          post: state.currentPost,
+          user: state.currentUser!,
+          post: state.currentPost!,
           dataRepo: context.read<DataRepository>(),
           onHome: false,
         ),
@@ -98,7 +98,7 @@ class MyPostScreenState extends State<MyPostScreen> {
   final String _message =
       "Henüz hiçbir etkinliğin yok. Yeni bir etkinlik oluşturmak ister misin? Artı işaretine basman yeterli.";
 
-  PreferredSize _appBar({required double width}) {
+  PreferredSize _appBar({required double width,required BuildContext newContext}) {
     return PreferredSize(
         child: BlocBuilder<MyPostBloc, s.MyPostScreenState>(
             builder: ((context, state) {
@@ -116,8 +116,8 @@ class MyPostScreenState extends State<MyPostScreen> {
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      _archiveButton(context: context),
                       _addPostButton(context: context),
+                      _archiveButton(context: newContext),
                     ],
                   ))
                 ],
@@ -125,17 +125,6 @@ class MyPostScreenState extends State<MyPostScreen> {
         })),
         preferredSize: AppBar().preferredSize);
   }
-
-  IconButton _archiveButton({required BuildContext context}) {
-    return IconButton(
-      onPressed: () {
-        BlocProvider.of<HomeNavigatorCubit>(context).showArchive();
-      },
-      icon: const Icon(Icons.archive_rounded),
-      splashRadius: 20.0,
-    );
-  }
-
   IconButton _addPostButton({required BuildContext context}) {
     return IconButton(
       onPressed: () {
@@ -143,6 +132,15 @@ class MyPostScreenState extends State<MyPostScreen> {
       },
       icon: const Icon(Icons.add),
       splashRadius: 20,
+    );
+  }
+  IconButton _archiveButton({required BuildContext context}) {
+    return IconButton(
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ArchiveScreen(archiveBloc: context.read<ArchiveScreenBloc>(), userCredential: context.read<UserCredentialRepository>(), dataRepo: context.read<DataRepository>(),)));
+      },
+      icon: const Icon(Icons.archive_rounded),
+      splashRadius: 20.0,
     );
   }
 }

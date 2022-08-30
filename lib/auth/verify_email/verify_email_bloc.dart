@@ -6,10 +6,10 @@ import 'package:untitled1/auth/verify_email/verify_email_state.dart';
 import '../auth_cubit.dart';
 
 class VerifyEmailBloc extends Bloc<VerifyEmailEvent, VerifyEmailState> {
-  final AuthRepository? authRepo;
-  final AuthCubit? authCubit;
+  final AuthRepository authRepo;
+  final AuthCubit authCubit;
 
-  VerifyEmailBloc({this.authRepo,this.authCubit}) : super(VerifyEmailState()) {
+  VerifyEmailBloc({required this.authRepo,required this.authCubit}) : super(VerifyEmailState()) {
     on<VerifyEmailCodeChanged>((event, emit) {
       emit(state.copyWith(code: event.code));
     });
@@ -19,14 +19,14 @@ class VerifyEmailBloc extends Bloc<VerifyEmailEvent, VerifyEmailState> {
     on<VerifyEmailSubmitted>((event, emit) async {
       emit(state.copyWith(formStatus: FormSubmitting()));
       try {
-        var authCredentials = authCubit!.credentials!;
-        var response = authRepo?.verify(eMail: authCredentials.eMail,code: state.code);
-        if(response ==true ){
-          await authRepo?.signUp(name: authCredentials.name, lastName: authCredentials.lastName, eMail: authCredentials.eMail, password: authCredentials.password);
+        var authCredentials = authCubit.credentials!;
+        var response = authRepo.verify(eMail: authCredentials.eMail,code: state.code);
+        if(response){
+          await authRepo.signUp(name: authCredentials.name, lastName: authCredentials.lastName, eMail: authCredentials.eMail, password: authCredentials.password);
           emit(state.copyWith(formStatus: SubmissionSuccess()));
-          authCubit?.showMainScreen();
+          authCubit.showMainScreen();
         }
-        else if(response==false){
+        else{
           emit(state.copyWith(formStatus: SubmissionFailed(error: "girilen kod yanlış!")));
         }
 

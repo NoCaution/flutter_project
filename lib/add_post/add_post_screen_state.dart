@@ -21,7 +21,7 @@ class AddPostScreenState {
     String? whatToDo,
     FormSubmissionStatus? formStatus,
     PostStatus? postStatus,
-    required Post? newPost,
+    Post? newPost,
     required User? currentUser,
   })  : description = description,
         whatToDo = whatToDo,
