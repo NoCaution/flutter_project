@@ -55,40 +55,17 @@ class DataRepository {
         2, '0')}";
   }
 
-  String parseDateTime({required String date}) {
+  String parseDateTime({required String date}) {      //if the date is "2022-11-10" the output is 10 Kasım 2022
+    List<String> months = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
     List<String> hours = date.split(" ");
     List<String> dates = hours.first.split("-");
     String year = dates[0];
     String month = dates[1];
     String day = dates[2];
-    String message;
-    if (month == "01") {
-      message = day + " Ocak " + year;
-    }else if(month == "02"){
-      message = day + " Şubat " + year;
-    }else if(month == "03"){
-      message = day + " Mart " + year;
-    }else if(month== "04"){
-      message = day + " Nisan " + year;
-    }else if(month == "05"){
-      message = day + " Mayıs " + year;
-    } else if(month == "06"){
-      message = day + " Haziran " + year;
-    }else if(month == "07"){
-      message = day + " Temmuz " + year;
-    }else if(month == "08"){
-      message = day + " Ağustos  " + year;
-    }else if(month == "09"){
-      message = day + " Eylül " + year;
-    }else if(month == "10"){
-      message = day + " Ekim " + year;
-    }else if(month == "11"){
-      message = day + " Kasım " + year;
-    }else if(month == "12"){
-      message = day + " Aralık " + year;
+    if(int.parse(month)>9){
+      return day+" "+months[int.parse(month)-1]+" "+ year;
     }else{
-      message = "";
+      return day+" "+months[int.parse(month.split('')[1])-1]+" "+ year;
     }
-    return message;
   }
 }
