@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/archive/archive_screen_bloc.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/auth_repository.dart';
-import 'package:untitled1/bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
 import 'package:untitled1/home/main_screen_bloc.dart';
 import 'package:untitled1/home/main_screen_state.dart';
 import 'package:untitled1/add_post/add_post_screen_bloc.dart';
@@ -39,24 +38,18 @@ class MeetUp extends StatelessWidget {
             ],
             child: MultiBlocProvider(
               providers: [
-                BlocProvider(create: (context)=>BottomNavigationBarCubit()),
-                BlocProvider(create: (context)=>AddPostBloc(userCredential: context.read<UserCredentialRepository>(), bottomNavBarCubit: context.read<BottomNavigationBarCubit>())),
                 BlocProvider(
-                    create: (context) =>
-                        SessionCubit(
-                            authRepo: context.read<AuthRepository>(),
-                            userCredentialRepo:
+                    create: (context) => SessionCubit(
+                        authRepo: context.read<AuthRepository>(),
+                        userCredentialRepo:
                             context.read<UserCredentialRepository>())),
                 BlocProvider(
-                  create: (context) =>
-                      MyPostBloc(
-                          userCredential: context.read<
-                              UserCredentialRepository>()),
+                  create: (context) => MyPostBloc(
+                      userCredential: context.read<UserCredentialRepository>()),
                 ),
                 BlocProvider(
-                    create: (context) =>
-                        ArchiveScreenBloc(
-                            userCredential:
+                    create: (context) => ArchiveScreenBloc(
+                        userCredential:
                             context.read<UserCredentialRepository>())),
                 BlocProvider(create: (context) => MainScreenBloc()),
                 BlocProvider(create: (context) => HomeNavigatorCubit()),

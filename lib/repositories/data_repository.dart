@@ -57,7 +57,8 @@ class DataRepository {
 
   String parseDateTime({required String date}) {      //if the date is "2022-11-10" the output is 10 Kasım 2022
     List<String> months = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
-    List<String> dates = date.split(" ").first.split("-");  //["2022","11","10"]
+    List<String> hours = date.split(" ");
+    List<String> dates = hours.first.split("-");
     String year = dates[0];
     String month = dates[1];
     String day = dates[2];

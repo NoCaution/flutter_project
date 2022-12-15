@@ -5,8 +5,6 @@ import 'package:untitled1/auth/verify_email/verif_email_event.dart'
 import 'package:untitled1/auth/verify_email/verify_email_bloc.dart';
 import 'package:untitled1/auth/verify_email/verify_email_state.dart';
 
-import '../validators/validations.dart';
-
 class EmailVerificationField extends StatelessWidget {
   const EmailVerificationField({Key? key}) : super(key: key);
   @override
@@ -28,7 +26,15 @@ class EmailVerificationField extends StatelessWidget {
               .read<VerifyEmailBloc>()
               .add(verify_email_event.VerifyEmailCodeChanged(code: value));
         },
-        validator: (code) =>Validations().eMailCodeValidator(code: code),
+        validator: (code) {
+          if (code!.isEmpty) {
+            return "Kod girmelisin!";
+          }
+          if (code.trim().length != 6) {
+            return "Kod 6 haneli olmalı!";
+          }
+          return null;
+        },
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
             errorStyle: const TextStyle(fontSize: 10, color: Colors.red),

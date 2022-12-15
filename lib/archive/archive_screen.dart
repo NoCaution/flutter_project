@@ -50,7 +50,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
           builder: (context, state) {
             return archivedPosts == null
                 ? Text(
-                    message,
+                    "Henüz hiçbir etkinlik kaydetmediniz.",
                     style: GoogleFonts.gentiumBasic(
                         textStyle: TextStyle(
                             color: state.primaryTextColor?.withOpacity(0.75),
@@ -66,34 +66,33 @@ class ArchiveScreenState extends State<ArchiveScreen> {
 
   //COMPONENTS
 
-  String message = "Henüz hiçbir etkinlik kaydetmediniz.";
-
   Widget _postCardWidget({required double width, List<Post>? archivedPosts}) {
     var ref = widget.userCredential;
-    return ListView.builder(
-      itemCount: archivedPosts!.length,
-      itemBuilder: (context, int position) {
-        var text = widget.dataRepo
-            .parseDateTime(date: archivedPosts[position].createdAt!);
-        if (position > 0) {
-          return archivedPosts[position - 1].createdAt == text
-              ? _postCardWithoutDate(ref: ref, position: position)
-              : _postCardWithDate(
-                  text: text,
-                  width: width,
-                  position: position,
-                  ref: ref,
-                );
-        } else {
-          return _postCardWithDate(
-            text: text,
-            width: width,
-            position: position,
-            ref: ref,
-          );
-        }
-      },
+    return Padding(
       padding: const EdgeInsets.all(12),
+      child: ListView.builder(
+          itemCount: archivedPosts!.length,
+          itemBuilder: (context, int position) {
+            var text = widget.dataRepo
+                .parseDateTime(date: archivedPosts[position].createdAt!);
+            if (position > 0) {
+              return archivedPosts[position - 1].createdAt == text
+                  ? _postCardWithoutDate(ref: ref, position: position)
+                  : _postCardWithDate(
+                      text: text,
+                      width: width,
+                      position: position,
+                      ref: ref,
+                    );
+            } else {
+              return _postCardWithDate(
+                text: text,
+                width: width,
+                position: position,
+                ref: ref,
+              );
+            }
+          }),
     );
   }
 

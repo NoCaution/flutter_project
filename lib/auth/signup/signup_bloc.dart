@@ -35,7 +35,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         if(e.toString()=="Bad state: No element"){
           emit(state.copyWith(formStatus: SubmissionSuccess()));
           authCubit.showVerifyEmail(name: state.name,lastName: state.lastName,eMail: state.eMail,password: state.password,);
-          print(state.name!+state.lastName!+state.eMail!+state.password!);
           await authRepo.sendOtp(eMail: state.eMail);
         }
         else {

@@ -5,6 +5,7 @@ import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/form_submission_status.dart';
 import 'package:untitled1/auth/auth_repository.dart';
 import 'package:untitled1/auth/login/login_bloc.dart';
+import 'package:untitled1/models/user.dart';
 import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/auth_widgets/login_eMail_field.dart';
 import 'package:untitled1/auth_widgets/login_password_field.dart';

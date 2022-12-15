@@ -2,11 +2,9 @@ import '../auth/form_submission_status.dart';
 
 class Validations {
   static final Validations _singleton = Validations._internal();
-
   factory Validations(){
     return _singleton;
   }
-
   Validations._internal();
 
 
@@ -27,29 +25,23 @@ class Validations {
         return formStatus.exception.toString();
       }
     }
-    else {
-      return null;
-    }
-  }
-  String? lastNameValidator({String? lastName}){
-    if (lastName!.isEmpty) {
-      return "soy isim boşluk olamaz!";
-    }
-    return null;
-  }
-  String? signupExceptionPicker({FormSubmissionStatus? formStatus}) {
-    if (formStatus is SubmissionFailed) {
-      return formStatus.error;
-    }
-    if (formStatus is SubmissionFailed &&
-        formStatus.exception.toString() != "null") {
-      return formStatus.exception.toString();
-    }
-    else {
+    else{
       return null;
     }
   }
 
+  String? signupExceptionPicker({FormSubmissionStatus? formStatus}){
+      if (formStatus is SubmissionFailed) {
+        return formStatus.error;
+      }
+      if (formStatus is SubmissionFailed &&
+          formStatus.exception.toString() != "null") {
+        return formStatus.exception.toString();
+      }
+      else{
+        return null;
+    }
+  }
   //this one is same with above but there is going to be differences in time
   String? verifyEmailExceptionPicker(FormSubmissionStatus formStatus) {
     if (formStatus is SubmissionFailed) {
@@ -59,19 +51,9 @@ class Validations {
         formStatus.exception.toString() != "null") {
       return formStatus.exception.toString();
     }
-    else {
+    else{
       return null;
     }
-  }
-
-  String? eMailCodeValidator({String? code}){
-    if (code!.isEmpty) {
-      return "Kod girmelisin!";
-    }
-    if (code.trim().length != 6) {
-      return "Kod 6 haneli olmalı!";
-    }
-    return null;
   }
 
   String? passwordValidator(String? password) {
@@ -117,31 +99,11 @@ class Validations {
       return null;
     }
   }
+}
 
-  bool isNameValid(String? name) {
-    String pattern = r'^[a-z A-Z,.\-]+$';
-    RegExp regex = RegExp(pattern);
-    bool response = regex.hasMatch(name!);
-    return response;
-  }
-
-  String? postDescriptionValidator({String? description}) {
-    if (description!.length < 10) {
-      return "açıklama minimum 10 karakter olmalı!";
-    }
-    if (description.length > 1500) {
-      return "açıklama maximum 1500 karakter olmalı!";
-    }
-    return null;
-  }
-
-  String? postWhatToDoValidator({String? whatToDo}) {
-    if (whatToDo!.length < 5) {
-      return "minimum 5 karakter!";
-    }
-    if (whatToDo.length > 30) {
-      return "maximum 30 karakter!";
-    }
-    return null;
-  }
+bool isNameValid(String? name) {
+  String pattern = r'^[a-z A-Z,.\-]+$';
+  RegExp regex = RegExp(pattern);
+  bool response = regex.hasMatch(name!);
+  return response;
 }
