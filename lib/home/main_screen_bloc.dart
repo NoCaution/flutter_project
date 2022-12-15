@@ -15,16 +15,6 @@ class MainScreenBloc extends Bloc<MainScreenEvent, HomeScreenState> {
   }
 
   MainScreenBloc._internal(): super(HomeScreenState()){
-    on<PullToRefresh>((event, emit) async {
-      try {
-        var posts = await PostRepository().getPosts();
-        emit(state.copyWith(posts: posts,postStatus: GetPostsSuccessful()));
-      } catch (e) {
-        emit(state.copyWith(
-            postStatus: GetPostsFailed(exception: e as Exception)));
-      }
-    });
-
     on<Refresh>((event, emit) async {
       try {
         emit(state.copyWith(postStatus: GettingPosts()));

@@ -26,8 +26,6 @@ class HomeNavigator extends StatelessWidget {
                 const MaterialPage(child: MessagesScreen()),
               if(state == HomeNavigatorState.messageDetails)
                 const MaterialPage(child: MessageDetailsScreen()),
-              if(state==HomeNavigatorState.addPost)
-                const MaterialPage(child: AddPostScreen()),
             ],
             onPopPage: (route,result) {
               state == HomeNavigatorState.messageDetails

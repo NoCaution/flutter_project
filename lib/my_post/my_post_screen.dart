@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled1/add_post/add_post_screen.dart';
 import 'package:untitled1/archive/archive_screen.dart';
 import 'package:untitled1/archive/archive_screen_bloc.dart';
 import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/widgets/post_card_widget.dart';
+import '../bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
 import '../home/home_navigator_cubit.dart';
 import 'my_post_screen_state.dart' as s;
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'my_post_bloc.dart';
 
 class MyPostScreen extends StatefulWidget {
-  const MyPostScreen({Key? key, required this.postBloc}) : super(key: key);
+  const MyPostScreen({Key? key, required this.postBloc,required this.bottomNavBarCubit}) : super(key: key);
   final MyPostBloc postBloc;
+  final BottomNavigationBarCubit bottomNavBarCubit;
 
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +36,7 @@ class MyPostScreenState extends State<MyPostScreen> {
     double height = MediaQuery.of(context).size.height / 100;
     return Scaffold(
       backgroundColor: constants.backGroundColor,
-      appBar: _appBar(width: width, newContext: context),
+      appBar: _appBar(width: width),
       body: BlocProvider(
         create: (BuildContext context) => MyPostBloc(
             userCredential: context.read<UserCredentialRepository>()),
@@ -98,7 +101,7 @@ class MyPostScreenState extends State<MyPostScreen> {
   final String _message =
       "Henüz hiçbir etkinliğin yok. Yeni bir etkinlik oluşturmak ister misin? Artı işaretine basman yeterli.";
 
-  PreferredSize _appBar({required double width,required BuildContext newContext}) {
+  PreferredSize _appBar({required double width}) {
     return PreferredSize(
         child: BlocBuilder<MyPostBloc, s.MyPostScreenState>(
             builder: ((context, state) {
@@ -116,8 +119,8 @@ class MyPostScreenState extends State<MyPostScreen> {
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      _addPostButton(context: context),
-                      _archiveButton(context: newContext),
+                      _addPostButton(context: context, state: state),
+                      _archiveButton(context: context),
                     ],
                   ))
                 ],
@@ -125,10 +128,14 @@ class MyPostScreenState extends State<MyPostScreen> {
         })),
         preferredSize: AppBar().preferredSize);
   }
-  IconButton _addPostButton({required BuildContext context}) {
+  IconButton _addPostButton({required BuildContext context,required s.MyPostScreenState state}) {
     return IconButton(
       onPressed: () {
-        BlocProvider.of<HomeNavigatorCubit>(context).showAddPost();
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPostScreen(
+          user: state.currentUser,
+          dataRepo: context.read<DataRepository>(),
+          bottomNavBarCubit: widget.bottomNavBarCubit,
+        )));
       },
       icon: const Icon(Icons.add),
       splashRadius: 20,

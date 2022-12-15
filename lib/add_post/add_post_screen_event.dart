@@ -1,5 +1,7 @@
+import 'package:untitled1/add_post/add_post_screen_state.dart';
 import 'package:untitled1/home/main_screen_events.dart';
 
+import '../models/post.dart';
 import '../models/user.dart';
 
 abstract class AddPostScreenEvent{}

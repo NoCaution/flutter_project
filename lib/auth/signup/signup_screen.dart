@@ -63,7 +63,6 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
   }
 
   //COMPONENTS//
-
   Widget buildBottomPart(BuildContext context) {
     return Expanded(
       child: Column(
@@ -91,6 +90,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
   Widget buildFormField(double height,double width) {
     return BlocListener<SignupBloc, SignupState>(
         listener: (context, state) {
+          void onchanged({required BuildContext context}){};
           final formStatus = state.formStatus;
           // exceptions management//
           widget.authRepo.printException(
@@ -118,9 +118,9 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
                 child: NameField(),
               ),
               const Padding(
-                padding: EdgeInsets.only(left: 10, right: 10, top: 5),
-                child: LastNameField(),
-              ),
+                    padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                    child: LastNameField()),
+
               const Padding(
                   padding: EdgeInsets.only(left: 10, right: 10, top: 5),
                   child: SignUpEmailField()),
@@ -143,6 +143,7 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
           ),
         ));
   }
+
 
   TextButton buildSignUpButton(BuildContext context, SignupState state) {
     return TextButton(
