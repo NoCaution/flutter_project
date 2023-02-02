@@ -153,11 +153,6 @@ class LoginScreenState extends State<LoginScreen> {
               onPressed: () {
                 _onPressed(context);
               },
-              child: Text(
-                "Giriş yap",
-                style: TextStyle(
-                    color: constants.primaryTextColor.withOpacity(0.6)),
-              ),
               style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                       const EdgeInsets.only(left: 30, right: 30)),
@@ -167,6 +162,11 @@ class LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(50),
                     side: BorderSide.none,
                   ))),
+              child: Text(
+                "Giriş yap",
+                style: TextStyle(
+                    color: constants.primaryTextColor.withOpacity(0.6)),
+              ),
             );
     });
   }
@@ -199,21 +199,21 @@ class LoginScreenState extends State<LoginScreen> {
 
   PreferredSize _appBar() {
     return PreferredSize(
+        preferredSize: AppBar().preferredSize,
         child: AppBar(
             backgroundColor: constants.appBarColor.withOpacity(0.9),
             centerTitle: true,
             title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 "Meet",
-                style: GoogleFonts.gentiumBasic(
+                style: GoogleFonts.gentiumBookBasic(
                     textStyle:
                         const TextStyle(color: Colors.white, fontSize: 32)),
               ),
               Text("Up",
-                  style: GoogleFonts.gentiumBasic(
+                  style: GoogleFonts.gentiumBookBasic(
                       textStyle: const TextStyle(
                           color: constants.appNameColor, fontSize: 32))),
-            ])),
-        preferredSize: AppBar().preferredSize);
+            ])));
   }
 }

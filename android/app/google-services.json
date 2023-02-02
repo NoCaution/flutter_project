@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "743083597128",
+    "firebase_url": "https://meetup-d2efb-default-rtdb.firebaseio.com",
     "project_id": "meetup-d2efb",
     "storage_bucket": "meetup-d2efb.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "743083597128-krc7gdtg08nio9ufh53585tqbnr7gjq3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "743083597128-l8l7rbspumtrgi5ivue652935rv9f7u7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.untitled1"
+              }
             }
           ]
         }

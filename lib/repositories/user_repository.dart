@@ -15,9 +15,9 @@ class UserRepository {
 
   UserRepository._internal();
 
-  Future<User?> signIn(String? eMail, String? password) async {
+  Future<User?> signIn({required String eMail,required String password}) async {
     var user = await authReference.signInWithEmailAndPassword(
-        email: eMail!, password: password!);
+        email: eMail, password: password);
     var user2 = await getUserByEmail(user.user?.email);
     return user2;
   }
@@ -26,9 +26,9 @@ class UserRepository {
     return await authReference.signOut();
   }
 
-  Future<User?> createUser(User? user1) async {
+  Future<User?> createUser({required User user1}) async {
     var result = await authReference.createUserWithEmailAndPassword(
-        email: user1!.eMail!, password: user1.password!);
+        email: user1.eMail!, password: user1.password!);
     var date = DateTime.now();
     var now = convertDateTime(dateTime: date);
     var user = User(
@@ -46,7 +46,7 @@ class UserRepository {
     return user;
   }
 
-  String? getCurrentUserUid() {
+  String? getCurrentUid() {
     var result = authReference.currentUser;
     return result?.uid;
   }

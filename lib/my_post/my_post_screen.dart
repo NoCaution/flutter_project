@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/archive/archive_screen.dart';
 import 'package:untitled1/archive/archive_screen_bloc.dart';
+import 'package:untitled1/create_new_post/new_post_screen.dart';
+import 'package:untitled1/custom_page_route.dart';
 import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/widgets/post_card_widget.dart';
 import '../home/home_navigator_cubit.dart';
+import '../models/user.dart';
 import 'my_post_screen_state.dart' as s;
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'my_post_bloc.dart';
@@ -48,7 +51,7 @@ class MyPostScreenState extends State<MyPostScreen> {
                         padding: const EdgeInsets.only(top: 25, left: 20),
                         child: Text(
                           "Etkinliğim",
-                          style: GoogleFonts.gentiumBasic(
+                          style: GoogleFonts.gentiumBookBasic(
                               textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: state.primaryTextColor,
@@ -72,6 +75,7 @@ class MyPostScreenState extends State<MyPostScreen> {
 
   Padding _buildPostCard({required s.MyPostScreenState state,required BuildContext context}){
     return Padding(
+      padding: const EdgeInsets.only(top: 20),
       child: SingleChildScrollView(
         child: PostCardWidget(
           user: state.currentUser!,
@@ -80,18 +84,17 @@ class MyPostScreenState extends State<MyPostScreen> {
           onHome: false,
         ),
       ),
-      padding: const EdgeInsets.only(top: 20),
     );
   }
 
   Padding _buildMessage({required s.MyPostScreenState state,required double width}){
     return Padding(
-      child: Text("   " + _message,
-          style: GoogleFonts.gentiumBasic(
+      padding: const EdgeInsets.all(30),
+      child: Text("   $_message",
+          style: GoogleFonts.gentiumBookBasic(
               textStyle: TextStyle(
                   color: state.primaryTextColor,
                   fontSize: width * 3.3))),
-      padding: const EdgeInsets.all(30),
     );
   }
 
@@ -100,6 +103,7 @@ class MyPostScreenState extends State<MyPostScreen> {
 
   PreferredSize _appBar({required double width,required BuildContext newContext}) {
     return PreferredSize(
+        preferredSize: AppBar().preferredSize,
         child: BlocBuilder<MyPostBloc, s.MyPostScreenState>(
             builder: ((context, state) {
           return AppBar(
@@ -108,7 +112,7 @@ class MyPostScreenState extends State<MyPostScreen> {
                 children: [
                   Text(
                     state.currentUser!.userName!,
-                    style: GoogleFonts.gentiumBasic(
+                    style: GoogleFonts.gentiumBookBasic(
                         textStyle: TextStyle(
                             fontSize: width * 6, color: Colors.white)),
                   ),
@@ -116,19 +120,18 @@ class MyPostScreenState extends State<MyPostScreen> {
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      _addPostButton(context: context),
+                      _addPostButton(context: context,currentUser: state.currentUser!),
                       _archiveButton(context: newContext),
                     ],
                   ))
                 ],
               ));
-        })),
-        preferredSize: AppBar().preferredSize);
+        })));
   }
-  IconButton _addPostButton({required BuildContext context}) {
+  IconButton _addPostButton({required BuildContext context,required User currentUser}) {
     return IconButton(
       onPressed: () {
-        BlocProvider.of<HomeNavigatorCubit>(context).showAddPost();
+        Navigator.of(context).push(CustomPageRoute(child: NewPostScreen(currentUser: currentUser,)));
       },
       icon: const Icon(Icons.add),
       splashRadius: 20,

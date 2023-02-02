@@ -11,7 +11,7 @@ class AuthRepository {
   final DataRepository dataRepo;
   AuthRepository({required this.dataRepo});
   String? attemptAutoLogin() {
-    var result = UserRepository().getCurrentUserUid();
+    var result = UserRepository().getCurrentUid();
     if(result != null){
       return result ;
     }
@@ -20,10 +20,10 @@ class AuthRepository {
     }
   }
   Future<User?> login({
-    @required String? eMail,
-    @required String? password,
+    required String eMail,
+    required String password,
   })async {
-    return await UserRepository().signIn(eMail, password);
+    return await UserRepository().signIn(eMail:eMail, password: password);
   }
 
   bool verify({String? eMail, String? code}) {
@@ -38,7 +38,7 @@ class AuthRepository {
     @required String? password,
   }) async {
     var user = User(id: "",name: name, lastName: lastName,birth: "" ,eMail: eMail, password: password,mobile: "",imageUrl: "",userName: "", joinedAt: "");
-    UserRepository().createUser(user);
+    UserRepository().createUser(user1: user);
     return user;
   }
 
@@ -51,7 +51,7 @@ class AuthRepository {
   }
 
   Future<User?> getCurrentUser()async{
-    String? id = UserRepository().getCurrentUserUid().toString();
+    String? id = UserRepository().getCurrentUid().toString();
     return await UserRepository().getUserById(id);
   }
 

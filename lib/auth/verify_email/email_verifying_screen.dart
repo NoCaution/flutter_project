@@ -167,12 +167,12 @@ class EmailVerifyingScreenState extends State<EmailVerifyingScreen>{
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   "Meet",
-                  style: GoogleFonts.gentiumBasic(
+                  style: GoogleFonts.gentiumBookBasic(
                       textStyle:
                       const TextStyle(color: Colors.white, fontSize: 35)),
                 ),
                 Text("Up",
-                    style: GoogleFonts.gentiumBasic(
+                    style: GoogleFonts.gentiumBookBasic(
                         textStyle: const TextStyle(
                             color: Color.fromRGBO(255, 222, 118, 1),
                             fontSize: 35))),

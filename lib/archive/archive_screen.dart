@@ -51,7 +51,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
             return archivedPosts == null
                 ? Text(
                     "Henüz hiçbir etkinlik kaydetmediniz.",
-                    style: GoogleFonts.gentiumBasic(
+                    style: GoogleFonts.gentiumBookBasic(
                         textStyle: TextStyle(
                             color: state.primaryTextColor?.withOpacity(0.75),
                             fontSize: width * 8,
@@ -137,7 +137,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           child: Text(
             message,
-            style: GoogleFonts.gentiumBasic(
+            style: GoogleFonts.gentiumBookBasic(
                 textStyle: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: width * 6,
@@ -155,7 +155,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
         centerTitle: true,
         title: Text(
           "Etkinlik Arşivi",
-          style: GoogleFonts.gentiumBasic(
+          style: GoogleFonts.gentiumBookBasic(
               textStyle: TextStyle(
             color: Colors.white,
             fontSize: width * 6,

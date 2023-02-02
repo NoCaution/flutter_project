@@ -20,10 +20,10 @@ class AppNavigator extends StatelessWidget {
       return  Navigator(
         pages: [
           if(state is UnknownMainScreenState)
-            const MaterialPage(child:LoadingScreen()),
+            const MaterialPage(child: LoadingScreen()),
           if(state is UnAuthenticated)
             MaterialPage(child: BlocProvider<AuthCubit>(create: (context)=>AuthCubit(sessionCubit: context.read<SessionCubit>()),
-            child: const AuthNavigator(),)),
+              child: const AuthNavigator(),)),
           if(state is Authenticated)
             MaterialPage(child: BottomNavBar(homeNavCubit: HomeNavigatorCubit(),)),
         ],

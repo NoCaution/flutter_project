@@ -46,7 +46,7 @@ class MainScreenState extends State<MainScreen> {
     double height = MediaQuery.of(context).size.height / 100;
     return Scaffold(
         backgroundColor: constants.backGroundColor,
-        appBar: _appBar(context),
+        appBar: _appBar(context,height),
         body: BlocProvider<MainScreenBloc>(
             create: (context) => MainScreenBloc(),
             child: Column(
@@ -78,7 +78,7 @@ Widget postCardWidget(double height) {
   );
 }
 
-PreferredSize _appBar(BuildContext context){
+PreferredSize _appBar(BuildContext context,double fontSize){
   return PreferredSize(
       preferredSize: AppBar().preferredSize,
       child: AppBar(
@@ -93,15 +93,15 @@ PreferredSize _appBar(BuildContext context){
               children: [
                 Text(
                   "Meet",
-                  style: GoogleFonts.gentiumBasic(
+                  style: GoogleFonts.gentiumBookBasic(
                       textStyle:
-                          const TextStyle(color: Colors.white, fontSize: 32)),
+                          TextStyle(color: Colors.white, fontSize: fontSize*3.3)),
                 ),
                 Text("Up",
-                    style: GoogleFonts.gentiumBasic(
-                        textStyle: const TextStyle(
+                    style: GoogleFonts.gentiumBookBasic(
+                        textStyle: TextStyle(
                             color: constants.appNameColor,
-                            fontSize: 32)))
+                            fontSize: fontSize*3.3)))
               ],
             ),
           ),

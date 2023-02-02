@@ -106,10 +106,10 @@ class PostCardWidgetState extends State<PostCardWidget> {
         ),
         height: height * 6,
         width: width * 70,
-        child: Text(widget.post!.whatToDo!,
-            style: GoogleFonts.gentiumBasic(
-                textStyle: TextStyle(fontSize: width * 3.3, color: color))),
         padding: const EdgeInsets.all(10),
+        child: Text(widget.post!.whatToDo!,
+            style: GoogleFonts.gentiumBookBasic(
+                textStyle: TextStyle(fontSize: width * 3.3, color: color))),
       ),
     );
   }
@@ -146,7 +146,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
       padding: const EdgeInsets.only(left: 30, top: 20, bottom:30,right: 30),
       child: Text(
         "   "+widget.post!.description!,
-        style: GoogleFonts.gentiumBasic(
+        style: GoogleFonts.gentiumBookBasic(
             textStyle: TextStyle(fontSize: width * 3.3, color: color)),
       ),
     );

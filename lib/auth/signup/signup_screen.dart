@@ -179,12 +179,12 @@ class SignupScreenWidgetState extends State<SignupScreenWidget>{
             title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 "Meet",
-                style: GoogleFonts.gentiumBasic(
+                style: GoogleFonts.gentiumBookBasic(
                     textStyle:
                     const TextStyle(color: Colors.white, fontSize: 32)),
               ),
               Text("Up",
-                  style: GoogleFonts.gentiumBasic(
+                  style: GoogleFonts.gentiumBookBasic(
                       textStyle: const TextStyle(
                           color: constants.appNameColor,
                           fontSize: 32))),
