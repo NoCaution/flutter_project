@@ -2,14 +2,14 @@ import '../models/post.dart';
 
 abstract class NewPostScreenEvents{}
 
-class PostWhatToDoChanged extends NewPostScreenEvents{
+class NewPostWhatToDoChanged extends NewPostScreenEvents{
   final String? whatToDo;
-  PostWhatToDoChanged({this.whatToDo});
+  NewPostWhatToDoChanged({this.whatToDo});
 }
 
-class PostDescriptionChanged extends NewPostScreenEvents{
+class NewPostDescriptionChanged extends NewPostScreenEvents{
   final String? description;
-  PostDescriptionChanged({this.description});
+  NewPostDescriptionChanged({this.description});
 }
 
 class PostSubmitted extends NewPostScreenEvents{}

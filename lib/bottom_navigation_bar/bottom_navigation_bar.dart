@@ -7,6 +7,7 @@ import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/my_post/my_post_screen.dart';
 import 'package:untitled1/settings/settings_screen.dart';
 import '../my_post/my_post_bloc.dart';
+import '../utils/custom_icons.dart';
 
 
 class BottomNavBar extends StatelessWidget {
@@ -51,22 +52,22 @@ class BottomNavBar extends StatelessWidget {
   }
 
   BottomNavigationBarItem home(int state){
-    return BottomNavigationBarItem(
-        icon: state ==0 ? const Icon(Icons.home) : const Icon(Icons.home_outlined),
+    return const BottomNavigationBarItem(
+        icon: Icon(CustomIcons.home),
         label: "Ana Sayfa"
     );
   }
 
   BottomNavigationBarItem myPost(int state){
-    return BottomNavigationBarItem(
-        icon: state == 1 ? const Icon(Icons.add_circle) : const Icon(Icons.add_circle_outline),
+    return const BottomNavigationBarItem(
+        icon: Icon(CustomIcons.plus),
         label: "Etkinliğim"
     );
   }
 
   BottomNavigationBarItem settings(int state){
-    return BottomNavigationBarItem(
-        icon: state== 2 ? const Icon(Icons.settings) : const Icon(Icons.settings_outlined),
+    return const BottomNavigationBarItem(
+        icon: Icon(CustomIcons.cog),
         label: "Ayarlar"
     );
   }

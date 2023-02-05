@@ -7,7 +7,7 @@ import 'package:untitled1/home/main_screen.dart';
 import 'package:untitled1/messaging/messages/messages_screen.dart';
 import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/session_cubit.dart';
-import '../messaging/message_details.dart';
+import '../messaging/message_details_screen.dart';
 
 class HomeNavigator extends StatelessWidget {
   const HomeNavigator({Key? key}) : super(key: key);

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
-class MessagesScreen extends StatefulWidget{
-  const MessagesScreen({Key? key}) : super(key: key);
+class MessageDetailsScreen extends StatefulWidget{
+  const MessageDetailsScreen({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return MessagesScreenState();
+    return MessageDetailsScreenState();
   }
 
 }
 
-class MessagesScreenState extends State<MessagesScreen>{
+class MessageDetailsScreenState extends State<MessageDetailsScreen>{
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / 100;
@@ -28,7 +28,7 @@ class MessagesScreenState extends State<MessagesScreen>{
         child: AppBar(
           backgroundColor: constants.appBarColor,
           title: Text(
-            "Mesajlar",
+            "Ayarlar",
             style: GoogleFonts.gentiumBookBasic(
                 textStyle: TextStyle(color: Colors.white, fontSize: width * 6)),
           ),

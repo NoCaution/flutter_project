@@ -10,6 +10,7 @@ import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'package:untitled1/widgets/post_card_widget.dart';
+import '../utils/custom_icons.dart';
 import 'main_screen_state.dart';
 
 
@@ -110,7 +111,7 @@ PreferredSize _appBar(BuildContext context,double fontSize){
             children: [
               IconButton(
                 onPressed: () {BlocProvider.of<HomeNavigatorCubit>(context).showMessages();},
-                icon: const Icon(Icons.message_rounded),
+                icon: const Icon(CustomIcons.commentEmpty),
                 splashRadius: 20.0,
               ),
             ],

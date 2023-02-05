@@ -9,11 +9,11 @@ import '../models/post.dart';
 class NewPostScreenBloc extends Bloc<NewPostScreenEvents,NewPostScreenState>{
   final UserCredentialRepository userCredential;
   NewPostScreenBloc({required this.userCredential}) : super(NewPostScreenState(currentUser: userCredential.user)){
-    on<PostWhatToDoChanged>((event, emit)async{
+    on<NewPostWhatToDoChanged>((event, emit)async{
       emit(state.copyWith(whatToDo: event.whatToDo));
     });
 
-    on<PostDescriptionChanged>((event,emit)async{
+    on<NewPostDescriptionChanged>((event,emit)async{
       emit(state.copyWith(description: event.description));
     });
 
