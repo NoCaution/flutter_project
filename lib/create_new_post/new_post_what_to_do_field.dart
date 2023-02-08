@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled1/create_new_post/new_post_screen_bloc.dart';
-import 'package:untitled1/create_new_post/new_post_screen_events.dart';
 import 'package:untitled1/create_new_post/new_post_screen_state.dart';
+import 'new_post_screen_bloc.dart';
+import 'new_post_screen_events.dart';
 
-import '../add_post/add_post_screen_event.dart';
-
-class NewPostDescriptionFormField extends StatelessWidget{
-  const NewPostDescriptionFormField({super.key});
+class NewPostWhatToDoFormField extends StatelessWidget{
+  const NewPostWhatToDoFormField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +17,14 @@ class NewPostDescriptionFormField extends StatelessWidget{
             color: Colors.black54,
           ),
           onChanged: (value){
-            context.read<NewPostScreenBloc>().add(NewPostDescriptionChanged(description: value));
+            context.read<NewPostScreenBloc>().add(NewPostWhatToDoChanged(whatToDo: value));
           },
           maxLines: null,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
               errorStyle: const TextStyle(fontSize: 9),
               fillColor: Colors.white,
-              hintText: "açıklama yaz..",
+              hintText: "ne yapacaksın?",
               contentPadding:
               const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
               filled: true,

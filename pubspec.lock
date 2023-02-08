@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  awesome_page_transitions:
+    dependency: "direct main"
+    description:
+      name: awesome_page_transitions
+      sha256: d57aa47b3a959d14e0e6d531c61f7079ad514b767e2292847d8c781855b935fb
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   bloc:
     dependency: transitive
     description:
@@ -694,5 +702,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0 <4.0.0"
+  dart: ">=2.19.0 <3.0.0"
   flutter: ">=3.3.0"

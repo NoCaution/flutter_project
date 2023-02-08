@@ -7,8 +7,8 @@ import 'package:untitled1/create_new_post/new_post_screen.dart';
 import 'package:untitled1/custom_page_route.dart';
 import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/repositories/user_credential_repository.dart';
+import 'package:untitled1/utils/custom_icons.dart';
 import 'package:untitled1/widgets/post_card_widget.dart';
-import '../home/home_navigator_cubit.dart';
 import '../models/user.dart';
 import 'my_post_screen_state.dart' as s;
 import 'package:untitled1/utils/constants.dart' as constants;
@@ -120,7 +120,7 @@ class MyPostScreenState extends State<MyPostScreen> {
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      _addPostButton(context: context,currentUser: state.currentUser!),
+                      _addPostButton(context: context,currentUser: state.currentUser!,width: width),
                       _archiveButton(context: newContext),
                     ],
                   ))
@@ -128,12 +128,12 @@ class MyPostScreenState extends State<MyPostScreen> {
               ));
         })));
   }
-  IconButton _addPostButton({required BuildContext context,required User currentUser}) {
+  IconButton _addPostButton({required BuildContext context,required User currentUser,required double width}) {
     return IconButton(
       onPressed: () {
         Navigator.of(context).push(CustomPageRoute(child: NewPostScreen(currentUser: currentUser,)));
       },
-      icon: const Icon(Icons.add),
+      icon: Icon(CustomIcons.plus,size: width*5,),
       splashRadius: 20,
     );
   }

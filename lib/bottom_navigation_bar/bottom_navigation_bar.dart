@@ -8,7 +8,7 @@ import 'package:untitled1/my_post/my_post_screen.dart';
 import 'package:untitled1/settings/settings_screen.dart';
 import '../my_post/my_post_bloc.dart';
 import '../utils/custom_icons.dart';
-
+import 'package:untitled1/utils/constants.dart' as constants;
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({Key? key,this.homeNavCubit,}) : super(key: key);
@@ -32,7 +32,7 @@ class BottomNavBar extends StatelessWidget {
               bottomNavigationBar: BottomNavigationBar(
                 selectedLabelStyle: GoogleFonts.gentiumBookBasic(),
                 unselectedLabelStyle: GoogleFonts.gentiumBookBasic(),
-                selectedItemColor: Colors.black,
+                selectedItemColor: constants.appBarColor,
                 currentIndex: state,
                 type: BottomNavigationBarType.fixed,
                 elevation: 0,

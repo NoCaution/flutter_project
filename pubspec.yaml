@@ -43,6 +43,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   email_auth: ^1.0.0
   freezed: ^2.1.0+1
+  awesome_page_transitions: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
