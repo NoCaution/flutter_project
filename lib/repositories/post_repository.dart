@@ -26,12 +26,6 @@ class PostRepository {
       createdAt: now,
     ));
   }
-
-  Stream<QuerySnapshot> getStream() {
-    var ref = reference.collection("posts").snapshots();
-    return ref;
-  }
-
   Future<void> deletePost(String? postId) {
     var ref = reference.collection("posts").doc(postId).delete();
     return ref;

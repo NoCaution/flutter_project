@@ -38,12 +38,11 @@ dependencies:
   flutter_swiper_null_safety: ^1.0.2
   firebase_core: ^2.4.1
   firebase_database: ^10.0.9
-  firebase_auth: ^4.2.2
-  cloud_firestore: ^4.3.1
+  firebase_auth: ^4.6.1
+  cloud_firestore: ^4.7.1
   flutter_bloc: ^8.0.1
   email_auth: ^1.0.0
   freezed: ^2.1.0+1
-  awesome_page_transitions: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

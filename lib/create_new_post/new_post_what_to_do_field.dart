@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled1/create_new_post/new_post_screen_state.dart';
-import 'new_post_screen_bloc.dart';
+import 'package:untitled1/create_new_post/new_post_state.dart';
+import 'new_post_bloc.dart';
 import 'new_post_screen_events.dart';
 
 class NewPostWhatToDoFormField extends StatelessWidget{
@@ -10,14 +10,14 @@ class NewPostWhatToDoFormField extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewPostScreenBloc,NewPostScreenState>(builder: (context,state){
+    return BlocBuilder<NewPostBloc,NewPostState>(builder: (context,state){
       return TextFormField(
           cursorColor: Colors.blueAccent,
           style: const TextStyle(
             color: Colors.black54,
           ),
           onChanged: (value){
-            context.read<NewPostScreenBloc>().add(NewPostWhatToDoChanged(whatToDo: value));
+            context.read<NewPostBloc>().add(NewPostWhatToDoChanged(whatToDo: value));
           },
           maxLines: null,
           keyboardType: TextInputType.text,

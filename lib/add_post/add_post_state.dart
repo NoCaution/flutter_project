@@ -5,33 +5,27 @@ import '../models/post.dart';
 import '../models/user.dart';
 import 'package:untitled1/utils/constants.dart'as constants;
 
-class AddPostScreenState {
+class AddPostState {
   final String? description;
   final String? whatToDo;
   final FormSubmissionStatus formStatus;
   final PostStatus postStatus;
-  final Post? newPost;
   final User? currentUser;
   final Color? primaryTextColor;
 
 
-  AddPostScreenState({
-    String? description,
+  AddPostState({
+    this.description,
     Color? primaryTextColor,
-    String? whatToDo,
+    this.whatToDo,
     FormSubmissionStatus? formStatus,
     PostStatus? postStatus,
-    Post? newPost,
-    required User? currentUser,
-  })  : description = description,
-        whatToDo = whatToDo,
-        postStatus= const InitialPostStatus(),
+    this.currentUser,
+  })  : postStatus= const InitialPostStatus(),
         formStatus = const InitialFormStatus(),
-        newPost = newPost,
-        currentUser = currentUser,
         primaryTextColor = constants.primaryTextColor.withOpacity(0.75);
 
-  AddPostScreenState copyWith({
+  AddPostState copyWith({
     String? description,
     String? whatToDo,
     PostStatus? postStatus,
@@ -39,12 +33,11 @@ class AddPostScreenState {
     Post? newPost,
     User? currentUser,
   }) {
-    return AddPostScreenState(
+    return AddPostState(
         description: description ?? this.description,
         whatToDo: whatToDo ?? this.whatToDo,
         postStatus: postStatus?? this.postStatus,
         formStatus: formStatus ?? this.formStatus,
-        newPost: newPost ?? this.newPost,
         currentUser: currentUser ?? this.currentUser);
   }
 }

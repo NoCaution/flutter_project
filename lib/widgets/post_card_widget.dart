@@ -6,13 +6,13 @@ import '../models/post.dart';
 import '../models/user.dart';
 
 class PostCardWidget extends StatefulWidget {
-  final Post? post;
-  final User? user;
-  final DataRepository? dataRepo;
+  final Post post;
+  final User user;
+  final DataRepository dataRepo;
   final bool? onHome;
   final bool? archived;
 
-  const PostCardWidget({Key? key, this.post, this.user,this.dataRepo,this.onHome,this.archived =false}) : super(key: key);
+  const PostCardWidget({Key? key, required this.post, required this.user,required this.dataRepo, this.onHome, this.archived}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {

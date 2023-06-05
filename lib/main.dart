@@ -1,14 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:untitled1/archive/archive_screen_bloc.dart';
+import 'package:untitled1/archive/archive_bloc.dart';
 import 'package:untitled1/auth/auth_cubit.dart';
 import 'package:untitled1/auth/auth_repository.dart';
-import 'package:untitled1/home/main_screen_bloc.dart';
-import 'package:untitled1/home/main_screen_state.dart';
-import 'package:untitled1/add_post/add_post_screen_bloc.dart';
+import 'package:untitled1/home/home_bloc.dart';
 import 'package:untitled1/repositories/data_repository.dart';
-import 'package:untitled1/repositories/user_credential_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'app_navigator.dart';
 import 'home/home_navigator_cubit.dart';
@@ -33,29 +30,23 @@ class MeetUp extends StatelessWidget {
                 create: (context) => AuthRepository(dataRepo: DataRepository()),
               ),
               RepositoryProvider(create: (context) => DataRepository()),
-              RepositoryProvider(
-                  create: (context) => UserCredentialRepository()),
             ],
             child: MultiBlocProvider(
               providers: [
                 BlocProvider(
                     create: (context) => SessionCubit(
-                        authRepo: context.read<AuthRepository>(),
-                        userCredentialRepo:
-                            context.read<UserCredentialRepository>())),
+                        authRepo: context.read<AuthRepository>())),
                 BlocProvider(
-                  create: (context) => MyPostBloc(
-                      userCredential: context.read<UserCredentialRepository>()),
+                    create: (context)=> ArchiveBloc(
+                        currentUser: context.read<SessionCubit>().getCurrentUser)),
+                BlocProvider(
+                  create: (context) => MyPostBloc(),
                 ),
-                BlocProvider(
-                    create: (context) => ArchiveScreenBloc(
-                        userCredential:
-                            context.read<UserCredentialRepository>())),
-                BlocProvider(create: (context) => MainScreenBloc()),
                 BlocProvider(create: (context) => HomeNavigatorCubit()),
               ],
               child: AppNavigator(
                 authCubit: AuthCubit(),
+                sessionCubit: SessionCubit(),
               ),
             )));
   }

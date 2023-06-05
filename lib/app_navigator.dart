@@ -7,11 +7,13 @@ import 'package:untitled1/loading_screen.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/session_state.dart';
 import 'auth/auth_cubit.dart';
-import 'home/main_screen_state.dart';
+import 'home/home_bloc.dart';
+import 'home/home_state.dart';
 
 class AppNavigator extends StatelessWidget {
   final AuthCubit? authCubit;
-  const AppNavigator({Key? key,this.authCubit,}) : super(key: key);
+  final SessionCubit sessionCubit;
+  const AppNavigator({Key? key,this.authCubit,required this.sessionCubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class AppNavigator extends StatelessWidget {
             MaterialPage(child: BlocProvider<AuthCubit>(create: (context)=>AuthCubit(sessionCubit: context.read<SessionCubit>()),
               child: const AuthNavigator(),)),
           if(state is Authenticated)
-            MaterialPage(child: BottomNavBar(homeNavCubit: HomeNavigatorCubit(),)),
+            MaterialPage(child: BottomNavBar(homeNavCubit: HomeNavigatorCubit(),sessionCubit: context.read<SessionCubit>(),)),
         ],
         onPopPage: (route,result)=> route.didPop(result),
       );

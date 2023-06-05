@@ -5,14 +5,17 @@ import 'package:untitled1/bottom_navigation_bar/bottom_navigation_bar_cubit.dart
 import 'package:untitled1/home/home_navigator.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/my_post/my_post_screen.dart';
+import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/settings/settings_screen.dart';
+import '../home/home_bloc.dart';
 import '../my_post/my_post_bloc.dart';
 import '../utils/custom_icons.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({Key? key,this.homeNavCubit,}) : super(key: key);
+  const BottomNavBar({Key? key,this.homeNavCubit,required this.sessionCubit}) : super(key: key);
   final HomeNavigatorCubit? homeNavCubit;
+  final SessionCubit sessionCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +27,8 @@ class BottomNavBar extends StatelessWidget {
               body: IndexedStack(
                 index: state,
                 children:  [
-                  const HomeNavigator(),
-                  MyPostScreen(postBloc: context.read<MyPostBloc>(),),
+                  HomeNavigator(sessionCubit: sessionCubit,),
+                  MyPostScreen(bottomNavBarCubit: context.read<BottomNavigationBarCubit>(), sessionCubit: sessionCubit,),
                   const SettingsScreen()
                 ],
               ),

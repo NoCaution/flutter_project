@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled1/archive/archive_screen_bloc.dart';
-import 'package:untitled1/archive/archive_screen_event.dart';
 import 'package:untitled1/repositories/data_repository.dart';
-import 'package:untitled1/repositories/user_credential_repository.dart';
+import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'package:untitled1/widgets/post_card_widget.dart';
 import '../models/post.dart';
-import 'archive_screen_state.dart' as s;
+import '../models/user.dart';
+import 'archive_bloc.dart';
+import 'archive_event.dart';
+import 'archive_state.dart';
 
 class ArchiveScreen extends StatefulWidget {
-  final ArchiveScreenBloc archiveBloc;
-  final UserCredentialRepository userCredential;
+  final ArchiveBloc archiveBloc;
   final DataRepository dataRepo;
 
   const ArchiveScreen(
-      {Key? key,
-      required this.archiveBloc,
-      required this.userCredential,
-      required this.dataRepo})
+      {Key? key, required this.archiveBloc, required this.dataRepo})
       : super(key: key);
 
   @override
@@ -37,18 +34,16 @@ class ArchiveScreenState extends State<ArchiveScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Post>? archivedPosts = widget.userCredential.archivedPosts;
+    SessionCubit sessionCubit = context.read<SessionCubit>();
+    User? currentUser = sessionCubit.getCurrentUser;
     double width = MediaQuery.of(context).size.width / 100;
     double height = MediaQuery.of(context).size.height / 100;
     return Scaffold(
       appBar: _appBar(width: width),
       backgroundColor: constants.backGroundColor,
-      body: BlocProvider(
-        create: (BuildContext context) => ArchiveScreenBloc(
-            userCredential: context.read<UserCredentialRepository>()),
-        child: BlocBuilder<ArchiveScreenBloc, s.ArchiveScreenState>(
+      body: BlocBuilder<ArchiveBloc, ArchiveState>(
           builder: (context, state) {
-            return archivedPosts == null
+            return state.archivedPosts == null
                 ? Text(
                     "Henüz hiçbir etkinlik kaydetmediniz.",
                     style: GoogleFonts.gentiumBookBasic(
@@ -57,39 +52,46 @@ class ArchiveScreenState extends State<ArchiveScreen> {
                             fontSize: width * 8,
                             fontWeight: FontWeight.bold)),
                   )
-                : _postCardWidget(width: width, archivedPosts: archivedPosts);
+                : _postCardWidget(
+                    width: width,
+                    archivedPosts: state.archivedPosts,
+                    currentUser: currentUser!);
           },
         ),
-      ),
     );
   }
 
   //COMPONENTS
 
-  Widget _postCardWidget({required double width, List<Post>? archivedPosts}) {
-    var ref = widget.userCredential;
+  Widget _postCardWidget(
+      {required double width,
+      List<Post?>? archivedPosts,
+      required User currentUser}) {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: ListView.builder(
           itemCount: archivedPosts!.length,
           itemBuilder: (context, int position) {
             var text = widget.dataRepo
-                .parseDateTime(date: archivedPosts[position].createdAt!);
+                .parseDateTime(date: archivedPosts[position]!.createdAt!);
             if (position > 0) {
-              return archivedPosts[position - 1].createdAt == text
-                  ? _postCardWithoutDate(ref: ref, position: position)
+              return archivedPosts[position - 1]?.createdAt == text
+                  ? _postCardWithoutDate(
+                      position: position, currentUser: currentUser)
                   : _postCardWithDate(
                       text: text,
                       width: width,
                       position: position,
-                      ref: ref,
+                      currentUser: currentUser,
+                      archivedPosts: archivedPosts,
                     );
             } else {
               return _postCardWithDate(
                 text: text,
                 width: width,
                 position: position,
-                ref: ref,
+                currentUser: currentUser,
+                archivedPosts: archivedPosts,
               );
             }
           }),
@@ -100,15 +102,16 @@ class ArchiveScreenState extends State<ArchiveScreen> {
     required String text,
     required double width,
     required int position,
-    required UserCredentialRepository ref,
+    required User currentUser,
+    required List<Post?> archivedPosts,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildDatePart(message: text, width: width),
         PostCardWidget(
-          post: ref.archivedPosts![position],
-          user: ref.user,
+          post: archivedPosts[position]!,
+          user: currentUser,
           dataRepo: context.read<DataRepository>(),
           archived: true,
         ),
@@ -117,12 +120,14 @@ class ArchiveScreenState extends State<ArchiveScreen> {
   }
 
   Widget _postCardWithoutDate(
-      {required int position, required UserCredentialRepository ref}) {
+      {required int position,
+      List<Post?>? archivedPosts,
+      required User currentUser}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: PostCardWidget(
-        post: ref.archivedPosts![position],
-        user: ref.user,
+        post: archivedPosts![position]!,
+        user: currentUser,
         dataRepo: context.read<DataRepository>(),
         archived: true,
       ),
@@ -150,6 +155,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
 
   PreferredSize _appBar({required double width}) {
     return PreferredSize(
+      preferredSize: AppBar().preferredSize,
       child: AppBar(
         backgroundColor: constants.appBarColor.withOpacity(0.9),
         centerTitle: true,
@@ -162,7 +168,6 @@ class ArchiveScreenState extends State<ArchiveScreen> {
           )),
         ),
       ),
-      preferredSize: AppBar().preferredSize,
     );
   }
 }

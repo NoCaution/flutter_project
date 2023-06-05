@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled1/bottom_navigation_bar/bottom_navigation_bar_cubit.dart';
 import 'package:untitled1/create_new_post/new_post_description_field.dart';
-import 'package:untitled1/create_new_post/new_post_screen_bloc.dart';
+import 'package:untitled1/create_new_post/new_post_bloc.dart';
 import 'package:untitled1/create_new_post/new_post_screen_events.dart';
-import 'package:untitled1/create_new_post/new_post_screen_state.dart' as s;
+import 'package:untitled1/create_new_post/new_post_state.dart';
 import 'package:untitled1/create_new_post/new_post_what_to_do_field.dart';
-import 'package:untitled1/repositories/user_credential_repository.dart';
+import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'package:untitled1/utils/custom_icons.dart';
 import '../models/user.dart';
 import 'custom_dialog.dart';
 
 class NewPostScreen extends StatefulWidget {
-  final User currentUser;
-
-  const NewPostScreen({Key? key, required this.currentUser}) : super(key: key);
+  final BottomNavigationBarCubit bottomNavBarCubit;
+  const NewPostScreen({Key? key,required this.bottomNavBarCubit}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -28,17 +28,19 @@ class NewPostScreenState extends State<NewPostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SessionCubit sessionCubit= context.read<SessionCubit>();
+    User currentUser = sessionCubit.getCurrentUser!;
     Color color = constants.primaryTextColor.withOpacity(0.75);
     double height = MediaQuery.of(context).size.height / 100;
     double width = MediaQuery.of(context).size.width / 100;
-    User currentUser = widget.currentUser;
     return Scaffold(
       backgroundColor: constants.backGroundColor,
       appBar: _appBar(context: context, color: color, width: width),
-      body: BlocProvider<NewPostScreenBloc>(
-        create: (context) => NewPostScreenBloc(
-            userCredential: context.read<UserCredentialRepository>()),
-        child: BlocBuilder<NewPostScreenBloc, s.NewPostScreenState>(
+      body: BlocProvider<NewPostBloc>(
+        create: (context) => NewPostBloc(
+          currentUser: currentUser
+            ),
+        child: BlocBuilder<NewPostBloc, NewPostState>(
             builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.all(15),
@@ -226,20 +228,6 @@ class NewPostScreenState extends State<NewPostScreen> {
       ),
     );
   }
-
-  _showDialog(BuildContext context) {
-    continueCallBack() => {
-          Navigator.of(context).pop(),
-        };
-    CustomDialog alert = CustomDialog(continueCallBack: continueCallBack);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   Row _submitButton({required BuildContext context, required double width}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -256,24 +244,36 @@ class NewPostScreenState extends State<NewPostScreen> {
           ),
         ),
         const SizedBox(
-          width: 15,
+          width: 30,
         )
       ],
     );
   }
 
   _onPressed(BuildContext context) {
-    if (formKey.currentState?.validate() == true) {
-      context.read<NewPostScreenBloc>().add(PostSubmitted());
+      context.read<NewPostBloc>().add(PostSubmitted());
       Navigator.of(context).pop();
-    }
+      widget.bottomNavBarCubit.selectIndex(0);
+  }
+
+  _showDialog(BuildContext context) {
+    continueCallBack() => {
+      Navigator.of(context).pop(),
+    };
+    CustomDialog alert = CustomDialog(continueCallBack: continueCallBack);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   ButtonStyle _buttonStyle() {
     return ButtonStyle(
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
             const EdgeInsets.only(left: 30, right: 30)),
-        backgroundColor: MaterialStateProperty.all(Colors.white70),
+        backgroundColor: MaterialStateProperty.all(constants.backGroundColor),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),

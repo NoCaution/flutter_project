@@ -2,26 +2,26 @@ import 'dart:core';
 import '../models/user.dart';
 import 'new_post_status.dart';
 
-class NewPostScreenState {
+class NewPostState {
   final String? whatToDo;
   final String? description;
   final User? currentUser;
   final NewPostStatus postStatus;
 
-  NewPostScreenState({
+  NewPostState({
     this.whatToDo,
     this.description,
     this.currentUser,
     this.postStatus = const InitNewPostStatus(),
   });
 
-  NewPostScreenState copyWith({
+  NewPostState copyWith({
     String? whatToDo,
     String? description,
     User? currentUser,
     NewPostStatus? postStatus,
   }) {
-    return NewPostScreenState(
+    return NewPostState(
         whatToDo: whatToDo ?? this.whatToDo,
         description: description ?? this.description,
         currentUser: currentUser ?? this.currentUser,
