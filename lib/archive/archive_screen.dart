@@ -43,6 +43,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
       backgroundColor: constants.backGroundColor,
       body: BlocBuilder<ArchiveBloc, ArchiveState>(
           builder: (context, state) {
+            var userInfo ="${currentUser!.name} ${currentUser.lastName} ${currentUser.imageUrl}";
             return state.archivedPosts == null
                 ? Text(
                     "Henüz hiçbir etkinlik kaydetmediniz.",
@@ -55,7 +56,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
                 : _postCardWidget(
                     width: width,
                     archivedPosts: state.archivedPosts,
-                    currentUser: currentUser!);
+                    userInfoForPost: userInfo);
           },
         ),
     );
@@ -66,7 +67,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
   Widget _postCardWidget(
       {required double width,
       List<Post?>? archivedPosts,
-      required User currentUser}) {
+      required String userInfoForPost}) {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: ListView.builder(
@@ -77,12 +78,12 @@ class ArchiveScreenState extends State<ArchiveScreen> {
             if (position > 0) {
               return archivedPosts[position - 1]?.createdAt == text
                   ? _postCardWithoutDate(
-                      position: position, currentUser: currentUser)
+                      position: position, userInfoForPost: userInfoForPost)
                   : _postCardWithDate(
                       text: text,
                       width: width,
                       position: position,
-                      currentUser: currentUser,
+                      userInfoForPost: userInfoForPost,
                       archivedPosts: archivedPosts,
                     );
             } else {
@@ -90,7 +91,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
                 text: text,
                 width: width,
                 position: position,
-                currentUser: currentUser,
+                userInfoForPost: userInfoForPost,
                 archivedPosts: archivedPosts,
               );
             }
@@ -102,7 +103,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
     required String text,
     required double width,
     required int position,
-    required User currentUser,
+    required String userInfoForPost,
     required List<Post?> archivedPosts,
   }) {
     return Column(
@@ -111,7 +112,7 @@ class ArchiveScreenState extends State<ArchiveScreen> {
         _buildDatePart(message: text, width: width),
         PostCardWidget(
           post: archivedPosts[position]!,
-          user: currentUser,
+          userInfoForPost: userInfoForPost,
           dataRepo: context.read<DataRepository>(),
           archived: true,
         ),
@@ -122,12 +123,12 @@ class ArchiveScreenState extends State<ArchiveScreen> {
   Widget _postCardWithoutDate(
       {required int position,
       List<Post?>? archivedPosts,
-      required User currentUser}) {
+      required String userInfoForPost}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: PostCardWidget(
         post: archivedPosts![position]!,
-        user: currentUser,
+        userInfoForPost: userInfoForPost,
         dataRepo: context.read<DataRepository>(),
         archived: true,
       ),

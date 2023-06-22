@@ -24,8 +24,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<Refresh>((event, emit) async {
       try {
         emit(state.copyWith(postStatus: GettingPosts()));
+        var userInfoForPost = await UserRepository().getUserInfoForPost();
         var posts = await PostRepository().getPosts();
-        emit(state.copyWith(posts: posts,postStatus: GetPostsSuccessful()));
+        emit(state.copyWith(posts: posts,postStatus: GetPostsSuccessful(),userInfoForPosts: userInfoForPost));
       } catch (e) {
         emit(state.copyWith(
             postStatus: GetPostsFailed(exception: e as Exception)));
@@ -40,7 +41,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetCurrentUserPost>((event, emit) async {
       var userPost =await PostRepository().getPostById(currentUser!.id);
       emit(state.copyWith(currentUserPost: userPost));
-      print(state.currentUserPost!.id!+"id");
+
     });
   }
 }

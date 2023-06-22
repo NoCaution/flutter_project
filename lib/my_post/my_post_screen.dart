@@ -11,6 +11,7 @@ import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/utils/custom_icons.dart';
 import 'package:untitled1/widgets/post_card_widget.dart';
+import '../models/post.dart';
 import '../models/user.dart';
 import 'my_post_state.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
@@ -47,6 +48,7 @@ class MyPostScreenState extends State<MyPostScreen> {
       ),
       child: BlocBuilder<MyPostBloc, MyPostState>(
         builder: (context, state) {
+          var userInfo ="${state.currentUser!.name} ${state.currentUser!.lastName} ${state.currentUser!.imageUrl}";
           return Scaffold(
             backgroundColor: constants.backGroundColor,
             appBar: _appBar(width: width, context: context, state: state),
@@ -70,7 +72,7 @@ class MyPostScreenState extends State<MyPostScreen> {
                 ),
                 state.currentPost?.whatToDo == null
                     ? _buildMessage(state: state, width: width)
-                    : _buildPostCard(state: state, context: context)
+                    : _buildPostCard(currentPost: state.currentPost!,userInfo: userInfo)
               ],
             ),
           );
@@ -81,19 +83,16 @@ class MyPostScreenState extends State<MyPostScreen> {
 
   //COMPONENTS
 
-  Padding _buildPostCard(
-      {required MyPostState state, required BuildContext context}) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: SingleChildScrollView(
+  Widget _buildPostCard(
+      {required Post currentPost,required String userInfo}) {
+    return SingleChildScrollView(
         child: PostCardWidget(
-          user: state.currentUser!,
-          post: state.currentPost!,
+          userInfoForPost: userInfo,
+          post: currentPost,
           dataRepo: context.read<DataRepository>(),
           onHome: false,
         ),
-      ),
-    );
+      );
   }
 
   Padding _buildMessage({required MyPostState state, required double width}) {

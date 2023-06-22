@@ -6,9 +6,12 @@ import 'package:untitled1/repositories/data_repository.dart';
 import 'package:untitled1/home/home_navigator_cubit.dart';
 import 'package:untitled1/home/home_bloc.dart';
 import 'package:untitled1/home/home_events.dart';
+import 'package:untitled1/repositories/user_repository.dart';
 import 'package:untitled1/session_cubit.dart';
 import 'package:untitled1/utils/constants.dart' as constants;
 import 'package:untitled1/widgets/post_card_widget.dart';
+import '../models/post.dart';
+import '../models/user.dart';
 import '../utils/custom_icons.dart';
 import 'home_state.dart';
 
@@ -43,33 +46,38 @@ class HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height / 100;
     SessionCubit sessionCubit = widget.sessionCubit;
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-        return Scaffold(
-          backgroundColor: constants.backGroundColor,
-          appBar: _appBar(context, height),
-          body: Column(
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: postCardWidget(height, state),
-                ),
-              ),
-            ],
-          ),
-        );
-      });
+      var posts = state.posts;
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: constants.backGroundColor,
+        appBar: _appBar(context, height),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 20,right: 20),
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: state.userInfoForPosts == null || posts == null
+                  ? const Center(heightFactor: 5,child: CircularProgressIndicator(),)
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        var currentPost = posts[index];
+                        var userInfoForPost =
+                            state.userInfoForPosts?[currentPost.userId];
+                        return postCardWidget(
+                            post: currentPost, userInfoForPost: userInfoForPost!);
+                      })),
+        ),
+      );
+    });
   }
 
 //COMPONENTS
-  Widget postCardWidget(double height, HomeState state) {
-    print(state.currentUserPost?.description);
+  Widget postCardWidget(
+      {required String userInfoForPost, required Post post}) {
     return PostCardWidget(
-      user: state.currentUser!,
-      post: state.currentUserPost!,
+      userInfoForPost: userInfoForPost,
+      post: post,
       dataRepo: context.read<DataRepository>(),
       onHome: true,
     );
@@ -118,12 +126,8 @@ class HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  _onRefresh() {
-    widget.homeBloc.add(Refresh());
-  }
-
   _getCurrentUserAndPosts() {
-    widget.homeBloc.add(GetCurrentUser());
+    widget.homeBloc.add(Refresh());
     widget.homeBloc.add(GetCurrentUserPost());
   }
 }

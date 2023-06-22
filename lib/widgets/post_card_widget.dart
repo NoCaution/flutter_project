@@ -7,12 +7,12 @@ import '../models/user.dart';
 
 class PostCardWidget extends StatefulWidget {
   final Post post;
-  final User user;
+  final String userInfoForPost;
   final DataRepository dataRepo;
   final bool? onHome;
   final bool? archived;
 
-  const PostCardWidget({Key? key, required this.post, required this.user,required this.dataRepo, this.onHome, this.archived}) : super(key: key);
+  const PostCardWidget({Key? key, required this.post, required this.userInfoForPost,required this.dataRepo, this.onHome, this.archived}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -25,56 +25,60 @@ class PostCardWidgetState extends State<PostCardWidget> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height / 100;
     double width = MediaQuery.of(context).size.width / 100;
-    User? user = widget.user;
-    String? userName = widget.dataRepo?.capitalizeFirstLetter(user!.name!);
-    String? userLastName = widget.dataRepo?.capitalizeFirstLetter(user!.lastName!);
+    List<String> userInfo = widget.userInfoForPost.split(" ");
+    String? userName = userInfo[0];
+    String? userLastName = userInfo[1];
+    String? userImageUrl = userInfo[2];
     Color color = constants.primaryTextColor.withOpacity(0.75);
-    return Container(
-      width: width * 93,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              _circleAvatar(user!, width, height),  // avatar
-              Text(userName!,style: textStyle(color, width*4),), // user name
-              const SizedBox(width: 7),
-              Text(userLastName!,style: textStyle(color, width*4),), // user last name
-            ],
-          ),
-          _thinLinePart(), //thin divider
-          _descriptionPart(width: width, height: height, color: color), //description part
-          _whatToDoPart(width: width, height: height, color: color), //whatToDo part
-          widget.onHome ==true
-              ? _likeButton()
-              : widget.archived == true
-              ? const SizedBox(height: 0,width: 0,)
-              : _editButton(),
-          const SizedBox(
-            height: 30,
-          )
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Container(
+        width: width * 93,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          color: Colors.white,
+        ),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                _circleAvatar(userName,userImageUrl, width, height),  // avatar
+                Text(userName,style: textStyle(color, width*4),), // user name
+                const SizedBox(width: 7),
+                Text(userLastName,style: textStyle(color, width*4),), // user last name
+              ],
+            ),
+            _thinLinePart(), //thin divider
+            _descriptionPart(width: width, height: height, color: color), //description part
+            _whatToDoPart(width: width, height: height, color: color), //whatToDo part
+            widget.onHome ==true
+                ? _likeButton()
+                : widget.archived == true
+                ? const SizedBox(height: 0,width: 0,)
+                : _editButton(),
+            const SizedBox(
+              height: 30,
+            )
+          ],
+        ),
       ),
     );
   }
 
 //COMPONENTS
-  Widget _circleAvatar(User user, double width, double height) {
+  Widget _circleAvatar(String userName,String  userImageUrl, double width, double height) {
     return Padding(
       padding: const EdgeInsets.only(left: 30,right: 20),
       child: CircleAvatar(
           backgroundImage: AssetImage("lib/assets/images/imageflutter.jpeg"),
           backgroundColor: constants.appBarColor.withOpacity(0.9),
           radius: width * 8,
-          child: user.imageUrl! == " "
+          child: userImageUrl == " "
               ? Text(
-                  user.name!.substring(0, 1).toUpperCase(),
+                  userName.substring(0, 1).toUpperCase(),
                   style: TextStyle(
                     fontSize: width * 7,
                     fontWeight: FontWeight.bold,
@@ -107,7 +111,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
         height: height * 6,
         width: width * 75,
         padding: const EdgeInsets.all(10),
-        child: Text(widget.post!.whatToDo!,
+        child: Text(widget.post.whatToDo!,
             style: GoogleFonts.gentiumBookBasic(
                 textStyle: TextStyle(fontSize: width * 3.3, color: color))),
       ),
@@ -115,11 +119,11 @@ class PostCardWidgetState extends State<PostCardWidget> {
   }
 
   Padding _likeButton() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 30, top: 15),
+    return const Padding(
+      padding: EdgeInsets.only(right: 30, top: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: const [
+        children: [
           Icon(Icons.favorite_border_outlined),
         ],
       ),
@@ -127,11 +131,11 @@ class PostCardWidgetState extends State<PostCardWidget> {
   }
 
   Padding _editButton() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 30, top: 15),
+    return const Padding(
+      padding: EdgeInsets.only(right: 30, top: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: const [
+        children: [
           Icon(Icons.edit),
         ],
       ),
@@ -145,7 +149,7 @@ class PostCardWidgetState extends State<PostCardWidget> {
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(left: 30, top: 20, bottom:30,right: 30),
       child: Text(
-        "   "+widget.post!.description!,
+        "   ${widget.post.description!}",
         style: GoogleFonts.gentiumBookBasic(
             textStyle: TextStyle(fontSize: width * 3.3, color: color)),
       ),

@@ -68,6 +68,16 @@ class UserRepository {
         .toList();
   }
 
+  Future<Map<String,String>>? getUserInfoForPost()async{
+    var users = await getUsers();
+    var map = <String,String>{};
+    if(users != null){
+      for (var user in users) {
+        map[user.id!] = "${user.name!} ${user.lastName!} ${user.imageUrl}";
+      }}
+    return map;
+  }
+
   Future<User>? getUserByEmail(String? eMail) async {
     var ref = reference.collection("users");
     return await ref.where("eMail", isEqualTo: eMail).get().then((snapshot) {
